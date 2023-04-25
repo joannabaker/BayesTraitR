@@ -1,0 +1,174 @@
+﻿Species,Order,Bd,Br,Source
+Rhyncholestes_raphanurus,Paucituberculata,1.301029996,-0.171726888,Boddy 2012
+Caenolestes_fuliginosus,Paucituberculata,1.544068044,-0.167491087,Burger
+Caluromys_derbianus,Didelphimorphia,2.460897843,0.546838672,Boddy 2012
+Caluromys_philander,Didelphimorphia,2.442479769,0.5594278,Boddy 2012
+Caluromys_lanatus,Didelphimorphia,2.584331224,0.491361694,Boddy 2012
+Marmosops_noctivagus,Didelphimorphia,2,-0.040958608,DosSantosEtAl2017
+Thylamys_elegans,Didelphimorphia,1.303196057,-0.133381896,Boddy 2012
+Thylamys_pallidior,Didelphimorphia,1.315970345,-0.142667504,Burger
+Monodelphis_brevicaudata,Didelphimorphia,1.810232518,-0.030397735,Boddy 2012
+Marmosa_murina,Didelphimorphia,1.77815125,0.056752441,Boddy 2012
+Marmosa_rubra,Didelphimorphia,1.77815125,0.094541001,Boddy 2012
+Marmosa_robinsoni,Didelphimorphia,1.703291378,-0.139542205,Boddy 2012
+Marmosa_mexicana,Didelphimorphia,1.669316881,0.015359755,Boddy 2012
+Metachirus_nudicaudatus,Didelphimorphia,2.591064607,0.5594278,Boddy 2012
+Chironectes_minimus,Didelphimorphia,2.883093359,0.743509765,Burger
+Lutreolina_crassicaudata,Didelphimorphia,2.702430536,0.532754379,Burger
+Philander_opossum,Didelphimorphia,2.755874856,0.598558529,Boddy 2012
+Didelphis_virginiana,Didelphimorphia,3.446692466,0.842729028,Boddy 2012
+Didelphis_marsupialis,Didelphimorphia,3.18610838,0.781755375,Boddy 2012
+Dromiciops_gliroides,Microbiotheria,1.380211242,-0.091514981,Burger
+Notoryctes_caurinus,Notoryctemorphia,1.740362689,-0.107905397,Burger
+Macrotis_lagotis,Peramelemorphia,3.26927939,0.832925125,Boddy 2012
+Chaeropus_ecaudatus,Peramelemorphia,2.301029996,0.380211242,Burger
+Isoodon_macrourus,Peramelemorphia,2.914871818,0.660782025,Boddy 2012
+Isoodon_obesulus,Peramelemorphia,2.839478047,0.605309357,Boddy 2012
+Perameles_bougainville,Peramelemorphia,2.6599162,0.521864788,Boddy 2012
+Perameles_gunnii,Peramelemorphia,3.000867722,0.668572269,Boddy 2012
+Perameles_nasuta,Peramelemorphia,3.104828404,0.710841432,Boddy 2012
+Peroryctes_raffrayana,Peramelemorphia,2.989894564,0.816763465,Boddy 2012
+Microperoryctes_longicauda,Peramelemorphia,2.730782276,0.580924976,Burger
+Rhynchomeles_prattorum,Peramelemorphia,2.957607287,0.69019608,Burger
+Echymipera_clara,Peramelemorphia,3.08170727,0.666637769,Boddy 2012
+Echymipera_rufescens,Peramelemorphia,2.902002891,0.587068587,Boddy 2012
+Echymipera_kalubu,Peramelemorphia,2.977723605,0.564666064,Burger
+Thylacinus_cynocephalus,Dasyuromorphia,4.469822016,1.70918513,Burger
+Myrmecobius_fasciatus,Dasyuromorphia,2.607883744,0.643748685,Boddy 2012
+Planigale_maculata,Dasyuromorphia,1.041392685,-0.698970004,Burger
+Planigale_tenuirostris,Dasyuromorphia,0.781755375,-0.853871964,Burger
+Planigale_novaeguineae,Dasyuromorphia,1.173186268,-0.568636236,Burger
+Planigale_gilesi,Dasyuromorphia,0.785329835,-0.754191323,Boddy 2012
+Planigale_ingrami,Dasyuromorphia,0.62838893,-0.823908741,Burger
+Antechinomys_laniger,Dasyuromorphia,1.250420002,-0.312542387,Boddy 2012
+Sminthopsis_griseoventer,Dasyuromorphia,1.29666519,-0.294444165,Boddy 2012
+Ningaui_yvonnae,Dasyuromorphia,0.903089987,-0.585026652,Burger
+Ningaui_ridei,Dasyuromorphia,0.954242509,-0.619788758,Burger
+Sminthopsis_hirtipes,Dasyuromorphia,1.278753601,-0.387216143,Burger
+Sminthopsis_murina,Dasyuromorphia,1.230448921,-0.356547324,Burger
+Sminthopsis_leucopus,Dasyuromorphia,1.352182518,-0.387216143,Burger
+Sminthopsis_crassicaudata,Dasyuromorphia,1.123851641,-0.428337744,Boddy 2012
+Sminthopsis_macroura,Dasyuromorphia,1.230448921,-0.382580253,Boddy 2012
+Sminthopsis_virginiae,Dasyuromorphia,1.662757832,-0.468521083,Burger
+Sminthopsis_douglasi,Dasyuromorphia,1.740362689,-0.455931956,Burger
+Phascogale_calura,Dasyuromorphia,1.641474111,-0.025598852,Boddy 2012
+Phascogale_tapoatafa,Dasyuromorphia,2.286680969,0.257678575,Burger
+Murexchinus_melanurus,Dasyuromorphia,1.491361694,-0.187086643,Burger
+Paramurexia_rothschildi,Dasyuromorphia,1.792391689,0.036549054,Boddy 2012
+Phascomurexia_naso,Dasyuromorphia,1.685741739,-0.113509275,Burger
+Murexia_longicaudata,Dasyuromorphia,2.472024698,0.240669037,Boddy 2012
+Antechinus_minimus,Dasyuromorphia,1.559906625,-0.115408525,Boddy 2012
+Antechinus_swainsonii,Dasyuromorphia,1.802773725,0.052786253,Boddy 2012
+Antechinus_stuartii,Dasyuromorphia,1.474216264,-0.103826652,Boddy 2012
+Antechinus_flavipes,Dasyuromorphia,1.487138375,-0.178460271,Boddy 2012
+Antechinus_agilis,Dasyuromorphia,1.380211242,-0.251811973,Burger
+Antechinus_bellus,Dasyuromorphia,1.660865478,-0.185299695,Boddy 2012
+Antechinus_leo,Dasyuromorphia,1.779596491,-0.109578981,Boddy 2012
+Pseudantechinus_bilarni,Dasyuromorphia,1.439332694,-0.187086643,Burger
+Pseudantechinus_macdonnellensis,Dasyuromorphia,1.511883361,-0.30980392,Burger
+Parantechinus_apicalis,Dasyuromorphia,1.781755375,0.094541001,Boddy 2012
+Myoictis_melas,Dasyuromorphia,1.959041392,0.311753861,Burger
+Dasykaluta_rosamondae,Dasyuromorphia,1.544068044,-0.26760624,Burger
+Dasyuroides_byrnei,Dasyuromorphia,1.992995098,0.191451014,Boddy 2012
+Dasycercus_cristicauda,Dasyuromorphia,1.954242509,0.093421685,Burger
+Neophascogale_lorentzii,Dasyuromorphia,2.326335861,0.389166084,Burger
+Phascolosorex_dorsalis,Dasyuromorphia,1.67669361,0.045322979,Burger
+Sarcophilus_harrisii,Dasyuromorphia,3.903089987,1.206556044,Burger
+Dasyurus_hallucatus,Dasyuromorphia,2.710117365,0.544276456,Boddy 2012
+Dasyurus_maculatus,Dasyuromorphia,3.740362689,0.973589623,Burger
+Dasyurus_viverrinus,Dasyuromorphia,3.037426498,0.726727209,Burger
+Dasyurus_albopunctatus,Dasyuromorphia,2.797267541,0.57863921,Burger
+Dasyurus_geoffroii,Dasyuromorphia,3.041392685,0.713490543,Burger
+Dasyurus_spartacus,Dasyuromorphia,2.687528961,0.72427587,Burger
+Phascolarctos_cinereus,Diprotodontia,3.763427994,1.305351369,Burger
+Vombatus_ursinus,Diprotodontia,4.434441152,1.786211767,Boddy 2012
+Lasiorhinus_latifrons,Diprotodontia,4.414973348,1.744292983,Burger
+Distoechurus_pennatus,Diprotodontia,1.657055853,-0.011512391,Boddy 2012
+Acrobates_pygmaeus,Diprotodontia,1.079181246,-0.455931956,Burger
+Tarsipes_rostratus,Diprotodontia,0.954242509,-0.443697499,Burger
+Dactylopsila_palpator,Diprotodontia,2.638489257,0.839478047,Burger
+Dactylopsila_trivirgata,Diprotodontia,2.704150517,0.78102831,Boddy 2012
+Gymnobelideus_leadbeateri,Diprotodontia,1.956648579,0.470204615,Boddy 2012
+Petaurus_australis,Diprotodontia,2.744292983,0.756636108,Burger
+Petaurus_abidi,Diprotodontia,2.45331834,0.583198774,Burger
+Petaurus_norfolcensis,Diprotodontia,2.361727836,0.480006943,Burger
+Petaurus_breviceps,Diprotodontia,2.105510185,0.320146286,Burger
+Pseudochirops_archeri,Diprotodontia,3.039414119,0.768638101,Burger
+Petropseudes_dahli,Diprotodontia,3.301029996,0.702258163,Burger
+Pseudochirops_corinnae,Diprotodontia,3.050379756,0.72916479,Burger
+Pseudochirops_albertisii,Diprotodontia,2.894592948,0.670245853,Burger
+Pseudochirops_cupreus,Diprotodontia,3.230448921,0.877371346,Burger
+Petauroides_volans,Diprotodontia,2.954242509,0.686532598,Boddy 2012
+Hemibelideus_lemuroides,Diprotodontia,2.978864984,0.498310554,Burger
+Pseudocheirus_peregrinus,Diprotodontia,2.880241776,0.761993954,Boddy 2012
+Pseudochirulus_herbertensis,Diprotodontia,3.047274867,0.635483747,Burger
+Pseudochirulus_canescens,Diprotodontia,2.477121255,0.255272505,Burger
+Pseudochirulus_forbesi,Diprotodontia,2.812913357,0.526339277,Burger
+Pseudochirulus_caroli,Diprotodontia,2.643452676,0.505149978,Burger
+Pseudochirulus_mayeri,Diprotodontia,2.1811287,0.303196057,Burger
+Burramys_parvus,Diprotodontia,1.618048097,0,Burger
+Cercartetus_caudatus,Diprotodontia,1.477121255,-0.148741651,Burger
+Cercartetus_concinnus,Diprotodontia,0.977723605,-0.50751899,Boddy 2012
+Cercartetus_nanus,Diprotodontia,1.380211242,-0.366531544,Burger
+Cercartetus_lepidus,Diprotodontia,0.892094603,-0.428337744,Boddy 2012
+Wyulda_squamicaudata,Diprotodontia,3.224014811,1.004321374,Burger
+Trichosurus_vulpecula,Diprotodontia,3.245759356,1.056828653,Boddy 2012
+Trichosurus_caninus,Diprotodontia,3.462397998,1.075546961,Burger
+Strigocuscus_pelengensis,Diprotodontia,2.996073654,0.793790385,Burger
+Phalanger_lullulae,Diprotodontia,3.21285319,0.784617293,Burger
+Spilocuscus_maculatus,Diprotodontia,3.495127881,1.142464554,Boddy 2012
+Spilocuscus_rufoniger,Diprotodontia,3.77815125,1.225309282,Burger
+Phalanger_gymnotis,Diprotodontia,3.431363764,1.113943352,Burger
+Phalanger_sericeus,Diprotodontia,3.301680949,0.998259338,Burger
+Phalanger_orientalis,Diprotodontia,3.223755454,0.934960779,Boddy 2012
+Phalanger_carmelitae,Diprotodontia,3.244029589,0.944267446,Boddy 2012
+Phalanger_vestitus,Diprotodontia,3.223236273,0.99490813,Boddy 2012
+Potorous_platyops,Diprotodontia,2.77815125,0.799340549,Burger
+Potorous_tridactylus,Diprotodontia,3.041392685,0.979092901,Burger
+Aepyprymnus_rufescens,Diprotodontia,3.414973348,1.089905111,Burger
+Bettongia_lesueur,Diprotodontia,3.113943352,1.021189299,Burger
+Bettongia_gaimardi,Diprotodontia,3.104828404,1.083545617,Boddy 2012
+Bettongia_penicillata,Diprotodontia,2.991669007,0.995817648,Boddy 2012
+Bettongia_tropica,Diprotodontia,3.079181246,0.950364854,Burger
+Lagostrophus_fasciatus,Diprotodontia,3.243038049,0.84509804,Burger
+Dorcopsulus_vanheurni,Diprotodontia,3.229553864,1.071882007,Burger
+Lagorchestes_hirsutus,Diprotodontia,3.102090526,0.890421019,Burger
+Lagorchestes_conspicillatus,Diprotodontia,3.30427505,1.161487791,Boddy 2012
+Onychogalea_unguifera,Diprotodontia,3.822821645,1.222716471,Burger
+Onychogalea_fraenata,Diprotodontia,3.15624619,1.130333768,Boddy 2012
+Thylogale_billardierii,Diprotodontia,3.558468563,1.359752029,Boddy 2012
+Thylogale_stigmatica,Diprotodontia,3.662757832,1.250420002,Burger
+Thylogale_thetis,Diprotodontia,3.567496891,1.298660984,Boddy 2012
+Thylogale_browni,Diprotodontia,3.738622028,1.26245109,Burger
+Thylogale_brunii,Diprotodontia,3.558708571,1.243038049,Burger
+Petrogale_godmani,Diprotodontia,3.67669361,1.255272505,Burger
+Dendrolagus_bennettianus,Diprotodontia,4.039414119,1.267171728,Burger
+Dendrolagus_inustus,Diprotodontia,4.005137596,1.493926251,Boddy 2012
+Dendrolagus_lumholtzi,Diprotodontia,3.857030798,1.418301291,Burger
+Dendrolagus_spadix,Diprotodontia,3.959041392,1.45484486,Burger
+Dendrolagus_matschiei,Diprotodontia,3.944482672,1.439332694,Burger
+Dendrolagus_goodfellowi,Diprotodontia,3.875061263,1.45331834,Burger
+Dendrolagus_dorianus,Diprotodontia,3.897462138,1.524562278,Boddy 2012
+Dendrolagus_scottae,Diprotodontia,4.021189299,1.465382851,Burger
+Petrogale_concinna,Diprotodontia,3.148294097,1.056752441,Boddy 2012
+Petrogale_brachyotis,Diprotodontia,3.607455023,1.197280558,Burger
+Petrogale_xanthopus,Diprotodontia,3.875061263,1.361727836,Burger
+Petrogale_persephone,Diprotodontia,3.758306182,1.347798215,Boddy 2012
+Petrogale_lateralis,Diprotodontia,3.662757832,1.283301229,Burger
+Petrogale_assimilis,Diprotodontia,3.653212514,1.243038049,Burger
+Petrogale_inornata,Diprotodontia,3.662757832,1.230448921,Burger
+Petrogale_penicillata,Diprotodontia,3.777426822,1.393757656,Boddy 2012
+Petrogale_herberti,Diprotodontia,3.711807229,1.326335861,Burger
+Setonix_brachyurus,Diprotodontia,3.544068044,1.243038049,Sacher 1974
+Wallabia_bicolor,Diprotodontia,4.214843848,1.514547753,Boddy 2012
+Macropus_rufogriseus,Diprotodontia,4.088401902,1.581471774,Boddy 2012
+Macropus_parma,Diprotodontia,3.575187845,1.240549248,Boddy 2012
+Macropus_parryi,Diprotodontia,4.181672122,1.631309807,Boddy 2012
+Macropus_giganteus,Diprotodontia,4.510115119,1.790115119,Halley 2016
+Macropus_fuliginosus,Diprotodontia,4.460145817,1.763427994,Burger
+Macropus_irma,Diprotodontia,3.903089987,1.392696953,Burger
+Macropus_agilis,Diprotodontia,4.176091259,1.522444234,Burger
+Macropus_eugenii,Diprotodontia,3.645913275,1.390108101,Boddy 2012
+Macropus_rufus,Diprotodontia,4.665111737,1.79518459,Burger
+Macropus_antilopinus,Diprotodontia,4.495350041,1.769708091,Boddy 2012
+Macropus_robustus,Diprotodontia,4.550717423,1.786211767,Boddy 2012
