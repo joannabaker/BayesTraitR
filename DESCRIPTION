@@ -1,0 +1,14 @@
+Package: BayesTraitR
+Title: R Tools for BayesTraits
+Version: 0.0.0.9000
+Authors@R: 
+    person("Joanna", "Baker", , "joanna.lab@gmail.com", role = c("aut", "cre"),
+           comment = c(ORCID = "https://orcid.org/0000-0003-4904-6934"))
+Description: This package comprises a suite of tools for use with BayesTraits.
+   It is intended to facilitate pre-processing of data files and trees for use
+   in downstream phylogenetic comparative analyses as well as to aid post-
+   processing and interpretation of BayesTraits outputs.
+License: file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
