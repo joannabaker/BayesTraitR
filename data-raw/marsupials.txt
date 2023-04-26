@@ -1,0 +1,174 @@
+Species	Order	Family	Br	Bd	Ref
+Bettongia_gaimardi	Diprotodontia	Potoroidae	1.083545617	3.104828404	Boddy 2012
+Bettongia_penicillata	Diprotodontia	Potoroidae	0.995817648	2.991669007	Boddy 2012
+Cercartetus_concinnus	Diprotodontia	Burramyidae	-0.50751899	0.977723605	Boddy 2012
+Cercartetus_lepidus	Diprotodontia	Burramyidae	-0.428337744	0.892094603	Boddy 2012
+Dactylopsila_trivirgata	Diprotodontia	Petauridae	0.78102831	2.704150517	Boddy 2012
+Dendrolagus_dorianus	Diprotodontia	Macropodidae	1.524562278	3.897462138	Boddy 2012
+Dendrolagus_inustus	Diprotodontia	Macropodidae	1.493926251	4.005137596	Boddy 2012
+Distoechurus_pennatus	Diprotodontia	Acrobatidae	-0.011512391	1.657055853	Boddy 2012
+Gymnobelideus_leadbeateri	Diprotodontia	Petauridae	0.470204615	1.956648579	Boddy 2012
+Lagorchestes_conspicillatus	Diprotodontia	Macropodidae	1.161487791	3.30427505	Boddy 2012
+Macropus_antilopinus	Diprotodontia	Macropodidae	1.769708091	4.495350041	Boddy 2012
+Macropus_eugenii	Diprotodontia	Macropodidae	1.390108101	3.645913275	Boddy 2012
+Macropus_giganteus	Diprotodontia	Macropodidae	1.790115119	4.510115119	Halley 2016
+Macropus_parma	Diprotodontia	Macropodidae	1.240549248	3.575187845	Boddy 2012
+Macropus_parryi	Diprotodontia	Macropodidae	1.631309807	4.181672122	Boddy 2012
+Macropus_robustus	Diprotodontia	Macropodidae	1.786211767	4.550717423	Boddy 2012
+Macropus_rufogriseus	Diprotodontia	Macropodidae	1.581471774	4.088401902	Boddy 2012
+Onychogalea_fraenata	Diprotodontia	Macropodidae	1.130333768	3.15624619	Boddy 2012
+Petauroides_volans	Diprotodontia	Pseudocheiridae	0.686532598	2.954242509	Boddy 2012
+Petrogale_concinna	Diprotodontia	Macropodidae	1.056752441	3.148294097	Boddy 2012
+Petrogale_penicillata	Diprotodontia	Macropodidae	1.393757656	3.777426822	Boddy 2012
+Petrogale_persephone	Diprotodontia	Macropodidae	1.347798215	3.758306182	Boddy 2012
+Phalanger_carmelitae	Diprotodontia	Phalangeridae	0.944267446	3.244029589	Boddy 2012
+Phalanger_orientalis	Diprotodontia	Phalangeridae	0.934960779	3.223755454	Boddy 2012
+Phalanger_vestitus	Diprotodontia	Phalangeridae	0.99490813	3.223236273	Boddy 2012
+Pseudocheirus_peregrinus	Diprotodontia	Pseudocheiridae	0.761993954	2.880241776	Boddy 2012
+Setonix_brachyurus	Diprotodontia	Macropodidae	1.243038049	3.544068044	Sacher 1974
+Spilocuscus_maculatus	Diprotodontia	Phalangeridae	1.142464554	3.495127881	Boddy 2012
+Thylogale_billardierii	Diprotodontia	Macropodidae	1.359752029	3.558468563	Boddy 2012
+Thylogale_thetis	Diprotodontia	Macropodidae	1.298660984	3.567496891	Boddy 2012
+Trichosurus_vulpecula	Diprotodontia	Phalangeridae	1.056828653	3.245759356	Boddy 2012
+Vombatus_ursinus	Diprotodontia	Vombatidae	1.786211767	4.434441152	Boddy 2012
+Wallabia_bicolor	Diprotodontia	Macropodidae	1.514547753	4.214843848	Boddy 2012
+Antechinomys_laniger	Dasyuromorphia	Dasyuridae	-0.312542387	1.250420002	Boddy 2012
+Antechinus_bellus	Dasyuromorphia	Dasyuridae	-0.185299695	1.660865478	Boddy 2012
+Antechinus_flavipes	Dasyuromorphia	Dasyuridae	-0.178460271	1.487138375	Boddy 2012
+Antechinus_leo	Dasyuromorphia	Dasyuridae	-0.109578981	1.779596491	Boddy 2012
+Antechinus_minimus	Dasyuromorphia	Dasyuridae	-0.115408525	1.559906625	Boddy 2012
+Antechinus_stuartii	Dasyuromorphia	Dasyuridae	-0.103826652	1.474216264	Boddy 2012
+Antechinus_swainsonii	Dasyuromorphia	Dasyuridae	0.052786253	1.802773725	Boddy 2012
+Caluromys_derbianus	Didelphimorphia	Didelphidae	0.546838672	2.460897843	Boddy 2012
+Caluromys_lanatus	Didelphimorphia	Didelphidae	0.491361694	2.584331224	Boddy 2012
+Caluromys_philander	Didelphimorphia	Didelphidae	0.5594278	2.442479769	Boddy 2012
+Dasyuroides_byrnei	Dasyuromorphia	Dasyuridae	0.191451014	1.992995098	Boddy 2012
+Dasyurus_hallucatus	Dasyuromorphia	Dasyuridae	0.544276456	2.710117365	Boddy 2012
+Didelphis_marsupialis	Didelphimorphia	Didelphidae	0.781755375	3.18610838	Boddy 2012
+Didelphis_virginiana	Didelphimorphia	Didelphidae	0.842729028	3.446692466	Boddy 2012
+Echymipera_clara	Peramelemorphia	Peramelidae	0.666637769	3.08170727	Boddy 2012
+Echymipera_rufescens	Peramelemorphia	Peramelidae	0.587068587	2.902002891	Boddy 2012
+Isoodon_macrourus	Peramelemorphia	Peramelidae	0.660782025	2.914871818	Boddy 2012
+Isoodon_obesulus	Peramelemorphia	Peramelidae	0.605309357	2.839478047	Boddy 2012
+Macrotis_lagotis	Peramelemorphia	Thylacomyidae	0.832925125	3.26927939	Boddy 2012
+Marmosa_mexicana	Didelphimorphia	Didelphidae	0.015359755	1.669316881	Boddy 2012
+Marmosa_murina	Didelphimorphia	Didelphidae	0.056752441	1.77815125	Boddy 2012
+Marmosa_robinsoni	Didelphimorphia	Didelphidae	-0.139542205	1.703291378	Boddy 2012
+Marmosa_rubra	Didelphimorphia	Didelphidae	0.094541001	1.77815125	Boddy 2012
+Metachirus_nudicaudatus	Didelphimorphia	Didelphidae	0.5594278	2.591064607	Boddy 2012
+Monodelphis_brevicaudata	Didelphimorphia	Didelphidae	-0.030397735	1.810232518	Boddy 2012
+Murexia_longicaudata	Dasyuromorphia	Dasyuridae	0.240669037	2.472024698	Boddy 2012
+Myrmecobius_fasciatus	Dasyuromorphia	Myrmecobiidae	0.643748685	2.607883744	Boddy 2012
+Paramurexia_rothschildi	Dasyuromorphia	Dasyuridae	0.036549054	1.792391689	Boddy 2012
+Parantechinus_apicalis	Dasyuromorphia	Dasyuridae	0.094541001	1.781755375	Boddy 2012
+Perameles_bougainville	Peramelemorphia	Peramelidae	0.521864788	2.6599162	Boddy 2012
+Perameles_gunnii	Peramelemorphia	Peramelidae	0.668572269	3.000867722	Boddy 2012
+Perameles_nasuta	Peramelemorphia	Peramelidae	0.710841432	3.104828404	Boddy 2012
+Peroryctes_raffrayana	Peramelemorphia	Peramelidae	0.816763465	2.989894564	Boddy 2012
+Phascogale_calura	Dasyuromorphia	Dasyuridae	-0.025598852	1.641474111	Boddy 2012
+Philander_opossum	Didelphimorphia	Didelphidae	0.598558529	2.755874856	Boddy 2012
+Planigale_gilesi	Dasyuromorphia	Dasyuridae	-0.754191323	0.785329835	Boddy 2012
+Rhyncholestes_raphanurus	Paucituberculata	Caenolestidae	-0.171726888	1.301029996	Boddy 2012
+Sminthopsis_crassicaudata	Dasyuromorphia	Dasyuridae	-0.428337744	1.123851641	Boddy 2012
+Sminthopsis_griseoventer	Dasyuromorphia	Dasyuridae	-0.294444165	1.29666519	Boddy 2012
+Sminthopsis_macroura	Dasyuromorphia	Dasyuridae	-0.382580253	1.230448921	Boddy 2012
+Thylamys_elegans	Didelphimorphia	Didelphidae	-0.133381896	1.303196057	Boddy 2012
+Planigale_tenuirostris	Dasyuromorphia	Dasyuridae	-0.853871964	0.781755375	Burger
+Planigale_ingrami	Dasyuromorphia	Dasyuridae	-0.823908741	0.62838893	Burger
+Planigale_maculata	Dasyuromorphia	Dasyuridae	-0.698970004	1.041392685	Burger
+Ningaui_ridei	Dasyuromorphia	Dasyuridae	-0.619788758	0.954242509	Burger
+Ningaui_yvonnae	Dasyuromorphia	Dasyuridae	-0.585026652	0.903089987	Burger
+Planigale_novaeguineae	Dasyuromorphia	Dasyuridae	-0.568636236	1.173186268	Burger
+Sminthopsis_virginiae	Dasyuromorphia	Dasyuridae	-0.468521083	1.662757832	Burger
+Sminthopsis_douglasi	Dasyuromorphia	Dasyuridae	-0.455931956	1.740362689	Burger
+Sminthopsis_hirtipes	Dasyuromorphia	Dasyuridae	-0.387216143	1.278753601	Burger
+Sminthopsis_leucopus	Dasyuromorphia	Dasyuridae	-0.387216143	1.352182518	Burger
+Sminthopsis_murina	Dasyuromorphia	Dasyuridae	-0.356547324	1.230448921	Burger
+Pseudantechinus_macdonnellensis	Dasyuromorphia	Dasyuridae	-0.30980392	1.511883361	Burger
+Dasykaluta_rosamondae	Dasyuromorphia	Dasyuridae	-0.26760624	1.544068044	Burger
+Antechinus_agilis	Dasyuromorphia	Dasyuridae	-0.251811973	1.380211242	Burger
+Pseudantechinus_bilarni	Dasyuromorphia	Dasyuridae	-0.187086643	1.439332694	Burger
+Murexchinus_melanurus	Dasyuromorphia	Dasyuridae	-0.187086643	1.491361694	Burger
+Phascomurexia_naso	Dasyuromorphia	Dasyuridae	-0.113509275	1.685741739	Burger
+Phascolosorex_dorsalis	Dasyuromorphia	Dasyuridae	0.045322979	1.67669361	Burger
+Dasycercus_cristicauda	Dasyuromorphia	Dasyuridae	0.093421685	1.954242509	Burger
+Phascogale_tapoatafa	Dasyuromorphia	Dasyuridae	0.257678575	2.286680969	Burger
+Myoictis_melas	Dasyuromorphia	Dasyuridae	0.311753861	1.959041392	Burger
+Neophascogale_lorentzii	Dasyuromorphia	Dasyuridae	0.389166084	2.326335861	Burger
+Dasyurus_albopunctatus	Dasyuromorphia	Dasyuridae	0.57863921	2.797267541	Burger
+Dasyurus_geoffroii	Dasyuromorphia	Dasyuridae	0.713490543	3.041392685	Burger
+Dasyurus_viverrinus	Dasyuromorphia	Dasyuridae	0.726727209	3.037426498	Burger
+Dasyurus_maculatus	Dasyuromorphia	Dasyuridae	0.973589623	3.740362689	Burger
+Sarcophilus_harrisii	Dasyuromorphia	Dasyuridae	1.206556044	3.903089987	Burger
+Thylacinus_cynocephalus	Dasyuromorphia	Thylacinidae	1.70918513	4.469822016	Burger
+Dasyurus_spartacus	Dasyuromorphia	Dasyuridae	0.72427587	2.687528961	Burger
+Thylamys_pallidior	Didelphimorphia	Didelphidae	-0.142667504	1.315970345	Burger
+Lutreolina_crassicaudata	Didelphimorphia	Didelphidae	0.532754379	2.702430536	Burger
+Chironectes_minimus	Didelphimorphia	Didelphidae	0.743509765	2.883093359	Burger
+Acrobates_pygmaeus	Diprotodontia	Acrobatidae	-0.455931956	1.079181246	Burger
+Tarsipes_rostratus	Diprotodontia	Tarsipedidae	-0.443697499	0.954242509	Burger
+Cercartetus_nanus	Diprotodontia	Burramyidae	-0.366531544	1.380211242	Burger
+Cercartetus_caudatus	Diprotodontia	Burramyidae	-0.148741651	1.477121255	Burger
+Burramys_parvus	Diprotodontia	Burramyidae	0	1.618048097	Burger
+Pseudochirulus_canescens	Diprotodontia	Pseudocheiridae	0.255272505	2.477121255	Burger
+Pseudochirulus_mayeri	Diprotodontia	Pseudocheiridae	0.303196057	2.1811287	Burger
+Petaurus_breviceps	Diprotodontia	Petauridae	0.320146286	2.105510185	Burger
+Petaurus_norfolcensis	Diprotodontia	Petauridae	0.480006943	2.361727836	Burger
+Hemibelideus_lemuroides	Diprotodontia	Pseudocheiridae	0.498310554	2.978864984	Burger
+Pseudochirulus_caroli	Diprotodontia	Pseudocheiridae	0.505149978	2.643452676	Burger
+Pseudochirulus_forbesi	Diprotodontia	Pseudocheiridae	0.526339277	2.812913357	Burger
+Pseudochirulus_herbertensis	Diprotodontia	Pseudocheiridae	0.635483747	3.047274867	Burger
+Pseudochirops_albertisii	Diprotodontia	Pseudocheiridae	0.670245853	2.894592948	Burger
+Petropseudes_dahli	Diprotodontia	Pseudocheiridae	0.702258163	3.301029996	Burger
+Pseudochirops_corinnae	Diprotodontia	Pseudocheiridae	0.72916479	3.050379756	Burger
+Petaurus_australis	Diprotodontia	Petauridae	0.756636108	2.744292983	Burger
+Pseudochirops_archeri	Diprotodontia	Pseudocheiridae	0.768638101	3.039414119	Burger
+Phalanger_lullulae	Diprotodontia	Phalangeridae	0.784617293	3.21285319	Burger
+Potorous_platyops	Diprotodontia	Potoroidae	0.799340549	2.77815125	Burger
+Dactylopsila_palpator	Diprotodontia	Petauridae	0.839478047	2.638489257	Burger
+Lagostrophus_fasciatus	Diprotodontia	Macropodidae	0.84509804	3.243038049	Burger
+Pseudochirops_cupreus	Diprotodontia	Pseudocheiridae	0.877371346	3.230448921	Burger
+Lagorchestes_hirsutus	Diprotodontia	Macropodidae	0.890421019	3.102090526	Burger
+Bettongia_tropica	Diprotodontia	Potoroidae	0.950364854	3.079181246	Burger
+Potorous_tridactylus	Diprotodontia	Potoroidae	0.979092901	3.041392685	Burger
+Phalanger_sericeus	Diprotodontia	Phalangeridae	0.998259338	3.301680949	Burger
+Wyulda_squamicaudata	Diprotodontia	Phalangeridae	1.004321374	3.224014811	Burger
+Bettongia_lesueur	Diprotodontia	Potoroidae	1.021189299	3.113943352	Burger
+Dorcopsulus_vanheurni	Diprotodontia	Macropodidae	1.071882007	3.229553864	Burger
+Trichosurus_caninus	Diprotodontia	Phalangeridae	1.075546961	3.462397998	Burger
+Aepyprymnus_rufescens	Diprotodontia	Potoroidae	1.089905111	3.414973348	Burger
+Phalanger_gymnotis	Diprotodontia	Phalangeridae	1.113943352	3.431363764	Burger
+Petrogale_brachyotis	Diprotodontia	Macropodidae	1.197280558	3.607455023	Burger
+Onychogalea_unguifera	Diprotodontia	Macropodidae	1.222716471	3.822821645	Burger
+Spilocuscus_rufoniger	Diprotodontia	Phalangeridae	1.225309282	3.77815125	Burger
+Petrogale_inornata	Diprotodontia	Macropodidae	1.230448921	3.662757832	Burger
+Thylogale_brunii	Diprotodontia	Macropodidae	1.243038049	3.558708571	Burger
+Petrogale_assimilis	Diprotodontia	Macropodidae	1.243038049	3.653212514	Burger
+Thylogale_stigmatica	Diprotodontia	Macropodidae	1.250420002	3.662757832	Burger
+Petrogale_godmani	Diprotodontia	Macropodidae	1.255272505	3.67669361	Burger
+Thylogale_browni	Diprotodontia	Macropodidae	1.26245109	3.738622028	Burger
+Dendrolagus_bennettianus	Diprotodontia	Macropodidae	1.267171728	4.039414119	Burger
+Petrogale_lateralis	Diprotodontia	Macropodidae	1.283301229	3.662757832	Burger
+Phascolarctos_cinereus	Diprotodontia	Phascolarctidae	1.305351369	3.763427994	Burger
+Petrogale_herberti	Diprotodontia	Macropodidae	1.326335861	3.711807229	Burger
+Petrogale_xanthopus	Diprotodontia	Macropodidae	1.361727836	3.875061263	Burger
+Macropus_irma	Diprotodontia	Macropodidae	1.392696953	3.903089987	Burger
+Dendrolagus_lumholtzi	Diprotodontia	Macropodidae	1.418301291	3.857030798	Burger
+Dendrolagus_matschiei	Diprotodontia	Macropodidae	1.439332694	3.944482672	Burger
+Dendrolagus_goodfellowi	Diprotodontia	Macropodidae	1.45331834	3.875061263	Burger
+Dendrolagus_spadix	Diprotodontia	Macropodidae	1.45484486	3.959041392	Burger
+Dendrolagus_scottae	Diprotodontia	Macropodidae	1.465382851	4.021189299	Burger
+Macropus_agilis	Diprotodontia	Macropodidae	1.522444234	4.176091259	Burger
+Lasiorhinus_latifrons	Diprotodontia	Vombatidae	1.744292983	4.414973348	Burger
+Macropus_fuliginosus	Diprotodontia	Macropodidae	1.763427994	4.460145817	Burger
+Macropus_rufus	Diprotodontia	Macropodidae	1.79518459	4.665111737	Burger
+Petaurus_abidi	Diprotodontia	Petauridae	0.583198774	2.45331834	Burger
+Strigocuscus_pelengensis	Diprotodontia	Phalangeridae	0.793790385	2.996073654	Burger
+Dromiciops_gliroides	Microbiotheria	Microbiotheriidae	-0.091514981	1.380211242	Burger
+Notoryctes_caurinus	Notoryctemorphia	Notoryctidae	-0.107905397	1.740362689	Burger
+Caenolestes_fuliginosus	Paucituberculata	Caenolestidae	-0.167491087	1.544068044	Burger
+Chaeropus_ecaudatus	Peramelemorphia	Chaeropodidae	0.380211242	2.301029996	Burger
+Echymipera_kalubu	Peramelemorphia	Peramelidae	0.564666064	2.977723605	Burger
+Microperoryctes_longicauda	Peramelemorphia	Peramelidae	0.580924976	2.730782276	Burger
+Rhynchomeles_prattorum	Peramelemorphia	Peramelidae	0.69019608	2.957607287	Burger
+Marmosops_noctivagus	Didelphimorphia	Didelphidae	-0.040958608	2	DosSantosEtAl2017
