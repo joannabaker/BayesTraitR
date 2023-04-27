@@ -39,4 +39,13 @@ taken from the forthcoming publication:
 Venditti C, Baker J & Barton, R (2023) *Co-evolutionary dynamics of
 mammalian brain and body size*, Currently **in review**.
 
-<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
+<div class="figure">
+
+<img src="man/figures/README-unnamed-chunk-2-1.png" alt="Figure 1. Marsupial Brain and Body Size. There is a clear (and unsurprising) strong positive relationship between brain and body mass in marsupials." width="100%" />
+<p class="caption">
+Figure 1. Marsupial Brain and Body Size. There is a clear (and
+unsurprising) strong positive relationship between brain and body mass
+in marsupials.
+</p>
+
+</div>

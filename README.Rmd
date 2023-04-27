@@ -42,8 +42,8 @@ This package contains sample brain and body size data for marsupials, taken from
 Venditti C, Baker J & Barton, R (2023) *Co-evolutionary dynamics of mammalian brain and body size*, Currently **in review**.
 
 
-```{r, echo=FALSE, message =FALSE}
+```{r, echo=FALSE, message =FALSE, fig.cap = "Figure 1. Marsupial Brain and Body Size. There is a clear (and unsurprising) strong positive relationship between brain and body mass in marsupials."}
 marsupials = read.table("data-raw/marsupials.txt", sep = "\t", header = T, stringsAsFactors = F)
-plot(marsupials$Br~marsupials$Bd, xlab = expression(log[10]~Body~Mass~(g)), ylab = expression(log[10]~Brain~Mass~(g)), pch = 16, col = "red")
+plot(marsupials$Br~marsupials$Bd, xlab = expression(log[10]~Body~Mass~(g)), ylab = expression(log[10]~Brain~Mass~(g)), pch = 16, col = "red", las = 1, bty = "l")
 ```
 
