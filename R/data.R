@@ -25,4 +25,4 @@
 #'   ...
 #' }
 #' @source Downloaded from timetree.org Jan 2020
-"marsupials"
+"marsupial_tree"

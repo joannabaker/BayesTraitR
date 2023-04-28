@@ -16,29 +16,14 @@ A data frame with 173 rows and 6 columns:
 ...
 }
 }
-
-\subsection{\code{marsupial_tree}}{
-
-A "phylo" format Phylogenetic tree with 173 tips and 160 internal nodes:
-\describe{
-\item{Tip Labels}{Binomial as found in the Time Tree of Life, downloaded from timetree.org Jan 2020.}
-...
-}
-}
 }
 \source{
 Venditti, Baker & Barton (2023) forthcoming publication
-
-Downloaded from timetree.org Jan 2020
 }
 \usage{
-marsupials
-
 marsupials
 }
 \description{
 A subset of the mammalian brain size dataset presented in Venditti et al 2023
-
-A subset of the timetree.org mammalian phylogeny representing 173 marsupials
 }
 \keyword{datasets}
