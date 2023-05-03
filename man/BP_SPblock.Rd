@@ -5,7 +5,6 @@
 \title{Generate BayesPhylogenies analysis files.}
 \usage{
 BP_SPblock(
-  nexusfile,
   chainsN = 1,
   model = "GTR",
   iterations = 1100,
@@ -28,6 +27,15 @@ BP_SPblock(
 "GTR" (the default), "GTNR", "HKY85", "F81", "SYM", "JC", "K2P" for sequence data.
 For binary data, model can be "M1P", "M2P" and for multi-state data the "KSTATES"
 model can be used.}
+
+\item{iterations}{Numeric value determining the total number of iterations to run.
+Default is \code{1100}.}
+
+\item{sample}{Numeric value determining the "thinning" or "sampling" parameter -
+i.e. how many iterations to run between each sample. Default is \code{500}.}
+
+\item{burnin}{Numeric value determining the amount of iterations to remove from
+the beginning of the chain as burn-in. Defaults to \code{100}.}
 
 \item{seed}{A numeric value specifying the random number seed for a model.
 If left unspecified, BayesPhylogenies will randomly specify this. If specified,
@@ -58,15 +66,6 @@ It is not recommended that this value be larger than 2.}
 \item{optionalarguments}{An optional character vector containing further arguments
 to be passed to BayesPhylogenies. Please see program documentation for options
 and examples of accepted arguemnts.}
-
-\item{bi}{Numeric value determining the amount of iterations to remove from
-the beginning of the chain as burn-in. Defaults to \code{100}.}
-
-\item{it}{Numeric value determining the total number of iterations to run.
-Default is \code{1100}.}
-
-\item{sa}{Numeric value determining the "thinning" or "sampling" parameter -
-i.e. how many iterations to run between each sample. Default is \code{500}.}
 }
 \value{
 A character string representing the input to BayesTraits

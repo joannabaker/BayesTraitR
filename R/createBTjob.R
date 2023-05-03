@@ -97,12 +97,9 @@ BTBetapriors = function(data, prior, pars) {
 #'     corresponding data point (\code{DistData=FALSE}). This allows the user to input a sample of data
 #'     for a taxon/range of taxa instead of a single point. This requires the input
 #'     data file to contain multiple entries for at least one of the sampled taxa.
-#'     See \href{http://www.evolution.reading.ac.uk/BayesTraitsV4.0.1/BayesTraitsV4.0.1.html}{BayesTraits} manual for details.
-#' @param link If \code{DistData = TRUE}, then this specifies whether the samples are
-#'     linked: where multiple traits within a single taxon are taken from the same source
-#'     (e.g. brain and body size taken from a single individual); or unlinked (\code(DistData = FALSE}: where
-#'     data values for a given taxon are not taken from a single source or individual.
-#'     Please see \code{\link{linkvalues}} function and \href{http://www.evolution.reading.ac.uk/BayesTraitsV4.0.1/BayesTraitsV4.0.1.html}{BayesTraits} Manual for more details.
+#' @param link If \code{DistData=TRUE}, the user must specify whether samples are "linked"
+#'     (traits are taken from the same source or individual) or "unlinked" (samples)
+#'     are not taken from a single source or individual.
 #' @return Generates files in the current working directory that can be used
 #'     to run BayesTraits analyses.
 #' @details BayesTraits is in constant development and as such not all eventualities are

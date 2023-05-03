@@ -67,8 +67,11 @@ working directory.}
 values to be accounted for (\code{DistData=TRUE}), or if each tip has only a single
 corresponding data point (\code{DistData=FALSE}). This allows the user to input a sample of data
 for a taxon/range of taxa instead of a single point. This requires the input
-data file to contain multiple entries for at least one of the sampled taxa.
-See \href{http://www.evolution.reading.ac.uk/BayesTraitsV4.0.1/BayesTraitsV4.0.1.html}{BayesTraits} manual for details.}
+data file to contain multiple entries for at least one of the sampled taxa.}
+
+\item{link}{If \code{DistData=TRUE}, the user must specify whether samples are "linked"
+(traits are taken from the same source or individual) or "unlinked" (samples)
+are not taken from a single source or individual.}
 }
 \value{
 Generates files in the current working directory that can be used
