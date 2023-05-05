@@ -91,3 +91,65 @@ trimmedlogs = function(dir = ".", out = "TrimmedLogFiles", pat = ".txt.Log.txt",
 
 }
 
+
+#' @title Plot parameter values against index value.
+#' @description Useful for visualizing parameter traces from MCMC analyses in
+#' BayesTraits but can in principle be applied to any data.
+#' @param files path or filename of the file a summary is required for.
+#'     This can be a list of filenames - if so, all identical values in each
+#'     table will be plotted on a single chart. This is useful for comparing estimates
+#'     of the same parameter across multiple replicate,s for example.
+#'     File must be a tab-delimited text file with column headers.
+#'     This function is designed to be compatible with the output of [trimmedlogs()].
+#' @param cols A string or list of strings defining the column names or indices
+#'     for which summary information is required. If unspecified, takes the
+#'     value "all" which will return traces for the following columns
+#'     (if present): Likelihood, Intercept, Slope(s)/Beta parameters,
+#'     Variance, R-suqred, Number of local scalars (branch or node), and Lambda.
+#' @param table if TRUE, then the function will accept a list of \code{data.frames}
+#'     rather than a list of filenames.
+#' @importFrom utils read.table
+#' @importFrom grDevices rainbow
+#' @importFrom graphics legend lines
+#' @export
+plotTraces = function (files, cols = "all", table = T)
+{
+  # Check to see whether specified inputs are R objects or files
+  if (table==T) {fil = files; files = names(files)} else {
+    fil = list()
+    for (f in 1:length(files))
+    {fil[[f]] = utils::read.table(files[f], sep = "\t", header = T, stringsAsFactors = F)}
+  }
+
+  # Specify "iterations" as row indices
+  its = seq(from = 1, to = max(unlist(lapply(fil, nrow))), by = 1)
+  if (length(cols) == 1)
+    if (cols == "all")
+      cols = colnames(fil[[1]])[grepl("Lh|^Alpha|^Beta|Sigma|Var$|R.2|Local|Lambda",
+                                      colnames(fil[[1]]))]
+
+  # Create a blank plot and add a colour legend
+  colours = rainbow(n = length(files))
+  plot(1, axes = F, main = "", bty = "n", type = "n",
+       xlab = "", ylab = "")
+  legend("center", legend = files, fill = colours)
+  if(length(files) > 10) warning("Colours str specified randomly using rainbow() and may
+                                 not be clearly distinct for more than 10 replicates.")
+
+  # Loop through each of the specified columns of interest
+  for (col in cols) {
+
+    # Identify plot bounds using the full range of observed values
+    bound = c(min(unlist(lapply(fil, function(x)min(x[,col])))),
+              max(unlist(lapply(fil, function(x)max(x[,col])))))
+
+    # Create a blank plot
+    plot(1, xlim = c(min(its), max(its)), ylim = bound,
+         type = "n", las = 1, xlab = "Iteration", ylab = col,
+         bty = "l", main = col)
+
+    # Add the values to the plot
+    lapply(1:length(fil), function(x) lines(fil[[x]][, col] ~
+              its[1:nrow(fil[[x]])], col = colours[x]))
+  }
+}
