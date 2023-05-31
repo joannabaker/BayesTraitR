@@ -153,3 +153,20 @@ plotTraces = function (files, cols = "all", table = T)
               its[1:nrow(fil[[x]])], col = colours[x]))
   }
 }
+
+#' @title Extract variance from BayesTraits output.
+#' @description This will work with raw output.
+#' @param lf The path and filename of the log file the variance is wanted for.
+#' @return List with elements:
+#' \item{BG}{a vector of the extracted phylogenetic variance}
+#' \item{dBG}{computed density distribution}
+#' \item{dLogBG}{computed logged density distribution}
+#' @export
+# Get variance from a BT log file
+getVar = function(lf){
+  skip = (which(grepl("\tTree No", readLines(lf))))-1
+  log = read.table(lf, sep = "\t", header = T, stringsAsFactors = F, comment.char = "*", skip = skip, fill = T)
+  BG = log[,which(grepl("Sigma|^Var$", colnames(log)))]
+  return(list(BG = BG, dBG = density(BG), dLogBG = density(log10(BG))))
+}
+
