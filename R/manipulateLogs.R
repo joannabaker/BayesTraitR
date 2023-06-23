@@ -161,6 +161,7 @@ plotTraces = function (files, cols = "all", table = T)
 #' \item{BG}{a vector of the extracted phylogenetic variance}
 #' \item{dBG}{computed density distribution}
 #' \item{dLogBG}{computed logged density distribution}
+#' @importFrom stats density
 #' @export
 # Get variance from a BT log file
 getVar = function(lf){
@@ -169,4 +170,78 @@ getVar = function(lf){
   BG = log[,which(grepl("Sigma|^Var$", colnames(log)))]
   return(list(BG = BG, dBG = density(BG), dLogBG = density(log10(BG))))
 }
+
+
+
+#' @title Function to summarize BayesTraits log files
+#' @description This function will produce average parameter values (mean, median, mode) as well as other summary statistics.
+#'     It will return averages, effective sample sizes, pMCMC values, and ranges.
+#'     It ideally works with the output from trimmedlogs().
+#'     Can work with all sorts of outputs, but will need to manually specify column names for non Bayes Traits tables.
+#' @param file data.frame or file path of the BayesTraits output.
+#'    This must be one of either (see also the 'table' argument):
+#'      - a file path for a tab-delimited text file specifying the output columns from a BayesTraits run.
+#'      - a name of an  R data-frame.
+#' @param cols A string or list of strings defining the columns for which summary information is required.
+#'     If unspecified, takes the value "all" which summarizes a small pre-defined list of columns including:
+#'     Likelihood, Alpha, Beta estimates, Variance, R-squared, Local transforms, and Lambda.
+#' @param tradeoffs Boolean operator that if true, plots trade-offs between all parameters specified in cols.
+#' @param table Boolean operator that if true, accepts an R data.frame object as input. If False, the file argument is interpreted as a character-string file path to the trimmed log file output from BayesTraits.
+#' @param name The name which the output will be saved under.
+#' @importFrom grDevices pdf dev.off
+#' @importFrom coda effectiveSize
+#' @importFrom stats median density quantile
+#' @return R data.frame object with the summary information:
+#' \item{Parameter}{Name of the parameter of interest}
+#' \item{Minimum}{Minimum parameter value}
+#' \item{Mean}{Mean parameter value}
+#' \item{Median}{Median parameter value}
+#' \item{Mode}{Mode parameter value}
+#' \item{Maximum}{Maximum parameter value}
+#' \item{PropLess0}{The proportion of the posterior distribution of the parameter that is less than zero.}
+#' \item{pmcmc}{The proportion of the posterior distribution of the parameter that crosses zero i.e. in either direction.}
+#' @export
+
+summarizeBT = function (file, cols = "all", tradeoffs = T, table = T, name = "Summary") {
+  out = NULL
+  if (table) {
+    fi = file
+    file = name
+  }
+  else fi = read.table(file, sep = "\t", header = T)
+  if (length(cols) == 1)
+    if (cols == "all")
+      cols = colnames(fi)[grepl("Lh|^Alpha|^Beta|Var$|R.2|Local|Lambda",
+                                colnames(fi))]
+  for (col in cols) {
+    .tmp = fi[, col]
+    l0 = length(.tmp[.tmp < 0])/length(.tmp)
+    pmcmc = ifelse(l0 > 0.5, 1 - l0, l0)
+    mod = density(.tmp)$x[which.max(density(.tmp)$y)]
+    out = rbind(out, data.frame(Parameter = col, Minimum = min(.tmp),
+                                Mean = mean(.tmp), Median = median(.tmp), Mode = mod,
+                                Maximum = max(.tmp), PropLess0 = l0, pMCMC = pmcmc, q05 = quantile(.tmp, 0.05), q95 = quantile(.tmp, 0.95),
+                                stringsAsFactors = F))
+  }
+  ess = effectiveSize(fi[, cols])
+  ess = data.frame(Parameter = names(ess), ess = ess)
+  out = merge(out, ess)
+  if (tradeoffs) {
+    pdf(paste0(name, "_Tradeoffs.pdf"), useDingbats = F,
+        height = 20, width = 20)
+    plot(fi[, cols])
+    dev.off()
+  }
+
+  out$Parameter[grepl("Beta", out$Parameter)]
+
+  nums = as.numeric(as.character(gsub("Beta.", "", out$Parameter[grepl("Beta", out$Parameter)])))
+  names(nums) = out$Parameter[grepl("Beta", out$Parameter)]
+  nums = sort(nums)
+
+  rownames(out) = out$Parameter
+  out = rbind(out[!grepl("Beta", out$Parameter),], out[names(nums),])
+
+  write.table(out, file = paste0(name, ".txt"), sep = "\t", col.names = T, row.names = F, quote = F)
+  return(out)}
 
