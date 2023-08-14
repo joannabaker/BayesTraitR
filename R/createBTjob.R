@@ -132,6 +132,7 @@ createBTjob <- function(fm, dataset, tree, jobname, bi = 100000, it = 1100000,
           paste0(.mistx, collapse = "\n "), "\n\n")
         tree = drop.tip(tree, .mistx)
     }
+    write.nexus(tree, file = paste0(jobname, ".trees"))
 
     # Ensure all taxa are in the data file
     .mistx = dataset[,1][!dataset[,1] %in% tree$tip.label]
