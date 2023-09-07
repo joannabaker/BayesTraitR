@@ -108,17 +108,24 @@ trimmedlogs = function(dir = ".", out = "TrimmedLogFiles", pat = ".txt.Log.txt",
 #'     Variance, R-suqred, Number of local scalars (branch or node), and Lambda.
 #' @param table if TRUE, then the function will accept a list of \code{data.frames}
 #'     rather than a list of filenames.
+#' @param logs if TRUE then the function will treat any filenames given as raw BayesTraits output (it will search for and remove any header info). Only compatible with table=FALSE and will not work with modified output files.
 #' @importFrom utils read.table
 #' @importFrom grDevices rainbow
 #' @importFrom graphics legend lines
 #' @export
-plotTraces = function (files, cols = "all", table = T)
+plotTraces = function (files, cols = "all", table = T, logs = F)
 {
+  if(logs)  cat("Reading output from raw log files...\n")
   # Check to see whether specified inputs are R objects or files
   if (table==T) {fil = files; files = names(files)} else {
     fil = list()
     for (f in 1:length(files))
-    {fil[[f]] = utils::read.table(files[f], sep = "\t", header = T, stringsAsFactors = F)}
+    {
+      if(!logs){
+        fil[[f]] = utils::read.table(files[f], sep = "\t", header = T, stringsAsFactors = F)
+      } else
+        fil[[f]] = readlog(files[f])
+      }
   }
 
   # Specify "iterations" as row indices

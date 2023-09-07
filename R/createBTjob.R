@@ -112,7 +112,7 @@ BTBetapriors = function(data, prior, pars) {
 #'     in the documentation for [lm()].
 #'
 #' @export
-#' @importFrom ape drop.tip
+#' @importFrom ape drop.tip write.nexus
 #' @importFrom utils read.table write.table
 #' @importFrom stats model.matrix
 createBTjob <- function(fm, dataset, tree, jobname, bi = 100000, it = 1100000,

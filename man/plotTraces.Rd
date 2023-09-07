@@ -4,7 +4,7 @@
 \alias{plotTraces}
 \title{Plot parameter values against index value.}
 \usage{
-plotTraces(files, cols = "all", table = T)
+plotTraces(files, cols = "all", table = T, logs = F)
 }
 \arguments{
 \item{files}{path or filename of the file a summary is required for.
@@ -22,6 +22,8 @@ Variance, R-suqred, Number of local scalars (branch or node), and Lambda.}
 
 \item{table}{if TRUE, then the function will accept a list of \code{data.frames}
 rather than a list of filenames.}
+
+\item{logs}{if TRUE then the function will treat any filenames given as raw BayesTraits output (it will search for and remove any header info). Only compatible with table=FALSE and will not work with modified output files.}
 }
 \description{
 Useful for visualizing parameter traces from MCMC analyses in
