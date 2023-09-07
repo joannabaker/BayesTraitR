@@ -194,6 +194,7 @@ getVar = function(lf){
 #'     Likelihood, Alpha, Beta estimates, Variance, R-squared, Local transforms, and Lambda.
 #' @param tradeoffs Boolean operator that if true, plots trade-offs between all parameters specified in cols.
 #' @param table Boolean operator that if true, accepts an R data.frame object as input. If False, the file argument is interpreted as a character-string file path to the trimmed log file output from BayesTraits.
+#' @param input If true, and table = FALSE, then will modify the column names of the output table to reflect the input data file (e.g. Beta.1 will become "BodyMass").
 #' @param name The name which the output will be saved under.
 #' @importFrom grDevices pdf dev.off
 #' @importFrom coda effectiveSize
@@ -209,46 +210,70 @@ getVar = function(lf){
 #' \item{pmcmc}{The proportion of the posterior distribution of the parameter that crosses zero i.e. in either direction.}
 #' @export
 
-summarizeBT = function (file, cols = "all", tradeoffs = T, table = T, name = "Summary") {
+
+summarizeBT = function (file, cols = "all", tradeoffs = T, table = T, name = "Summary", input) {
   out = NULL
   if (table) {
     fi = file
     file = name
-  }
-  else fi = read.table(file, sep = "\t", header = T)
+  }  else
+    if(!logs) {fi = read.table(file, sep = "\t", header = T)} else {fi = readlog(file)}
+
+
   if (length(cols) == 1)
-    if (cols == "all")
+    if (cols == "all"){
       cols = colnames(fi)[grepl("Lh|^Alpha|^Beta|Var$|R.2|Local|Lambda",
                                 colnames(fi))]
-  for (col in cols) {
-    .tmp = fi[, col]
-    l0 = length(.tmp[.tmp < 0])/length(.tmp)
-    pmcmc = ifelse(l0 > 0.5, 1 - l0, l0)
-    mod = density(.tmp)$x[which.max(density(.tmp)$y)]
-    out = rbind(out, data.frame(Parameter = col, Minimum = min(.tmp),
-                                Mean = mean(.tmp), Median = median(.tmp), Mode = mod,
-                                Maximum = max(.tmp), PropLess0 = l0, pMCMC = pmcmc, q05 = quantile(.tmp, 0.05), q95 = quantile(.tmp, 0.95),
-                                stringsAsFactors = F))
-  }
-  ess = effectiveSize(fi[, cols])
-  ess = data.frame(Parameter = names(ess), ess = ess)
-  out = merge(out, ess)
-  if (tradeoffs) {
-    pdf(paste0(name, "_Tradeoffs.pdf"), useDingbats = F,
-        height = 20, width = 20)
-    plot(fi[, cols])
-    dev.off()
-  }
+      reorder=TRUE
+    } else reorder = FALSE
 
-  out$Parameter[grepl("Beta", out$Parameter)]
+    for (col in cols) {
+      .tmp = fi[, col]
+      l0 = length(.tmp[.tmp < 0])/length(.tmp)
+      pmcmc = ifelse(l0 > 0.5, 1 - l0, l0)
+      mod = density(.tmp)$x[which.max(density(.tmp)$y)]
+      out = rbind(out, data.frame(Parameter = col, Minimum = min(.tmp),
+                                  Mean = mean(.tmp), Median = median(.tmp), Mode = mod,
+                                  Maximum = max(.tmp), PropLess0 = l0, pMCMC = pmcmc, q05 = quantile(.tmp, 0.05), q95 = quantile(.tmp, 0.95),
+                                  stringsAsFactors = F))
+    }
+    ess = effectiveSize(fi[, cols])
+    ess = data.frame(Parameter = names(ess), ess = ess)
+    out = merge(out, ess)
+    if (tradeoffs) {
+      pdf(paste0(name, "_Tradeoffs.pdf"), useDingbats = F,
+          height = 20, width = 20)
+      plot(fi[, cols])
+      dev.off()
+    }
 
-  nums = as.numeric(as.character(gsub("Beta.", "", out$Parameter[grepl("Beta", out$Parameter)])))
-  names(nums) = out$Parameter[grepl("Beta", out$Parameter)]
-  nums = sort(nums)
+    out$Parameter[grepl("Beta", out$Parameter)]
 
-  rownames(out) = out$Parameter
-  out = rbind(out[!grepl("Beta", out$Parameter),], out[names(nums),])
+    nums = as.numeric(as.character(gsub("Beta.", "", out$Parameter[grepl("Beta", out$Parameter)])))
+    names(nums) = out$Parameter[grepl("Beta", out$Parameter)]
+    nums = sort(nums)
 
-  write.table(out, file = paste0(name, ".txt"), sep = "\t", col.names = T, row.names = F, quote = F)
-  return(out)}
+    rownames(out) = out$Parameter
+    out = rbind(out[!grepl("Beta", out$Parameter),], out[names(nums),])
+
+    if(!missing(input)){
+      cat("Taking column headers from input file. Note this will not work if column order has been modified in any way.\n\n")
+      inf=read.table(input, sep = "\t", header = T, stringsAsFactors = F)
+      out$Parameter[grepl("Beta", out$Parameter)] = colnames(inf)[3:ncol(inf)]
+      out$Parameter[grepl("Alpha", out$Parameter)] = colnames(inf[2])
+    }
+
+    # Restructure the table
+    if(reorder){
+      cols = c("Alpha", rownames(out)[grepl("Beta", rownames(out))], "Lh", "Var", "R.2")
+      cols = c(cols, rownames(out)[!rownames(out) %in% cols])
+      rows = c("Parameter", "Median", "pMCMC")
+      rows = c(rows, colnames(out)[!colnames(out) %in% rows])
+      out = t(out[cols,rows])
+
+    }
+
+
+    write.table(out, file = paste0(name, ".txt"), sep = "\t", col.names = F, row.names = T, quote = F)
+    return(out)}
 

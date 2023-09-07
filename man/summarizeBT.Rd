@@ -4,7 +4,14 @@
 \alias{summarizeBT}
 \title{Function to summarize BayesTraits log files}
 \usage{
-summarizeBT(file, cols = "all", tradeoffs = T, table = T, name = "Summary")
+summarizeBT(
+  file,
+  cols = "all",
+  tradeoffs = T,
+  table = T,
+  name = "Summary",
+  input
+)
 }
 \arguments{
 \item{file}{data.frame or file path of the BayesTraits output.
@@ -21,6 +28,8 @@ Likelihood, Alpha, Beta estimates, Variance, R-squared, Local transforms, and La
 \item{table}{Boolean operator that if true, accepts an R data.frame object as input. If False, the file argument is interpreted as a character-string file path to the trimmed log file output from BayesTraits.}
 
 \item{name}{The name which the output will be saved under.}
+
+\item{input}{If true, and table = FALSE, then will modify the column names of the output table to reflect the input data file (e.g. Beta.1 will become "BodyMass").}
 }
 \value{
 R data.frame object with the summary information:
