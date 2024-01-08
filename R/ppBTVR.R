@@ -13,6 +13,9 @@
 #'
 tidyVRblock <- function(VRblock,colstart){
 
+  # Print output
+  cat("\tConverting output to tabular format.\n")
+
   # Extract column names
   .vrlognames = VRblock[[1]]
   .vrlogblock = VRblock[-1]
@@ -21,9 +24,17 @@ tidyVRblock <- function(VRblock,colstart){
   .vrlognames_1 = gsub(" ", "",.vrlognames[1:(colstart-1)])
   .vrlognames_2 = gsub(" |/", "",.vrlognames[colstart:length(.vrlognames)])
 
+  # Info for progress updates
+  itnumber=seq(from = 1, to = length(.vrlogblock), by = length(.vrlogblock)/10)
+  names(itnumber) = seq(from = 0, to = 90, by = 10)
+
   # Loop through vr log block and add names
   vrlogtable = NULL
   for(i in 1: length(.vrlogblock)){
+    # Print some output
+    if(i %in% itnumber)
+      cat("\t\t - ", names(itnumber)[itnumber == i], "%\n")
+
     if((length(.vrlogblock[[i]])-(colstart-1)) %% length(.vrlognames_2) != 0)
       stop("vr logfile column headers not as expected.
                    Function currently only compatible with variable rates.")
@@ -33,13 +44,16 @@ tidyVRblock <- function(VRblock,colstart){
     # Tidy up
     .tmp = .vrlogblock[[i]]
     .firsthalf = data.frame(as.list(.tmp[1:(colstart-1)]))
-    .secondhalf = data.frame(split(.tmp[colstart:length(.tmp)], names(.tmp[colstart:length(.tmp)])))
+    if(length(.tmp) == length(.vrlognames_1)) {
+      .secondhalf = data.frame(CreatIt= NA, NodeBranch=NA,PartID=NA,Scaler=NA)
+      } else  .secondhalf = data.frame(split(.tmp[colstart:length(.tmp)], names(.tmp[colstart:length(.tmp)])))
     .vrdf = cbind(.firsthalf,.secondhalf)
     vrlogtable = rbind(vrlogtable,.vrdf)
 
   }
 
   # Return
+  cat("\t\t - done")
   return(vrlogtable)
 }
 
@@ -76,8 +90,14 @@ readVR <- function(vrfile){
   .vrlogstart = which(grepl("^It", vrraw))
   .vrlog = strsplit(vrraw[(.vrlogstart):length(vrraw)], split = "\t")
 
+  # Print output
+  cat("Extracting VR information from file...\n")
+
   # If we have a sample of trees, the structure of the output is different
   if(grepl("Part", vrraw[1])){
+
+    # Flag up that this is multi-topology
+    ntrees = Inf
 
     # Number of node/branch combinations
     nbranches = as.numeric(unlist(strsplit(vrraw[1],split = "\t"))[2])
@@ -96,6 +116,9 @@ readVR <- function(vrfile){
     .colstart = 9
 
   }else {
+
+    # This is only a single topology
+    ntrees =1
 
     # Number of taxa
     ntax = as.numeric(vrraw[1])
@@ -129,13 +152,14 @@ readVR <- function(vrfile){
 
   }
 
+
   # Tidy VR block
   vrlogtable = tidyVRblock(.vrlog, .colstart)
 
   # Add descendant information to table
   brInfotable$Des = unlist(sapply(brDes,function(x)paste0(sort(x), collapse = ",")))
 
-  return(list(brInfo = brInfotable, VRlog = vrlogtable))
+  return(list(brInfo = brInfotable, VRlog = vrlogtable, ntrees = ntrees))
 }
 
 
