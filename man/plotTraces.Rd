@@ -4,7 +4,7 @@
 \alias{plotTraces}
 \title{Plot parameter values against index value.}
 \usage{
-plotTraces(files, cols = "all", table = T, logs = F)
+plotTraces(files, cols = "all", table = T, logs = F, colours)
 }
 \arguments{
 \item{files}{path or filename of the file a summary is required for.

@@ -113,7 +113,7 @@ trimmedlogs = function(dir = ".", out = "TrimmedLogFiles", pat = ".txt.Log.txt",
 #' @importFrom grDevices rainbow
 #' @importFrom graphics legend lines
 #' @export
-plotTraces = function (files, cols = "all", table = T, logs = F)
+plotTraces = function (files, cols = "all", table = T, logs = F, colours)
 {
   if(logs)  cat("Reading output from raw log files...\n")
   # Check to see whether specified inputs are R objects or files
@@ -136,7 +136,7 @@ plotTraces = function (files, cols = "all", table = T, logs = F)
                                       colnames(fil[[1]]))]
 
   # Create a blank plot and add a colour legend
-  colours = rainbow(n = length(files))
+  if(missing(colours))  colours = rainbow(n = length(files))
   plot(1, axes = F, main = "", bty = "n", type = "n",
        xlab = "", ylab = "")
   legend("center", legend = files, fill = colours)
