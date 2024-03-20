@@ -211,7 +211,7 @@ getVar = function(lf){
 #' @export
 
 
-summarizeBT = function (file, cols = "all", tradeoffs = T, table = T, name = "Summary", input) {
+summarizeBT = function (file, cols = "all", tradeoffs = T, table = T, name = "Summary", input=T, logs = T) {
   out = NULL
   if (table) {
     fi = file
@@ -257,6 +257,7 @@ summarizeBT = function (file, cols = "all", tradeoffs = T, table = T, name = "Su
     out = rbind(out[!grepl("Beta", out$Parameter),], out[names(nums),])
 
     if(!missing(input)){
+      if(input == T) input = gsub(".Log.txt", "", file) else input = input
       cat("Taking column headers from input file. Note this will not work if column order has been modified in any way.\n\n")
       inf=read.table(input, sep = "\t", header = T, stringsAsFactors = F)
       out$Parameter[grepl("Beta", out$Parameter)] = colnames(inf)[3:ncol(inf)]

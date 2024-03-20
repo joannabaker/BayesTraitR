@@ -15,3 +15,17 @@ PL = function(phy, nodes = F){
   return(pl)
 }
 
+#' @title Identify descendants of a node as named tips
+#' @description Wrapper for phytools function getDescendants that retrieves tip labels rather than just node labels.
+#' @param tree a phylogenetic tree as an object of class "phylo".
+#' @param node an integer specifying a node number in the tree.
+#' @return The set of named tips descended from node in a vector.
+#' @importFrom phytools getDescendants
+#' @export
+tipDescendants = function(tree, node){
+  des = getDescendants(tree, node)
+  des = des[des <= Ntip(tree)]
+  des = tree$tip.label[des]
+  return(des)
+}
+
