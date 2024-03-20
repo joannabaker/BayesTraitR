@@ -10,7 +10,8 @@ summarizeBT(
   tradeoffs = T,
   table = T,
   name = "Summary",
-  input
+  input = T,
+  logs = T
 )
 }
 \arguments{
@@ -30,6 +31,8 @@ Likelihood, Alpha, Beta estimates, Variance, R-squared, Local transforms, and La
 \item{name}{The name which the output will be saved under.}
 
 \item{input}{If true, and table = FALSE, then will modify the column names of the output table to reflect the input data file (e.g. Beta.1 will become "BodyMass").}
+
+\item{logs}{Boolean operator that if true, means that the output file is in raw form as output directly from BayesTraits. Otherwise, it assumes the log file has been stripped of the header rows and is a simple tab-delimited file.}
 }
 \value{
 R data.frame object with the summary information:

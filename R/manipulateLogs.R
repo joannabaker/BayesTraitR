@@ -196,6 +196,7 @@ getVar = function(lf){
 #' @param table Boolean operator that if true, accepts an R data.frame object as input. If False, the file argument is interpreted as a character-string file path to the trimmed log file output from BayesTraits.
 #' @param input If true, and table = FALSE, then will modify the column names of the output table to reflect the input data file (e.g. Beta.1 will become "BodyMass").
 #' @param name The name which the output will be saved under.
+#' @param logs Boolean operator that if true, means that the output file is in raw form as output directly from BayesTraits. Otherwise, it assumes the log file has been stripped of the header rows and is a simple tab-delimited file.
 #' @importFrom grDevices pdf dev.off
 #' @importFrom coda effectiveSize
 #' @importFrom stats median density quantile
@@ -211,7 +212,7 @@ getVar = function(lf){
 #' @export
 
 
-summarizeBT = function (file, cols = "all", tradeoffs = T, table = T, name = "Summary", input) {
+summarizeBT = function (file, cols = "all", tradeoffs = T, table = T, name = "Summary", input=T, logs = T) {
   out = NULL
   if (table) {
     fi = file
@@ -257,6 +258,7 @@ summarizeBT = function (file, cols = "all", tradeoffs = T, table = T, name = "Su
     out = rbind(out[!grepl("Beta", out$Parameter),], out[names(nums),])
 
     if(!missing(input)){
+      if(input == T) input = gsub(".Log.txt", "", file) else input = input
       cat("Taking column headers from input file. Note this will not work if column order has been modified in any way.\n\n")
       inf=read.table(input, sep = "\t", header = T, stringsAsFactors = F)
       out$Parameter[grepl("Beta", out$Parameter)] = colnames(inf)[3:ncol(inf)]
