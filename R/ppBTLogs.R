@@ -6,7 +6,7 @@
 #' @return R data.frame object that contain the trimmed log file.
 #' @export
 
-readlog = function(file){
+readBTlog = function(file){
   skip = (which(grepl("\tTree No", readLines(file)))) - 1
   log = read.table(file, sep = "\t", header = T, stringsAsFactors = F,
                    comment.char = "*", skip = skip, fill = T)
@@ -36,7 +36,7 @@ readlog = function(file){
 #' @export
 
 
-trimmedlogs = function(dir = ".", out = "TrimmedLogFiles", pat = ".txt.Log.txt", start = "\tTree No", tail = NA, resample = NA, files= NULL){
+trimBTlog = function(dir = ".", out = "TrimmedLogFiles", pat = ".txt.Log.txt", start = "\tTree No", tail = NA, resample = NA, files= NULL){
 
   # Set working directory
   home = getwd()
@@ -59,7 +59,7 @@ trimmedlogs = function(dir = ".", out = "TrimmedLogFiles", pat = ".txt.Log.txt",
   {
 
     # Read in log file
-    .tmp = readlog(logs[l])
+    .tmp = readBTlog(logs[l])
 
     # remove NA columns for clarity
     .tmp = .tmp[,!apply(.tmp,2,function(x)all(is.na(x)))]
@@ -100,7 +100,7 @@ trimmedlogs = function(dir = ".", out = "TrimmedLogFiles", pat = ".txt.Log.txt",
 #'     table will be plotted on a single chart. This is useful for comparing estimates
 #'     of the same parameter across multiple replicate,s for example.
 #'     File must be a tab-delimited text file with column headers.
-#'     This function is designed to be compatible with the output of [trimmedlogs()].
+#'     This function is designed to be compatible with the output of [trimBTlog()].
 #' @param cols A string or list of strings defining the column names or indices
 #'     for which summary information is required. If unspecified, takes the
 #'     value "all" which will return traces for the following columns
@@ -109,11 +109,12 @@ trimmedlogs = function(dir = ".", out = "TrimmedLogFiles", pat = ".txt.Log.txt",
 #' @param table if TRUE, then the function will accept a list of \code{data.frames}
 #'     rather than a list of filenames.
 #' @param logs if TRUE then the function will treat any filenames given as raw BayesTraits output (it will search for and remove any header info). Only compatible with table=FALSE and will not work with modified output files.
+#' @param colours if provided, then should be a vector of colours for plotting - otherwise will be drawn randomly from rainbow.
 #' @importFrom utils read.table
 #' @importFrom grDevices rainbow
 #' @importFrom graphics legend lines
 #' @export
-plotTraces = function (files, cols = "all", table = T, logs = F, colours)
+plotBTlog = function (files, cols = "all", table = T, logs = F, colours)
 {
   if(logs)  cat("Reading output from raw log files...\n")
   # Check to see whether specified inputs are R objects or files
@@ -124,7 +125,7 @@ plotTraces = function (files, cols = "all", table = T, logs = F, colours)
       if(!logs){
         fil[[f]] = utils::read.table(files[f], sep = "\t", header = T, stringsAsFactors = F)
       } else
-        fil[[f]] = readlog(files[f])
+        fil[[f]] = readBTlog(files[f])
       }
   }
 
@@ -171,7 +172,7 @@ plotTraces = function (files, cols = "all", table = T, logs = F, colours)
 #' @importFrom stats density
 #' @export
 # Get variance from a BT log file
-getVar = function(lf){
+varBTlog = function(lf){
   skip = (which(grepl("\tTree No", readLines(lf))))-1
   log = read.table(lf, sep = "\t", header = T, stringsAsFactors = F, comment.char = "*", skip = skip, fill = T)
   BG = log[,which(grepl("Sigma|^Var$", colnames(log)))]
@@ -212,13 +213,13 @@ getVar = function(lf){
 #' @export
 
 
-summarizeBT = function (file, cols = "all", tradeoffs = T, table = T, name = "Summary", input=T, logs = T) {
+summarizeBTlog = function (file, cols = "all", tradeoffs = T, table = T, name = "Summary", input=T, logs = T) {
   out = NULL
   if (table) {
     fi = file
     file = name
   }  else
-    if(!logs) {fi = read.table(file, sep = "\t", header = T)} else {fi = readlog(file)}
+    if(!logs) {fi = read.table(file, sep = "\t", header = T)} else {fi = readBTlog(file)}
 
 
   if (length(cols) == 1)
@@ -278,4 +279,39 @@ summarizeBT = function (file, cols = "all", tradeoffs = T, table = T, name = "Su
 
     write.table(out, file = paste0(name, ".txt"), sep = "\t", col.names = F, row.names = T, quote = F)
     return(out)}
+
+#' @title Calculate predictions from BayesTraits regressions.
+#' @description Function to calculate predictions from BayesTraits input/output files. Incompatible with other programs.
+#' @param input A character vector defining the original input file (must have column headers).
+#' Note that this can be a modified version of the original input e.g. if one wants to fix a value at a mean - as long as columns are retained in identical order and format.
+#' @param output an optional argument. If defined, a character vector locating the original output file (unmodified).
+#' If unspecified, the function will search for the original input file as if it had been run through BayesTraits, appending .Log.txt.
+#' @param plot Optional argument. If TRUE, the function will generate a prediction plot. For complicated datasets this might produce undesirable results, and so the behaviour defaults to FALSE.
+#' This should really only be used in the case of a simple linear regression (i.e. a single continuous predictor and a single continuous response).
+#' @return A matrix of predicted values for terminal taxa (if original input was MCMC, one iteration per column)
+#' @export
+predBTlog = function(input, output = NULL, plot = F){
+
+  # Specify output (if not specified)
+  if(is.null(output)) output = paste0(input, ".Log.txt")
+
+  # Read in tables
+  input = read.table(input, sep = "\t", header = T, stringsAsFactors = F)
+  output = read.table(file = output, sep = "\t", header = T, skip = which(grepl("Sites:", readLines(output))), stringsAsFactors = F)
+
+  # Extract Xs and Bs
+  Xs = input[,3:ncol(input), drop = F]
+  Bs = output[,grepl("^Alpha|^Beta", colnames(output)), drop = F]
+
+  # Predict across all Xs
+  preds = apply(Bs, 1, function(y)unlist(apply(Xs, 1, function(x)sum(x*y[2:length(y)]) + y[1])))
+
+  if(plot == T){
+    plot(input[,2] ~ input[,3], type = "n")
+    apply(preds,2,function(x)lines(x~input[,3], col = makeTransparent("black", alpha = 0.1)))}
+
+  rownames(preds) = input[,1]
+  return(preds)
+
+}
 

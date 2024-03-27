@@ -7,6 +7,7 @@
 #' @return Hexidecimal code for converted transparent colour.
 #' @importFrom grDevices col2rgb rgb
 #' @export
+#' @keywords internal
 #' @examples
 #' makeTransparent("red", 0.5)
 #' makeTransparent("#000000", 0.1)
