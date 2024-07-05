@@ -6,7 +6,7 @@
 \usage{
 trimBTlog(
   dir = ".",
-  out = "TrimmedLogFiles",
+  out = ".",
   pat = ".txt.Log.txt",
   start = "\\tTree No",
   tail = NA,
@@ -17,9 +17,9 @@ trimBTlog(
 \arguments{
 \item{dir}{Directory of files for which we want trimmed output. Defaults to the current working directory.}
 
-\item{out}{The name of the folder to which we want output saved to.}
+\item{out}{The name of the folder to which we want output saved to. Defaults to the current working directory.}
 
-\item{pat}{If no files are specified, the function will use the string defined by pat to search for files in dir.}
+\item{pat}{If no files are specified, the function will use the string defined by pat to search for files in dir. If only one or a few specific files are desired, then see the \code{files} parameter.}
 
 \item{start}{A unique search string that defines the start of the columns of output (header row).
 Defaults to Tree No which should work for the models mentioned above - check if testing other BayesTraits outputs.}
@@ -37,10 +37,10 @@ Note that this number must be greater than the total number of rows in the origi
 If this is defined, dir and pat are ignored.}
 }
 \value{
-R data.frame objects that contain the trimmed log files.
+A \code{list} containing the trimmed log file, each as a \code{data.frame}.
 }
 \description{
-Removes the  header from BayesTraits output files.
+Removes the header from BayesTraits output files.
 Can only work with log files (.txt.Log.txt) as directly output from BayesTraits models 1-4, 7 and 9.
 Will not work with output from any other program or model.
 }

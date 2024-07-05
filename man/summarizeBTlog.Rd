@@ -30,7 +30,7 @@ Likelihood, Alpha, Beta estimates, Variance, R-squared, Local transforms, and La
 
 \item{name}{The name which the output will be saved under.}
 
-\item{input}{If true, and table = FALSE, then will modify the column names of the output table to reflect the input data file (e.g. Beta.1 will become "BodyMass").}
+\item{input}{Optional parameter. Can take two values. If simply specified as TRUE, this assumes that 'file' is a filename (i.e. table = F) and will search for a file with the name as follows: gsub(".Log.txt", "", file). Otherwise, can take a specified input file name. In either case, when specified, the function will modify the column names of the output table to reflect the input data file (e.g. Beta.1 will become "BodyMass"). Note that if the order of columns of the output or input files have been modified in any way this will not produce desirable output.}
 
 \item{logs}{Boolean operator that if true, means that the output file is in raw form as output directly from BayesTraits. Otherwise, it assumes the log file has been stripped of the header rows and is a simple tab-delimited file.}
 }
@@ -48,6 +48,6 @@ R data.frame object with the summary information:
 \description{
 This function will produce average parameter values (mean, median, mode) as well as other summary statistics.
 It will return averages, effective sample sizes, pMCMC values, and ranges.
-It ideally works with the output from trimmedlogs().
+It ideally works with the output from \code{\link[=trimBTlog]{trimBTlog()}}.
 Can work with all sorts of outputs, but will need to manually specify column names for non Bayes Traits tables.
 }
