@@ -130,7 +130,7 @@ readVR <- function(vrfile){
 
   return(list(brInfo = brInfotable, VRlog = VRblock, ntrees = ntrees))
 }
-
+#'
 #'
 #'
 #' #' @title Process BayesTraits VR log file
@@ -228,10 +228,10 @@ readVR <- function(vrfile){
 #'   return(out)
 #'
 #' }
-#'
-#'
-#'
-#'
+
+
+
+
 #' #' @title Summarize BayesTraits VR Log Files (from raw output)
 #' #' @description Reads the output file from a variable rates analysis in BayesTraits
 #' #'     and produces summarized output. Will only work with VR log files

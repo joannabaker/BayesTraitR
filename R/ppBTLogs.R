@@ -15,12 +15,12 @@ readBTlog = function(file){
 
 
 #' @title Trim header from BayesTraits log files.
-#' @description Removes the  header from BayesTraits output files.
+#' @description Removes the header from BayesTraits output files.
 #'     Can only work with log files (.txt.Log.txt) as directly output from BayesTraits models 1-4, 7 and 9.
 #'     Will not work with output from any other program or model.
 #' @param dir Directory of files for which we want trimmed output. Defaults to the current working directory.
-#' @param out The name of the folder to which we want output saved to.
-#' @param pat If no files are specified, the function will use the string defined by pat to search for files in dir.
+#' @param out The name of the folder to which we want output saved to. Defaults to the current working directory.
+#' @param pat If no files are specified, the function will use the string defined by pat to search for files in dir. If only one or a few specific files are desired, then see the \code{files} parameter.
 #' @param start A unique search string that defines the start of the columns of output (header row).
 #'     Defaults to Tree No which should work for the models mentioned above - check if testing other BayesTraits outputs.
 #' @param tail Takes a single numeric value.
@@ -31,12 +31,12 @@ readBTlog = function(file){
 #'     If defined, the function will resample this number of rows from the original log file.
 #'     Note that this number must be greater than the total number of rows in the original file, or this will fail.
 #' @param files Takes a string or list of strings defining specific log files to be trimmed.
-#'     If this is defined, dir and pat are ignored.
-#' @return R data.frame objects that contain the trimmed log files.
+#'     If this is defined, \code{dir} and \code{pat} are ignored.
+#' @return A \code{list} containing the trimmed log file, each as a \code{data.frame}.
 #' @export
 
 
-trimBTlog = function(dir = ".", out = "TrimmedLogFiles", pat = ".txt.Log.txt", start = "\tTree No", tail = NA, resample = NA, files= NULL){
+trimBTlog = function(dir = ".", out = ".", pat = ".txt.Log.txt", start = "\tTree No", tail = NA, resample = NA, files= NULL){
 
   # Set working directory
   home = getwd()
