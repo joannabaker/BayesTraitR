@@ -123,7 +123,7 @@ readVR <- function(vrfile){
 
   # If multiple trees, change the column names for consistency
   if(ntrees !=1) {
-    VRblock$NodeID = VRblock[,"Part ID"]
+    VRblock[,"Node ID"] = VRblock[,"Part ID"]
     VRblock[,"Part ID"] = NULL
   }
 
