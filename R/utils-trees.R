@@ -1,7 +1,7 @@
 #' @title Get all descendants of all nodes in a tree
 #' @description Retrieves the descendants of every node (including terminals) in a tree.
-#' @param tree a phylogenetic tree as an object of class "phylo".
-#' @return A list of vectors defining the taxa descending from every node of a tree.
+#' @param tree a phylogenetic tree as an object of class \code{phylo}.
+#' @return A \code{list} of vectors defining the taxa descending from every node of a tree.
 #' @keywords internal
 #' @export
 branchdefs = function(tree){
@@ -14,8 +14,8 @@ branchdefs = function(tree){
 
 #' @title Tabulate branch-level information for a tree.
 #' @description Gets all information associated with every branch of a tree.
-#' @param tree a phylogenetic tree as an object of class "phylo".
-#' @return A data.frame with n rows equal to the number of branches in the tree
+#' @param tree a phylogenetic tree as an object of class \code{phylo}.
+#' @return A \code{data.frame} with \code{n} rows equal to the number of branches in the tree
 #' and the following columns:
 #'
 #' * AncNode: the label for the node defining the start of the branch
@@ -34,6 +34,8 @@ tabulatetree = function(tree){
 
   # Get descendants
   des = branchdefs(tree)
+
+  # collapse to string
   des = unlist(lapply(des, function(x)paste0(sort(x), collapse = ",")))
   des = data.frame(DescNode = 1:length(des), des = des)
 
@@ -45,15 +47,18 @@ tabulatetree = function(tree){
 
   # Now also add all branches descending to the table, too
   alldes = lapply(df$des, function(x)unlist(strsplit(x,split=",")))
+  df$NoDes = unlist(lapply(alldes,length))
   df$desbranches = unlist(lapply(alldes,function(y)paste0(df$Rbranch[which(unlist(lapply(alldes,function(x)all(x %in% y))))], collapse = ",")))
+
+
 
   return(df)
 }
 
 #' @title Calculate path length across a tree.
 #' @description Extract the root to tip distances for every terminal taxa (and optionally, internal node) in the tree.
-#' @param tree A tree of class("Phylo") used as the reference tree.
-#' @param nodes Boolean operator (default value F) that if TRUE will retain path length estimates for internal nodes as well as terminal taxa.
+#' @param tree A tree of class \code{phylo} used as the reference tree.
+#' @param nodes Boolean operator (default = \code{FALSE}) that if \code{TRUE} will retain path length estimates for internal nodes as well as terminal taxa.
 #' @return A named numeric vector of root-to-tip distances.
 #' @importFrom ape dist.nodes Ntip Nnode
 #' @export
@@ -69,7 +74,7 @@ PL = function(tree, nodes = F){
 
 #' @title Identify descendants of a node as named tips
 #' @description Wrapper for phytools function getDescendants that retrieves tip labels rather than just node labels.
-#' @param tree a phylogenetic tree as an object of class "phylo".
+#' @param tree a phylogenetic tree as an object of class \code{phylo}.
 #' @param node an integer specifying a node number in the tree.
 #' @return The set of named tips descended from node in a vector.
 #' @importFrom phytools getDescendants
@@ -80,3 +85,44 @@ tipDescendants = function(tree, node){
   des = tree$tip.label[des]
   return(des)
 }
+
+
+#' @title Compare branch lengths between two trees of identical topology
+#' @description A function that extracts branch lengths between two trees of identical topology but where (for whatever reason) the edge matrices of the two trees do not match. This problem is encountered often when calculating stretched trees from the variable rates post-processor and comparing them to  means calculated from the raw trees output by the variable rates model.
+#' @param tree1 a phylogenetic tree as an object of class \code{phylo}.
+#' @param tree2 a phylogenetic tree as an object of class \code{phylo}.
+#' @return The set of named tips descended from node in a vector.
+#' @importFrom adephylo listTips
+#' @export
+compareBLS = function(tree1, tree2){
+
+  # Check
+  if(!all(tree1$tip.label %in% tree2$tip.label)) stop("The two supplied trees do not contain the same taxa. ")
+
+  # Extract descendants for each edge
+  t1_descendants <- listTips(tree1)
+  t2_descendants <- listTips(tree2)
+
+  # Create unique identifiers for each branch
+  t1_identifiers <- sapply(t1_descendants, function(x)paste0(sort(x),collapse = ","))
+  t2_identifiers <- sapply(t2_descendants, function(x)paste0(sort(x),collapse = ","))
+
+  # Data frame
+  t1 = data.frame(id = t1_identifiers, t1node = (Ntip(tree1)+1):(Ntip(tree1)+Nnode(tree1)))
+  t2 = data.frame(id = t2_identifiers, t2node = (Ntip(tree2)+1):(Ntip(tree2)+Nnode(tree2)))
+
+  # Add branch lengths
+  t1$t1brlen = tree1$edge.length[match(t1$t1node, tree1$edge[,2])]
+  t2$t2brlen = tree2$edge.length[match(t2$t2node, tree2$edge[,2])]
+
+  # merge together
+  compared = merge(t1,t2, by = "id")
+
+  # Plot the corresponding branch lengths
+  plot(as.numeric(compared$t1brlen), as.numeric(compared$t2brlen), xlab = "Tree 1 Branch Lengths", ylab = "Tree 2 Branch Lengths", main = "Branch Length Comparison")
+  abline(0, 1, col = "red")  # Optional: Add a y = x reference line
+
+  return(compared)
+}
+
+

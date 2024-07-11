@@ -23,8 +23,7 @@
 #' @keywords internal
 #' @noRd
 #' @importFrom utils head
-readVR <- function(vrfile){
-
+readVR = function(vrfile){
   # Read full input file
   vrraw = readLines(vrfile)
 
@@ -117,154 +116,233 @@ readVR <- function(vrfile){
   # Add descendant information to table
   brInfotable$Des = unlist(sapply(brDes,function(x)paste0(sort(x), collapse = ",")))
 
-  # Now also add all branches descending to the table, too
-  alldes = lapply(brInfotable$Des, function(x)unlist(strsplit(x,split=",")))
-  brInfotable$DesBranches = unlist(lapply(alldes,function(y)paste0(brInfotable$branch[which(unlist(lapply(alldes,function(x)all(x %in% y))))], collapse = ",")))
-
   # If multiple trees, change the column names for consistency
   if(ntrees !=1) {
     VRblock[,"Node ID"] = VRblock[,"Part ID"]
     VRblock[,"Part ID"] = NULL
   }
 
-
   return(list(brInfo = brInfotable, VRlog = VRblock, ntrees = ntrees))
 }
-#'
-#'
-#'
-#' #' @title Process BayesTraits VR log file
-#' #' @description Process the output files from a variable rates analysis in BayesTraits
-#' #'     as read in by readVR.
-#' #' @param VRout An R object defining the output of the read VR function.
-#' #' @param treefile An optional parameter giving the name of a treefile as a string.
-#' #' If defined, the output will link rates to the given tree. That is, every rate scalar
-#' #' is defined on the basis of a branch. If that branch does not exist in the defined tree, the
-#' #' rate scalar will instead be applied to the branch which terminates in the most recent
-#' #' common ancestor of all taxa that descended from the original defined branch. This is
-#' #' designed explicitly to summarize the results of a multi-topology variable rates output.
-#' #' @keywords internal
-#' #' @noRd
-#' #' @importFrom ape read.nexus
-#' #' @importFrom phytools findMRCA
-#' processVR = function(VRout, treefile){
-#'
-#'   # Print output
-#'   cat("\tSummarizing scalars\n")
-#'
-#'   # Identify the unique iterations
-#'   iters = unique(VRout$VRlog$It)
-#'
-#'   # If tree is specified, then we need to input our own branch table into the summary
-#'   if(!missing(treefile)){
-#'     cat("\tTree-file identified: linking to MRCAs.\n\tWARNING: This might be slow.\n")
-#'     tree = read.nexus(treefile)
-#'     treetab = tabulatetree(tree)
-#'     colnames(treetab)[c(3,6)] = c("branch", "DesBranches")
-#'     treetab = rbind(c("NA", (length(tree$tip.label)+1), 0, -1, paste0(sort(tree$tip.label),collapse=","), paste0(0:nrow(treetab), collapse = ",")), treetab)
-#'   } else treetab = VRout$brInfo
-#'
-#'   # Create a summary table
-#'   ratestable_summary = data.frame(VRout$brInfo)
-#'   ratestable_summary[,c("median_scalar", "mean_scalar")] = NA
-#'   ratestable_summary[,c("n_scaled", "n_origin" )] = 0
-#'
-#'   # Create a table for the posteriors
-#'   ratestable_post = as.data.frame(matrix(1, ncol=nrow(ratestable_summary), nrow=length(unique(iters)), dimnames=list(NULL, ratestable_summary$branch)))
-#'   rownames(ratestable_post) = iters
-#'
-#'   # Initialize the progress bar
-#'   progress_bar = txtProgressBar(min = 0, max = nrow(VRout$VRlog), style = 3)
-#'
-#'   # Now traverse the VRlog file and apply scalars to each branch at each iteration
-#'   for(i in 1:nrow(VRout$VRlog)){
-#'
-#'     # Identify iteration
-#'     iter = VRout$VRlog$It[i]
-#'
-#'     # If NO rate scalars identified, move on
-#'     if(is.na(VRout$VRlog$Scaler[i])) next
-#'
-#'     # Identify branch
-#'     if(!missing(treefile)){
-#'
-#'       nodeID = VRout$VRlog$NodeID[i]
-#'       tax =  unlist(strsplit(VRout$brInfo$Des[VRout$brInfo$branch == nodeID], split = ","))
-#'       newnode = findMRCA(tree, tax)
-#'       branch = origin = treetab$branch[treetab$DescNode == newnode]
-#'
-#'
-#'     }else {
-#'       branch = origin = ratestable_summary$branch[which(ratestable_summary$branch == VRout$VRlog$NodeID[i])]
-#'     }
-#'
-#'     # If this is a node scalar, this needs to be applied across all branches
-#'     if(VRout$VRlog$NodeBranch[i] == "Node"){
-#'       branch = unlist(strsplit(ratestable_summary$DesBranches[ratestable_summary$branch == branch], ","))
-#'     }
-#'
-#'     # Apply the rate scalar
-#'     ratestable_post[iter,branch] = ratestable_post[iter,branch]* as.numeric(VRout$VRlog$Scaler[i])
-#'
-#'     # Add n to the summary table
-#'     ratestable_summary[branch, "n_scaled"] = ratestable_summary[branch, "n_scaled"] + 1
-#'     ratestable_summary[origin, "n_origin"] = ratestable_summary[origin, "n_origin"] + 1
-#'
-#'     setTxtProgressBar(progress_bar, value = i)
-#'
-#'   }
-#'
-#'   # Calculate the mean and median rate scalars
-#'   ratestable_summary$median_scalar = apply(ratestable_post,2, median)
-#'   ratestable_summary$mean_scalar = apply(ratestable_post,2, mean)
-#'
-#'
-#'   out = list(summary = ratestable_summary, posterior = ratestable_post)
-#'   if(!missing(treefile)) out[["tree"]] = tree
-#'
-#'   # Close progress bar
-#'   close(progress_bar)
-#'
-#'   return(out)
-#'
+
+
+#' @title Link branches between processed VR output and an input tree
+#' @description Identify corresponding branches between variable rates output and a user-defined input tree.
+#' @param VRout An R object defining the output of the read VR function.
+#' @param treefile The name of a treefile as a string. The tree file must be in NEXUS format.
+#' The output will link rates to the given tree. That is, every rate scalar
+#' is defined on the basis of a branch. If that branch does not exist in the defined tree, the
+#' rate scalar will instead be applied to the branch which terminates in the most recent
+#' common ancestor of all taxa that descended from the original defined branch. This is
+#' designed explicitly to summarize the results of a multi-topology variable rates output.
+#' HOWEVER, BE WARNED: THIS DOES NOT CURRENTLY WORK FOR MULTI-TOPOLOGY RUNS.
+#'  Note that this WILL crash if the input tree does not contain all taxa in the original tree
+#'  used to run the variable rates model.
+#' @keywords internal
+#' @noRd
+#' @importFrom ape read.nexus
+#' @importFrom phytools findMRCA
+#' @importFrom tidyr unnest
+
+linkbranches = function(VRout, treefile){
+
+  # Split VRout into branch info and branch output
+  VRbrInfo = VRout$brInfo
+  VRlog = VRout$VRlog
+
+  # Read in the specified tree (must be in nexus format)
+  tree = read.nexus(treefile)
+
+  # Tabulate the tree
+  treetab = tabulatetree(tree)
+
+  # Modify column names to fit with the output of readVR
+  colnames(treetab)[c(5, 7)] = c("Des", "DesBranches")
+
+  # Add a row for the root
+  treetab = rbind(c((length(tree$tip.label)+1),"NA", 0, -1, paste0(sort(tree$tip.label),collapse=","), Ntip(tree),paste0(0:nrow(treetab), collapse = ",")), treetab)
+
+  # Get descendant lists for VRinfo
+  deslist = lapply(VRbrInfo$Des,function(x)unlist(strsplit(x,split=",")))
+  names(deslist) = VRbrInfo$branch
+
+  # Remove root from list
+  if(names(deslist)[1] == "0") deslist = deslist[2:length(deslist)]
+
+  # Split tips and nodes
+  des_tips = deslist[which(unlist(lapply(deslist,length)) < 2)]
+  des_nodes = deslist[which(unlist(lapply(deslist,length)) > 1)]
+
+  # Check - need trees with the same taxa in
+  if(any(lapply(des_nodes, function(x)all(x %in% tree$tip.label)) == FALSE))
+    stop("All taxa in the rates tree must be found in the input tree.")
+
+  # identify the MRCA of each of the nodes in the new tree
+  mrcas = sapply(des_nodes, function(x)treetab$Rbranch[treetab$DescNode == findMRCA(tree, tips = x)])
+
+  # identify the tip label of each of the tips in the new tree
+  tips = sapply(des_tips, function(x)treetab$Rbranch[treetab$Des == x])
+
+  # Combine them back into a reference list
+  reference = c(mrcas, tips)
+
+  # Modify all branch references in the log
+  VRlog[,"Rbranch"] = reference[match(VRlog[,"Node ID"], names(reference))]
+
+  # Output the results
+  VRout = list(brInfo = VRbrInfo, VRlog = VRlog, treetab = treetab, tree = tree)
+  return(VRout)
+
+}
+
+
+#' @title Process BayesTraits VR log file
+#' @description Process the output files from a variable rates analysis in BayesTraits as read in by readVR.
+#' @param VRout An R object defining the output of the read VR function with branches linked to R.
+#' Designed for use with the output of linkbranches. This will fail if used without running linkbranches first.
+#' @returns A list with three elements:
+#' \itemize{
+#' \item summary - A \code{data.frame} giving information about each branch/node
+#' in the analysis. Each branch is identified by the numeric value in "branch". For
+#' samples of trees, this value is equivalent to the "partition ID" used internally
+#' by BayesTraits. "NoDes" and "Des" record the number and names of all descendant
+#' taxa from each branch. The "freq" and "probability" columns tell us the frequency
+#' and probability that this branch occur in the sample are only relevant for
+#' analyses over samples of trees. The "length" records the branch length and
+#' is left blank for tree samples. The "DesBranches" tells us all branches that descend from
+#' the branch of interest. The median and mean scalar are the median and mean rate
+#' scalars acting on that branch across the entire posterior distribution. n_scaled
+#' tells us how many iterations that branch had a scalar acting on it, and n_origin tells
+#' us how many iterations that branch had a scalar ORIGINATING on it (either as the base of
+#' a node scalar or as its own branch scalar).
+#' \item posterior - A \code{data.frame} providing the posterior distribution of rate scalars acting
+#' on every branch (column) at each iteration (row).
+#' \item tree - If \code{treefile} is specified, then the tree will be returned as a part of the
+#' output for use in tree-scaling and visualization etc.
 #' }
+#' @keywords internal
+#' @noRd
+processVR = function(VRout){
+
+  # First identify iterations and branches
+  uiterations = unique(VRout$VRlog$It)
+  ubranches = VRout$treetab$Rbranch
+
+  # Create a table for the posteriors
+  posterior <- matrix(1, nrow = length(uiterations), ncol = length(ubranches),
+                      dimnames = list(uiterations, ubranches))
+
+  # OK, now we want to split nodes and branches
+  nodes <- VRout$VRlog %>% filter(NodeBranch == "Node") %>% select(It, Scaler, Rbranch)
+  nodes$Rbranch = sapply(nodes$Rbranch, function(x)unlist(strsplit(VRout$treetab$DesBranches[VRout$treetab$Rbranch == x], split = ",")))
+  #  nodes$Rbranch = sapply(nodes$Rbranch, function(x)unlist(strsplit(VRout$treetab$DesBranches[VRout$treetab$Rbranch == x], split = ","))[-1])
+
+
+  # Expand the nodes so that we have a row per branch
+  nodes_expanded = nodes %>%
+    unnest(Rbranch)
+  nodes_expanded = as.data.frame(nodes_expanded)
+
+  # Now format the branch table in the same way
+  branches = VRout$VRlog %>% filter(NodeBranch == "Branch") %>% select(It, Scaler, Rbranch)
+
+  # Combine the two
+  allscalars = rbind(nodes_expanded,branches)
+
+  # Now aggregate the scalar values per iteration (no duplicates)
+  allscalars$Scaler=as.numeric(allscalars$Scaler)
+  aggregated_raw <- allscalars %>%
+    group_by(It,Rbranch) %>%
+    summarize(Scaler=prod(Scaler),.groups='drop')
+
+  # Set a chunk size for processing to avoid memory issues
+  chunk_size = 5000
+
+  # Calculate the number of chunks needed
+  num_chunks = ceiling(nrow(aggregated_raw)/ chunk_size)
+
+  # Initialize posterior matrix index
+  posterior_index = matrix(NA, nrow = nrow(aggregated_raw), ncol = 2)
+  posterior_index[, 1] = match(aggregated_raw$It, uiterations)
+  posterior_index[, 2] = match(aggregated_raw$Rbranch, ubranches)
+
+  # Update the posterior matrix chunk by chunk
+  # Reduce chunk size if R runs out of memory
+  # Increase chunk size to speed up operation
+  for (chunk in 1:num_chunks) {
+    start_idx = (chunk - 1) * chunk_size + 1
+    end_idx = min(chunk * chunk_size, nrow(aggregated_raw))
+
+    # Subset of posterior index
+    index_subset <- posterior_index[start_idx:end_idx, ]
+
+    # Subset of aggregated_raw
+    aggregated_subset <- aggregated_raw[start_idx:end_idx, ]
+
+    # Update posterior matrix
+    posterior[index_subset] <- aggregated_subset$Scaler
+  }
+
+  # Add summary info
+  summarytab = VRout$treetab
+  summarytab$medianscalar = unlist(apply(posterior, 2, median))
+  summarytab$meanscalar = unlist(apply(posterior, 2, mean))
+  summarytab$n_scaled = apply(posterior,2,function(x)(length(x[x>1])+length(x[x<1])))
+
+  # Return
+  return(list(ratesummary = summarytab, posterior = posterior, tree = VRout$tree))
+}
 
 
 
-
-#' #' @title Summarize BayesTraits VR Log Files (from raw output)
-#' #' @description Reads the output file from a variable rates analysis in BayesTraits
-#' #'     and produces summarized output. Will only work with VR log files
-#' #'     (.VarRates.txt) as directly output from BayesTraits models 1-4, 7 and 9.
-#' #'     Will not (currently) work with output from any other program or model.
-#' #' @param vrfile Takes a single string defining the direct path to a single log file.
-#' #' @param treefile An optional parameter giving the name of a treefile as a string.
-#' #' If defined, the output will link rates to the given tree. That is, every rate scalar
-#' #' is defined on the basis of a branch. If that branch does not exist in the defined tree, the
-#' #' rate scalar will instead be applied to the branch which terminates in the most recent
-#' #' common ancestor of all taxa that descended from the original defined branch. This option is
-#' #' designed explicitly to summarize the results of a multi-topology variable rates output.
-#' #' @returns A list with two elements:
-#' #' \itemize{
-#' #' \item summary - A \code{data.frame} giving information about each branch/node
-#' #' in the analysis. Each branch is identified by the numeric value in "branch". For
-#' #' samples of trees, this value is equivalent to the "partition ID" used internally
-#' #' by BayesTraits. "NoDes" and "Des" record the number and names of all descendant
-#' #' taxa from each branch. The "freq" and "probability" columns tell us the frequency
-#' #' and probability that this branch occur in the sample are only relevant for
-#' #' analyses over samples of trees. The "length" records the branch length and
-#' #' is left blank for tree samples. The "DesBranches" tells us all branches that descend from
-#' #' the branch of interest. The median and mean scalar are the median and mean rate
-#' #' scalars acting on that branch across the entire posterior distribution. n_scaled
-#' #' tells us how many iterations that branch had a scalar acting on it, and n_origin tells
-#' #' us how many iterations that branch had a scalar ORIGINATING on it (either as the base of
-#' #' a node scalar or as its own branch scalar).
-#' #' \item posterior - A \code{data.frame} providing the posterior distribution of rate scalars acting
-#' #' on every branch (column) at each iteration (row).
-#' #' }
-#' #' @export
-#' summarizeVR <- function(vrfile, treefile){
-#'   VRout = readVR(vrfile)
-#'   if(!missing(treefile)) VRsum = processVR(VRout, treefile) else VRsum = processVR(VRout)
-#'   return(VRsum)
+#' @title Summarize BayesTraits VR Log Files (from raw output)
+#' @description Reads the output file from a variable rates analysis in BayesTraits
+#'     and produces summarized output. Will only work with VR log files
+#'     (.VarRates.txt) as directly output from BayesTraits models 1-4, 7 and 9.
+#'     Will not (currently) work with output from any other program or model.
+#' @param vrfile Takes a single string defining the direct path to a single log file.
+#' @param treefile The name of a treefile as a string. The tree file must be in NEXUS format.
+#' The output will link rates to the given tree. That is, every rate scalar
+#' is defined on the basis of a branch. If that branch does not exist in the defined tree, the
+#' rate scalar will instead be applied to the branch which terminates in the most recent
+#' common ancestor of all taxa that descended from the original defined branch. This is
+#' designed explicitly to summarize the results of a multi-topology variable rates output.
+#' HOWEVER, BE WARNED: THIS DOES NOT CURRENTLY WORK FOR MULTI-TOPOLOGY RUNS.
+#'  Note that this WILL crash if the input tree does not contain all taxa in the original tree
+#'  used to run the variable rates model.
+#' @returns A list with three elements:
+#' \itemize{
+#' \item summary - A \code{data.frame} giving information about each branch/node
+#' in the analysis. Each branch is identified by the numeric value in "branch". For
+#' samples of trees, this value is equivalent to the "partition ID" used internally
+#' by BayesTraits. "NoDes" and "Des" record the number and names of all descendant
+#' taxa from each branch. The "freq" and "probability" columns tell us the frequency
+#' and probability that this branch occur in the sample are only relevant for
+#' analyses over samples of trees. The "length" records the branch length and
+#' is left blank for tree samples. The "DesBranches" tells us all branches that descend from
+#' the branch of interest. The median and mean scalar are the median and mean rate
+#' scalars acting on that branch across the entire posterior distribution. n_scaled
+#' tells us how many iterations that branch had a scalar acting on it, and n_origin tells
+#' us how many iterations that branch had a scalar ORIGINATING on it (either as the base of
+#' a node scalar or as its own branch scalar).
+#' \item posterior - A \code{data.frame} providing the posterior distribution of rate scalars acting
+#' on every branch (column) at each iteration (row).
+#' \item tree - If \code{treefile} is specified, then the tree will be returned as a part of the
+#' output for use in tree-scaling and visualization etc.
 #' }
+#' @export
+summarizeVR <- function(vrfile, treefile){
+  # Read log
+  cat("Extracting VR information from file...\n")
+  cat("WARNING: This is not currently working for multi-topology")
+  VRout = readVR(vrfile)
+
+  # Link to tree
+  cat("\tLinking to tree...\n")
+  VRout = linkbranches(VRout, treefile)
+
+  # Link to tree
+  cat("\t\tSummarizing Rates...\n")
+  summarized = processVR(VRout, treefile)
+  return(summarized)
+}
