@@ -7,9 +7,9 @@
 PL(tree, nodes = F)
 }
 \arguments{
-\item{tree}{A tree of class("Phylo") used as the reference tree.}
+\item{tree}{A tree of class \code{phylo} used as the reference tree.}
 
-\item{nodes}{Boolean operator (default value F) that if TRUE will retain path length estimates for internal nodes as well as terminal taxa.}
+\item{nodes}{Boolean operator (default = \code{FALSE}) that if \code{TRUE} will retain path length estimates for internal nodes as well as terminal taxa.}
 }
 \value{
 A named numeric vector of root-to-tip distances.

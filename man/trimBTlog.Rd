@@ -34,7 +34,7 @@ If defined, the function will resample this number of rows from the original log
 Note that this number must be greater than the total number of rows in the original file, or this will fail.}
 
 \item{files}{Takes a string or list of strings defining specific log files to be trimmed.
-If this is defined, dir and pat are ignored.}
+If this is defined, \code{dir} and \code{pat} are ignored.}
 }
 \value{
 A \code{list} containing the trimmed log file, each as a \code{data.frame}.

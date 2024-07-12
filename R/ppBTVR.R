@@ -222,6 +222,8 @@ linkbranches = function(VRout, treefile){
 #' }
 #' @keywords internal
 #' @noRd
+#' @importFrom dplyr select
+#' @importFrom tidyr unnest
 processVR = function(VRout){
 
   # First identify iterations and branches
@@ -310,6 +312,10 @@ processVR = function(VRout){
 #' HOWEVER, BE WARNED: THIS DOES NOT CURRENTLY WORK FOR MULTI-TOPOLOGY RUNS.
 #'  Note that this WILL crash if the input tree does not contain all taxa in the original tree
 #'  used to run the variable rates model.
+#'  @param forcedequaltrees Boolean operator, default = \code{FALSE}. If \code{forcedequaltrees = true},
+#'  then the model will be run iteratively over a pre-defined sample of trees.
+#'  In this situation, we will have duplicate iterations (one for each tree) and thus
+#'  multiple posteriors. We need to let the post-processor know if this is the case.
 #' @returns A list with three elements:
 #' \itemize{
 #' \item summary - A \code{data.frame} giving information about each branch/node
@@ -331,18 +337,22 @@ processVR = function(VRout){
 #' output for use in tree-scaling and visualization etc.
 #' }
 #' @export
-summarizeVR <- function(vrfile, treefile){
+summarizeVR <- function(vrfile, treefile, forcedequaltrees = F){
   # Read log
   cat("Extracting VR information from file...\n")
-  cat("WARNING: This is not currently working for multi-topology")
+  # cat("WARNING: This is not currently working for multi-topology")
   VRout = readVR(vrfile)
 
   # Link to tree
   cat("\tLinking to tree...\n")
   VRout = linkbranches(VRout, treefile)
 
+  if(forcedequaltrees){
+    VRout$VRlog$It = paste0(VRout$VRlog$It, "_", VRout$VRlog$`Tree No`)
+  }
+
   # Link to tree
   cat("\t\tSummarizing Rates...\n")
-  summarized = processVR(VRout, treefile)
+  summarized = processVR(VRout)
   return(summarized)
 }

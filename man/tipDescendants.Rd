@@ -7,7 +7,7 @@
 tipDescendants(tree, node)
 }
 \arguments{
-\item{tree}{a phylogenetic tree as an object of class "phylo".}
+\item{tree}{a phylogenetic tree as an object of class \code{phylo}.}
 
 \item{node}{an integer specifying a node number in the tree.}
 }

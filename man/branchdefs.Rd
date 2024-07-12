@@ -7,10 +7,10 @@
 branchdefs(tree)
 }
 \arguments{
-\item{tree}{a phylogenetic tree as an object of class "phylo".}
+\item{tree}{a phylogenetic tree as an object of class \code{phylo}.}
 }
 \value{
-A list of vectors defining the taxa descending from every node of a tree.
+A \code{list} of vectors defining the taxa descending from every node of a tree.
 }
 \description{
 Retrieves the descendants of every node (including terminals) in a tree.

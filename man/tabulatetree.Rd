@@ -7,10 +7,10 @@
 tabulatetree(tree)
 }
 \arguments{
-\item{tree}{a phylogenetic tree as an object of class "phylo".}
+\item{tree}{a phylogenetic tree as an object of class \code{phylo}.}
 }
 \value{
-A data.frame with n rows equal to the number of branches in the tree
+A \code{data.frame} with \code{n} rows equal to the number of branches in the tree
 and the following columns:
 \itemize{
 \item AncNode: the label for the node defining the start of the branch
