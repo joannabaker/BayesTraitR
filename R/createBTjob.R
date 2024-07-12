@@ -232,6 +232,7 @@ createBTjob <- function(fm, dataset, tree, jobname = "BTjob", bi = 100000, it = 
 
   # Create replicates and save them to the output folder
   for(i in 1:reps){
+
     write.table(modeldata, file = paste0(jobname, "-", stringr::str_pad(i, 3, pad =0), ".txt"),
                 sep = "\t", col.names = T, row.names = F, quote = F)}
 
