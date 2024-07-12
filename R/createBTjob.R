@@ -89,7 +89,7 @@ BTBetapriors = function(data, prior, pars) {
 #'     include in the input file for running BayesTraits. This includes commands
 #'     like \code{"varrates"} or \code{"lambda"} in addition to prior specifications and
 #'     stepping stone sampling. See \href{http://www.evolution.reading.ac.uk/BayesTraitsV4.0.1/BayesTraitsV4.0.1.html}{BayesTraits} manual for list of available commands.
-#' @param out Path to desired folder where all generated job files will be saved.
+#' @param outdir Path to desired folder where all generated job files will be saved.
 #'     If this parameter is left unspecified, files will be generated in the current
 #'     working directory.
 #' @param DistData Boolean operator that specifies whether there are sampled
@@ -146,7 +146,7 @@ createBTjob <- function(fm, dataset, tree, jobname = "BTjob", bi = 100000, it = 
         paste0(.mistx, collapse = "\n "), "\n\n")
     tree = drop.tip(tree, .mistx)
   }
-  write.nexus(tree, file = paste0(jobname, ".trees"))
+  write.nexus(tree, file = paste0(outdir, "/",jobname, ".trees"))
 
   # Ensure all taxa are in the data file
   .mistx = dataset[,1][!dataset[,names.col] %in% tree$tip.label]
@@ -219,7 +219,7 @@ createBTjob <- function(fm, dataset, tree, jobname = "BTjob", bi = 100000, it = 
     # For any samples of data, create a DistData table
     linkeddata = linkvalues(dataset,link)
     dd = paste0(jobname, "-DistData.txt")
-    write.table(linkeddata, file = paste0(out, "/", dd), sep  = "\t",
+    write.table(linkeddata, file = paste0(outdir, "/", dd), sep  = "\t",
                 col.names = F, row.names = F, quote = F)
 
     # Create a new input file (we need only one data point per taxon)
@@ -232,11 +232,11 @@ createBTjob <- function(fm, dataset, tree, jobname = "BTjob", bi = 100000, it = 
 
   # Create replicates and save them to the output folder
   for(i in 1:reps){
-    write.table(modeldata, file = paste0(jobname, "-", stringr::str_pad(i, 3, pad =0), ".txt"),
+    write.table(modeldata, file = paste0(outdir, "/",jobname, "-", stringr::str_pad(i, 3, pad =0), ".txt"),
                 sep = "\t", col.names = T, row.names = F, quote = F)}
 
   # Create and save the input file
   inf = c(model, ifelse(MCMC==T,2,1), optarg,conditions,"run")
-  writeLines(inf, con = paste0(jobname, ".infile"))
+  writeLines(inf, con = paste0(outdir, "/", jobname, ".infile"))
 }
 

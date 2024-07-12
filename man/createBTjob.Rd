@@ -8,7 +8,7 @@ createBTjob(
   fm,
   dataset,
   tree,
-  jobname,
+  jobname = "BTjob",
   bi = 1e+05,
   it = 1100000,
   sa = 1000,
@@ -16,9 +16,11 @@ createBTjob(
   MCMC = T,
   reps = 1,
   optarg,
-  out,
+  outdir,
   DistData,
-  link
+  link,
+  contrast_arg = NULL,
+  names.col = colnames(dataset)[1]
 )
 }
 \arguments{
@@ -59,10 +61,6 @@ include in the input file for running BayesTraits. This includes commands
 like \code{"varrates"} or \code{"lambda"} in addition to prior specifications and
 stepping stone sampling. See \href{http://www.evolution.reading.ac.uk/BayesTraitsV4.0.1/BayesTraitsV4.0.1.html}{BayesTraits} manual for list of available commands.}
 
-\item{out}{Path to desired folder where all generated job files will be saved.
-If this parameter is left unspecified, files will be generated in the current
-working directory.}
-
 \item{DistData}{Boolean operator that specifies whether there are sampled
 values to be accounted for (\code{DistData=TRUE}), or if each tip has only a single
 corresponding data point (\code{DistData=FALSE}). This allows the user to input a sample of data
@@ -72,6 +70,17 @@ data file to contain multiple entries for at least one of the sampled taxa.}
 \item{link}{If \code{DistData=TRUE}, the user must specify whether samples are "linked"
 (traits are taken from the same source or individual) or "unlinked" (samples)
 are not taken from a single source or individual.}
+
+\item{out}{Path to desired folder where all generated job files will be saved.
+If this parameter is left unspecified, files will be generated in the current
+working directory.}
+
+\item{contrasts}{A list, whose entries are values (numeric matrices, \link[stats]{formula}s,
+or character strings naming functions) to be used as replacement values for the \link[stats]{contrasts}
+replacement function and whose names are the names of columns of \code{dataset} containing \link[base]{factor}s.
+Argument and description from \link[stats]{model.matrix}.
+@param names.col An argument specifying the column of the dataset that links to the names in the tree.
+If left unspecified, will search for names in the first column.}
 }
 \value{
 Generates files in the current working directory that can be used
