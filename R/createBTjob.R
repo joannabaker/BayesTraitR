@@ -100,6 +100,12 @@ BTBetapriors = function(data, prior, pars) {
 #' @param link If \code{DistData=TRUE}, the user must specify whether samples are "linked"
 #'     (traits are taken from the same source or individual) or "unlinked" (samples)
 #'     are not taken from a single source or individual.
+#' @param contrasts A list, whose entries are values (numeric matrices, \link[stats]{formula}s,
+#'  or character strings naming functions) to be used as replacement values for the \link[stats]{contrasts}
+#'  replacement function and whose names are the names of columns of \code{dataset} containing \link[base]{factor}s.
+#'  Argument and description from \link[stats]{model.matrix}.
+#'  @param names.col An argument specifying the column of the dataset that links to the names in the tree.
+#'  If left unspecified, will search for names in the first column.
 #' @return Generates files in the current working directory that can be used
 #'     to run BayesTraits analyses.
 #' @details BayesTraits is in constant development and as such not all eventualities are
@@ -115,87 +121,122 @@ BTBetapriors = function(data, prior, pars) {
 #' @importFrom ape drop.tip write.nexus
 #' @importFrom utils read.table write.table
 #' @importFrom stats model.matrix
-createBTjob <- function(fm, dataset, tree, jobname, bi = 100000, it = 1100000,
-                        sa = 1000, model, MCMC = T, reps = 1, optarg, out, DistData, link){
-    # Specify output directory
-    if(missing(out)) out = "."
+createBTjob <- function(fm, dataset, tree, jobname = "BTjob", bi = 100000, it = 1100000,
+                        sa = 1000, model, MCMC = T, reps = 1, optarg, outdir, DistData, link,
+                        contrast_arg = NULL, names.col = colnames(dataset)[1]){
+  # Specify output directory
+  if(missing(outdir)) outdir = "."
 
-    # Quick check that the names of the species are in the first column
-    if(!any(dataset[,1] %in% tree$tip.label))
-      stop("No species in dataset found in tree. Ensure first column of dataset
-           includes names corresponding to tip labels.")
+  # Quick check that the names of the species are in the tree
+  if(!any(dataset[,names.col] %in% tree$tip.label))
+    stop("No species in dataset found in tree. Ensure names.col is specified and that it includes names corresponding to tip labels.")
 
-    # Create and write the tree file
-    .mistx = tree$tip.label[!tree$tip.label %in% dataset[,1]]
-    if(length(.mistx) > 0){
-      cat("Removing", length(.mistx), "tips from the phylogeny:\n",
-          paste0(.mistx, collapse = "\n "), "\n\n")
-        tree = drop.tip(tree, .mistx)
-    }
-    write.nexus(tree, file = paste0(jobname, ".trees"))
+  # For contrast coding to work as expected, categorical variables should be treated as factors.
+  vartype = sapply(all.vars(fm),function(x)class(dataset[,x]))
+  if(any(vartype == "character")){
+    warning("Character variables detected; converting to factors.")
+    dataset[,names(vartype)[vartype == "character"]] <- lapply(dataset[names(vartype)[vartype == "character"]] , factor)
+    vartype = sapply(all.vars(fm),function(x)class(dataset[,x]))
+  }
 
-    # Ensure all taxa are in the data file
-    .mistx = dataset[,1][!dataset[,1] %in% tree$tip.label]
-    if(length(.mistx) > 0){
+  # Create and write the tree file
+  .mistx = tree$tip.label[!tree$tip.label %in% dataset[,names.col]]
+  if(length(.mistx) > 0){
+    cat("Removing", length(.mistx), "tips from the phylogeny:\n",
+        paste0(.mistx, collapse = "\n "), "\n\n")
+    tree = drop.tip(tree, .mistx)
+  }
+  write.nexus(tree, file = paste0(jobname, ".trees"))
+
+  # Ensure all taxa are in the data file
+  .mistx = dataset[,1][!dataset[,names.col] %in% tree$tip.label]
+  if(length(.mistx) > 0){
     cat("Removing", length(.mistx), "rows from the dataset:\n",
         paste0(.mistx, collapse = "\n "), "\n")
-    dataset = dataset[!dataset[,1] %in% .mistx,]
-    }
+    dataset = dataset[!dataset[,names.col] %in% .mistx,]
+  }
 
-    # Extract the relevant columns from the data file
-    mf = model.matrix(fm, dataset, na.action = 'na.pass')
-    mf[,1] = dataset[,all.vars(fm)[1]]
-    modeldata = cbind.data.frame(dataset[,1],mf)
-    colnames(modeldata)[1:2] = c(colnames(dataset)[1],all.vars(fm)[1])
+  # Calculate the model matrix
+  mf = model.matrix(fm, dataset, na.action = 'na.pass', contrasts.arg = contrast_arg)
 
-    # BayesTraits does not accept spaces or special characters in column names
-    colnames(modeldata) = gsub("-|//*| |:", "_", colnames(modeldata))
+  # Identify the Y variable and modify the design matrix to BT input format
+  mf[,1] = dataset[,all.vars(fm)[1]]
 
-    # Chain settings
-    if(MCMC==F) conditions ="" else
-      conditions = c(paste("burnin", format(bi, scientific =F)),
-                     paste("iterations", format(it, scientific = F)),
-                     paste("sample", format(sa, scientific = F)))
+  # Add the names column to the input data
+  modeldata = cbind.data.frame(dataset[,names.col],mf)
 
-    # Add optional arguments
-    if(missing(optarg)) optarg=""
+  # Modify the column names of the dataset for the intercept / names column
+  colnames(modeldata)[1:2] = c(names.col,all.vars(fm)[1])
 
-    # Add distribution data table if required
-    if(!missing(DistData)){
+  ## I have commented this out as it's not really good practice
+  ## But I found it helpful for interpreting the outputs of sum contrasts vs dummy codes
+  # # Modify the column names for any factors
+  # if(any(vartype == "factor")){
+  #   factors = vartype[vartype == "factor"]
+  #   for(f in 1:length(factors)){
+  #     fac = names(factors)[f]
+  #     faclvls = levels(dataset[,fac])
+  #
+  #     # Remove group name from column
+  #     colnames(modeldata) = gsub(fac, "", colnames(modeldata))
+  #
+  #     # If we had per-group coding, names should be OK
+  #     if(any(faclvls %in% colnames(modeldata))) next
+  #
+  #     # If we have contrast coding like sum diffs, adjust name
+  #     for(L in 1:length(faclvls)){
+  #       if(L %in% colnames(modeldata))
+  #         colnames(modeldata)[which(colnames(modeldata) == L)] = as.character(faclvls)[L]}
+  #
+  #
+  #   }}
 
-      # If we have no duplicates, this is a mistake. Check with user.
-      if(nrow(dataset) == length(unique(dataset[,1])))
-        stop("DistData specified with no sampled values found in dataset.")
+  # BayesTraits does not accept spaces or special characters in column names
+  colnames(modeldata) = gsub("-|//*| |:", "_", colnames(modeldata))
 
-      # Secondly, check link specification
-      if(missing(link)){
-        warning("DistData specified with no link value defined.
+  # Chain settings
+  if(MCMC==F) conditions ="" else
+    conditions = c(paste("burnin", format(bi, scientific =F)),
+                   paste("iterations", format(it, scientific = F)),
+                   paste("sample", format(sa, scientific = F)))
+
+  # Add optional arguments
+  if(missing(optarg)) optarg=""
+
+  # Add distribution data table if required
+  if(!missing(DistData)){
+
+    # If we have no duplicates, this is a mistake. Check with user.
+    if(nrow(dataset) == length(unique(dataset[,1])))
+      stop("DistData specified with no sampled values found in dataset.")
+
+    # Secondly, check link specification
+    if(missing(link)){
+      warning("DistData specified with no link value defined.
                                Defaulting to Linked.")
-        link = "Linked"}
+      link = "Linked"}
 
-      # For any samples of data, create a DistData table
-        linkeddata = linkvalues(dataset,link)
-        dd = paste0(jobname, "-DistData.txt")
-        write.table(linkeddata, file = paste0(out, "/", dd), sep  = "\t",
-                    col.names = F, row.names = F, quote = F)
+    # For any samples of data, create a DistData table
+    linkeddata = linkvalues(dataset,link)
+    dd = paste0(jobname, "-DistData.txt")
+    write.table(linkeddata, file = paste0(out, "/", dd), sep  = "\t",
+                col.names = F, row.names = F, quote = F)
 
-        # Create a new input file (we need only one data point per taxon)
-        dataset = dataset[match(unique(dataset[,1]), dataset[,1]),]
+    # Create a new input file (we need only one data point per taxon)
+    dataset = dataset[match(unique(dataset[,1]), dataset[,1]),]
 
-        # Add command to optional arguments
-        optarg = c(optarg, paste0("DistData ", dd))
+    # Add command to optional arguments
+    optarg = c(optarg, paste0("DistData ", dd))
 
-    }
+  }
 
-    # Create replicates and save them to the output folder
-    for(i in 1:reps){
-      print(i)
-      write.table(modeldata, file = paste0(jobname, "-", stringr::str_pad(i, 3, pad =0), ".txt"),
-                  sep = "\t", col.names = T, row.names = F, quote = F)}
+  # Create replicates and save them to the output folder
+  for(i in 1:reps){
+    write.table(modeldata, file = paste0(jobname, "-", stringr::str_pad(i, 3, pad =0), ".txt"),
+                sep = "\t", col.names = T, row.names = F, quote = F)}
 
-    # Create and save the input file
-    inf = c(model, ifelse(MCMC==T,2,1), optarg,conditions,"run")
-    writeLines(inf, con = paste0(jobname, ".infile"))
-    }
-
+  # Create and save the input file
+  inf = c(model, ifelse(MCMC==T,2,1), optarg,conditions,"run")
+  writeLines(inf, con = paste0(jobname, ".infile"))
+}
 
