@@ -222,7 +222,7 @@ linkbranches = function(VRout, treefile){
 #' }
 #' @keywords internal
 #' @noRd
-#' @importFrom dplyr select
+#' @importFrom dplyr select,filter, summarise, group_by
 #' @importFrom tidyr unnest
 processVR = function(VRout){
 
@@ -235,7 +235,7 @@ processVR = function(VRout){
                       dimnames = list(uiterations, ubranches))
 
   # OK, now we want to split nodes and branches
-  nodes <- VRout$VRlog %>% filter(NodeBranch == "Node") %>% select(It, Scaler, Rbranch)
+  nodes <- VRout$VRlog %>% dplyr::filter(NodeBranch == "Node") %>% select(It, Scaler, Rbranch)
   nodes$Rbranch = sapply(nodes$Rbranch, function(x)unlist(strsplit(VRout$treetab$DesBranches[VRout$treetab$Rbranch == x], split = ",")))
   #  nodes$Rbranch = sapply(nodes$Rbranch, function(x)unlist(strsplit(VRout$treetab$DesBranches[VRout$treetab$Rbranch == x], split = ","))[-1])
 
@@ -246,7 +246,7 @@ processVR = function(VRout){
   nodes_expanded = as.data.frame(nodes_expanded)
 
   # Now format the branch table in the same way
-  branches = VRout$VRlog %>% filter(NodeBranch == "Branch") %>% select(It, Scaler, Rbranch)
+  branches = VRout$VRlog %>% dplyr::filter(NodeBranch == "Branch") %>% select(It, Scaler, Rbranch)
 
   # Combine the two
   allscalars = rbind(nodes_expanded,branches)
@@ -254,8 +254,8 @@ processVR = function(VRout){
   # Now aggregate the scalar values per iteration (no duplicates)
   allscalars$Scaler=as.numeric(allscalars$Scaler)
   aggregated_raw <- allscalars %>%
-    group_by(It,Rbranch) %>%
-    summarize(Scaler=prod(Scaler),.groups='drop')
+    dplyr::group_by(It,Rbranch) %>%
+    dplyr::summarise(Scaler=prod(Scaler),.groups='drop')
 
   # Set a chunk size for processing to avoid memory issues
   chunk_size = 5000
