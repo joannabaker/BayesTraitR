@@ -135,7 +135,6 @@ readVR = function(vrfile){
 #' rate scalar will instead be applied to the branch which terminates in the most recent
 #' common ancestor of all taxa that descended from the original defined branch. This is
 #' designed explicitly to summarize the results of a multi-topology variable rates output.
-#' HOWEVER, BE WARNED: THIS DOES NOT CURRENTLY WORK FOR MULTI-TOPOLOGY RUNS.
 #'  Note that this WILL crash if the input tree does not contain all taxa in the original tree
 #'  used to run the variable rates model.
 #' @keywords internal
@@ -222,7 +221,9 @@ linkbranches = function(VRout, treefile){
 #' }
 #' @keywords internal
 #' @noRd
-#' @importFrom dplyr select,filter, summarise, group_by
+#' @importFrom dplyr group_by
+#' @importFrom dplyr filter
+#' @importFrom dplyr select
 #' @importFrom tidyr unnest
 processVR = function(VRout){
 
@@ -304,18 +305,9 @@ processVR = function(VRout){
 #'     Will not (currently) work with output from any other program or model.
 #' @param vrfile Takes a single string defining the direct path to a single log file.
 #' @param treefile The name of a treefile as a string. The tree file must be in NEXUS format.
-#' The output will link rates to the given tree. That is, every rate scalar
-#' is defined on the basis of a branch. If that branch does not exist in the defined tree, the
-#' rate scalar will instead be applied to the branch which terminates in the most recent
-#' common ancestor of all taxa that descended from the original defined branch. This is
-#' designed explicitly to summarize the results of a multi-topology variable rates output.
-#' HOWEVER, BE WARNED: THIS DOES NOT CURRENTLY WORK FOR MULTI-TOPOLOGY RUNS.
-#'  Note that this WILL crash if the input tree does not contain all taxa in the original tree
-#'  used to run the variable rates model.
-#'  @param forcedequaltrees Boolean operator, default = \code{FALSE}. If \code{forcedequaltrees = true},
-#'  then the model will be run iteratively over a pre-defined sample of trees.
-#'  In this situation, we will have duplicate iterations (one for each tree) and thus
-#'  multiple posteriors. We need to let the post-processor know if this is the case.
+#'      The output will link rates to the given tree. That is, every rate scalar
+#'      is defined on the basis of a branch. If that branch does not exist in the defined   #'      tree, the rate scalar will instead be applied to the branch which terminates in the #'      most recent common ancestor of all taxa that descended from the original defined branch. This is designed explicitly to summarize the results of a multi-topology variable rates output. Note that this WILL crash if the input tree does not contain all taxa in the original tree used to run the variable rates model.
+#' @param forcedequaltrees Boolean operator, default = \code{FALSE}. If \code{forcedequaltrees = true}, then the model will be run iteratively over a pre-defined sample of trees.In this situation, we will have duplicate iterations (one for each tree) and thus multiple posteriors. We need to let the post-processor know if this is the case.
 #' @returns A list with three elements:
 #' \itemize{
 #' \item summary - A \code{data.frame} giving information about each branch/node

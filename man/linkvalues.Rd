@@ -11,8 +11,7 @@ linkvalues(unlinked, link = "Linked")
 This MUST contain taxa names or row IDs in the first column.}
 
 \item{link}{Currently, the value must be "Linked" or "Unlinked".
-This will be applied across all taxa. Future updates may allow
-variable values across taxa.}
+This will be applied across all taxa. Future updates may allow variable values across taxa.}
 }
 \value{
 An R data frame that can be exported to a text file and used as input

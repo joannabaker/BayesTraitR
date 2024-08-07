@@ -37,13 +37,36 @@ You can download the latest version of [BayesTraits](http://www.evolution.readin
 
 ## Example Data
 
-This package contains sample brain and body size data for marsupials, taken from the forthcoming publication:
+This package contains the sample files bundled with BayesTraits. 
+This includes the following trees:
+* Artiodactyl_trees (A sample of 500 trees of 17 artiodactyls.)
+* Bird_tree (A tree of 5669 birds.)
+* Mammal_trees (A sample of 50 trees of 40 mammals.)
+* Marsupials_tree (A tree of 246 marsupials.)
+* NortheastBantu_tree (A tree of 85 Bantu languages.)
+* Primates_trees (A sample of 500 trees of 60 primate species.)
 
-Venditti C, Baker J & Barton, R (2023) *Co-evolutionary dynamics of mammalian brain and body size*, Currently **in review**.
+And the following data files:
+* Artiodactyl (for multi-state analysis)
+* BirdTerritory (for heterogeneous models)
+* MammalBody (for continuous models)
+* MammalBrainBody (for correlational or regression models)
+* MammalBrainBodyGt (for multicorrelational or multivariate regression models)
+* MammalBrainBodySampleData (an example of how to include multiple values per species)
+* Marsupials (for continuous models, specifically variable rates)
+* MammalModelB (a dataset to depict trend or model B runs - not real data)
+* NortheastBantu (for geo models)
+* Primates (for discrete models)
 
+## Creating Analyses 
 
-```{r, echo=FALSE, message =FALSE, fig.cap = "Figure 1. Marsupial Brain and Body Size. There is a clear (and unsurprising) strong positive relationship between brain and body mass in marsupials."}
-marsupials = read.table("data-raw/marsupials.txt", sep = "\t", header = T, stringsAsFactors = F)
-plot(marsupials$Br~marsupials$Bd, xlab = expression(log[10]~Body~Mass~(g)), ylab = expression(log[10]~Brain~Mass~(g)), pch = 16, col = "red", las = 1, bty = "l")
-```
+The function \code{createBTjob} is used to generate an input file, data file and tree file for use in downstream BayesTraits analyses. This can then be run interactively from within R (using \code{shell} or similar) or externally using the command-line interface. 
 
+TODO: Currently, createBTjob only accepts a formula as input (it was designed around regression analyses) - but obviously lots of other models exist. To get round this, we can insert the formula as "1~vars" to just retain vars of interest but I will fix this to be more intuitive.
+
+## The variable rates post-processor
+
+Here, I will include how to run the variable rates post-processor using three examples:
+1) A variable rates model
+2) A variable rates model across a sample of trees
+3) A variable rates model across a tree sample, forcing equal tree sampling. 

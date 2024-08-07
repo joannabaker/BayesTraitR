@@ -11,17 +11,9 @@ summarizeVR(vrfile, treefile, forcedequaltrees = F)
 
 \item{treefile}{The name of a treefile as a string. The tree file must be in NEXUS format.
 The output will link rates to the given tree. That is, every rate scalar
-is defined on the basis of a branch. If that branch does not exist in the defined tree, the
-rate scalar will instead be applied to the branch which terminates in the most recent
-common ancestor of all taxa that descended from the original defined branch. This is
-designed explicitly to summarize the results of a multi-topology variable rates output.
-HOWEVER, BE WARNED: THIS DOES NOT CURRENTLY WORK FOR MULTI-TOPOLOGY RUNS.
-Note that this WILL crash if the input tree does not contain all taxa in the original tree
-used to run the variable rates model.
-@param forcedequaltrees Boolean operator, default = \code{FALSE}. If \code{forcedequaltrees = true},
-then the model will be run iteratively over a pre-defined sample of trees.
-In this situation, we will have duplicate iterations (one for each tree) and thus
-multiple posteriors. We need to let the post-processor know if this is the case.}
+is defined on the basis of a branch. If that branch does not exist in the defined   #'      tree, the rate scalar will instead be applied to the branch which terminates in the #'      most recent common ancestor of all taxa that descended from the original defined branch. This is designed explicitly to summarize the results of a multi-topology variable rates output. Note that this WILL crash if the input tree does not contain all taxa in the original tree used to run the variable rates model.}
+
+\item{forcedequaltrees}{Boolean operator, default = \code{FALSE}. If \code{forcedequaltrees = true}, then the model will be run iteratively over a pre-defined sample of trees.In this situation, we will have duplicate iterations (one for each tree) and thus multiple posteriors. We need to let the post-processor know if this is the case.}
 }
 \value{
 A list with three elements:

@@ -93,6 +93,7 @@ tipDescendants = function(tree, node){
 #' @param tree2 a phylogenetic tree as an object of class \code{phylo}.
 #' @return The set of named tips descended from node in a vector.
 #' @importFrom adephylo listTips
+#' @importFrom graphics abline
 #' @export
 compareBLS = function(tree1, tree2){
 

@@ -24,80 +24,46 @@ createBTjob(
 )
 }
 \arguments{
-\item{fm}{An object of class \code{\link[stats]{formula}} that is a symbolic description of the
-desired model to be fitted in BayesTraits. See details.}
+\item{fm}{An object of class \code{\link[stats]{formula}} that is a symbolic description of the desired model to be fitted in BayesTraits. See details.}
 
-\item{dataset}{The data table that is wanted for further analysis in BayesTraits.
-This must contain ONLY the columns required for subsequent analysis,
-and must have names matching the tree as the first column.}
+\item{dataset}{The data table that is wanted for further analysis in BayesTraits. This must contain ONLY the columns required for subsequent analysis, and must have names matching the tree as the first column.}
 
-\item{tree}{A single tree of class \code{"phylo"} containing tip-names as found in the first
-column of \code{"dataset"}.}
+\item{tree}{A single tree of class \code{"phylo"} containing tip-names as found in the first column of \code{"dataset"}.}
 
-\item{jobname}{A unique character string used for identifying the model.
-All created files will have this tag.}
+\item{jobname}{A unique character string used for identifying the model. All created files will have this tag.}
 
-\item{bi}{Numeric value determining the amount of iterations to remove from
-the beginning of the chain as burn-in. Defaults to \code{100000}.}
+\item{bi}{Numeric value determining the amount of iterations to remove from the beginning of the chain as burn-in. Defaults to \code{100000}.}
 
-\item{it}{Numeric value determining the total number of iterations to run.
-Default is \code{1100000}.}
+\item{it}{Numeric value determining the total number of iterations to run. Default is \code{1100000}.}
 
-\item{sa}{Numeric value determining the "thinning" or "sampling" parameter -
-i.e. how many iterations to run between each sample. Default is \code{1000}.}
+\item{sa}{Numeric value determining the "thinning" or "sampling" parameter - i.e. how many iterations to run between each sample. Default is \code{1000}.}
 
-\item{model}{A required argument that specifies which model is to be run in
-BayesTraits. See \href{http://www.evolution.reading.ac.uk/BayesTraitsV4.0.1/BayesTraitsV4.0.1.html}{BayesTraits} manual for list of available models.}
+\item{model}{A required argument that specifies which model is to be run in BayesTraits. See \href{http://www.evolution.reading.ac.uk/BayesTraitsV4.0.1/BayesTraitsV4.0.1.html}{BayesTraits} manual for list of available models.}
 
-\item{MCMC}{Boolean operator that determines whether the analysis to be run
-will be run using Markov chain Monte Carlo methods (\code{MCMC = T}) or in Maximum Likelihod (\code{MCMC=F}).
-Defaults to \code{MCMC=TRUE}.}
+\item{MCMC}{Boolean operator that determines whether the analysis to be run will be run using Markov chain Monte Carlo methods (\code{MCMC = T}) or in Maximum Likelihod (\code{MCMC=F}). Defaults to \code{MCMC=TRUE}.}
 
-\item{reps}{Numeric value (1:999) defining the number of replicates of this model to be run.
-Defaults to 1.}
+\item{reps}{Numeric value (1:999) defining the number of replicates of this model to be run. Defaults to 1.}
 
-\item{optarg}{an optional character vector with arguments to
-include in the input file for running BayesTraits. This includes commands
-like \code{"varrates"} or \code{"lambda"} in addition to prior specifications and
-stepping stone sampling. See \href{http://www.evolution.reading.ac.uk/BayesTraitsV4.0.1/BayesTraitsV4.0.1.html}{BayesTraits} manual for list of available commands.}
+\item{optarg}{an optional character vector with arguments to include in the input file for running BayesTraits. This includes commands like \code{"varrates"} or \code{"lambda"} in addition to prior specifications and stepping stone sampling. See \href{http://www.evolution.reading.ac.uk/BayesTraitsV4.0.1/BayesTraitsV4.0.1.html}{BayesTraits} manual for list of available commands.}
 
-\item{DistData}{Boolean operator that specifies whether there are sampled
-values to be accounted for (\code{DistData=TRUE}), or if each tip has only a single
-corresponding data point (\code{DistData=FALSE}). This allows the user to input a sample of data
-for a taxon/range of taxa instead of a single point. This requires the input
-data file to contain multiple entries for at least one of the sampled taxa.}
+\item{outdir}{Path to desired folder where all generated job files will be saved. If this parameter is left unspecified, files will be generated in the current working directory.}
 
-\item{link}{If \code{DistData=TRUE}, the user must specify whether samples are "linked"
-(traits are taken from the same source or individual) or "unlinked" (samples)
-are not taken from a single source or individual.}
+\item{DistData}{Boolean operator that specifies whether there are sampled values to be accounted for (\code{DistData=TRUE}), or if each tip has only a single corresponding data point (\code{DistData=FALSE}). This allows the user to input a sample of data for a taxon/range of taxa instead of a single point. This requires the input data file to contain multiple entries for at least one of the sampled taxa.}
 
-\item{out}{Path to desired folder where all generated job files will be saved.
-If this parameter is left unspecified, files will be generated in the current
-working directory.}
+\item{link}{If \code{DistData=TRUE}, the user must specify whether samples are "linked" (traits are taken from the same source or individual) or "unlinked" (samples) are not taken from a single source or individual.}
 
-\item{contrasts}{A list, whose entries are values (numeric matrices, \link[stats]{formula}s,
-or character strings naming functions) to be used as replacement values for the \link[stats]{contrasts}
-replacement function and whose names are the names of columns of \code{dataset} containing \link[base]{factor}s.
-Argument and description from \link[stats]{model.matrix}.
-@param names.col An argument specifying the column of the dataset that links to the names in the tree.
-If left unspecified, will search for names in the first column.}
+\item{contrast_arg}{A list, whose entries are values (numeric matrices, \link[stats]{formula}s, or character strings naming functions) to be used as replacement values for the \link[stats]{contrasts}  replacement function and whose names are the names of columns of \code{dataset} containing \link[base]{factor}s. Argument and description from \link[stats]{model.matrix}.}
+
+\item{names.col}{An argument specifying the column of the dataset that links to the names in the tree. If left unspecified, will search for names in the first column.}
 }
 \value{
-Generates files in the current working directory that can be used
-to run BayesTraits analyses.
+Generates files in the current working directory that can be used to run BayesTraits analyses.
 }
 \description{
 Flexible function for automatically generating all of the files
 required for running phylogenetic statistical comparative analyses in BayesTraits.
 }
 \details{
-BayesTraits is in constant development and as such not all eventualities are
-accounted for in this package. This function is designed with the informed
-user in mind. It is assumed that the user knows which model and parameter
-combinations are appropriate for their own data.
-
-\if{html}{\out{<div class="sourceCode">}}\preformatted{Using this function, models can be specified symbolically. The response
-variable must always be a numeric vector. Models can be specified as described
-in the documentation for [lm()].
-}\if{html}{\out{</div>}}
+BayesTraits is in constant development and as such not all eventualities are accounted for in this package. This function is designed with the informed user in mind. It is assumed that the user knows which model and parameter combinations are appropriate for their own data.
+Using this function, models can be specified symbolically. The response variable must always be a numeric vector. Models can be specified as described in the documentation for \code{\link[=lm]{lm()}}.
 }
