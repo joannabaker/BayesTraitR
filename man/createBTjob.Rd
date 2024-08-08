@@ -5,7 +5,7 @@
 \title{Generate BayesTraits analysis files.}
 \usage{
 createBTjob(
-  fm,
+  cols,
   dataset,
   tree,
   jobname = "BTjob",
@@ -20,11 +20,12 @@ createBTjob(
   DistData,
   link,
   contrast_arg = NULL,
-  names.col = colnames(dataset)[1]
+  names.col = colnames(dataset)[1],
+  fm
 )
 }
 \arguments{
-\item{fm}{An object of class \code{\link[stats]{formula}} that is a symbolic description of the desired model to be fitted in BayesTraits. See details.}
+\item{cols}{The columns required for analysis. These must be provided as a vector of column names found in dataset in the correct order. If regression analysis is desired, see the optional \code{fm} argument.}
 
 \item{dataset}{The data table that is wanted for further analysis in BayesTraits. This must contain ONLY the columns required for subsequent analysis, and must have names matching the tree as the first column.}
 
@@ -55,6 +56,8 @@ createBTjob(
 \item{contrast_arg}{A list, whose entries are values (numeric matrices, \link[stats]{formula}s, or character strings naming functions) to be used as replacement values for the \link[stats]{contrasts}  replacement function and whose names are the names of columns of \code{dataset} containing \link[base]{factor}s. Argument and description from \link[stats]{model.matrix}.}
 
 \item{names.col}{An argument specifying the column of the dataset that links to the names in the tree. If left unspecified, will search for names in the first column.}
+
+\item{fm}{Optional argument for specifying regression analyses. An object of class \code{\link[stats]{formula}} that is a symbolic description of the desired model to be fitted in BayesTraits. See details.}
 }
 \value{
 Generates files in the current working directory that can be used to run BayesTraits analyses.
@@ -65,5 +68,5 @@ required for running phylogenetic statistical comparative analyses in BayesTrait
 }
 \details{
 BayesTraits is in constant development and as such not all eventualities are accounted for in this package. This function is designed with the informed user in mind. It is assumed that the user knows which model and parameter combinations are appropriate for their own data.
-Using this function, models can be specified symbolically. The response variable must always be a numeric vector. Models can be specified as described in the documentation for \code{\link[=lm]{lm()}}.
+Using this function, regression models can be specified symbolically using the optional \code{fm} argument. When in use,the response variable must always be a numeric vector. Models can be specified as described in the documentation for \code{\link[=lm]{lm()}}. Otherwise, the \code{cols} argument can still be used as long as all columns are in the correct order.
 }

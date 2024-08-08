@@ -64,7 +64,7 @@ BTBetapriors = function(data, prior, pars) {
 #' @title Generate BayesTraits analysis files.
 #' @description Flexible function for automatically generating all of the files
 #'     required for running phylogenetic statistical comparative analyses in BayesTraits.
-#' @param fm An object of class \code{\link[stats]{formula}} that is a symbolic description of the desired model to be fitted in BayesTraits. See details.
+#' @param cols The columns required for analysis. These must be provided as a vector of column names found in dataset in the correct order. If regression analysis is desired, see the optional \code{fm} argument.
 #' @param dataset The data table that is wanted for further analysis in BayesTraits. This must contain ONLY the columns required for subsequent analysis, and must have names matching the tree as the first column.
 #' @param tree A single tree of class \code{"phylo"} containing tip-names as found in the first column of \code{"dataset"}.
 #' @param jobname A unique character string used for identifying the model. All created files will have this tag.
@@ -80,32 +80,60 @@ BTBetapriors = function(data, prior, pars) {
 #' @param link If \code{DistData=TRUE}, the user must specify whether samples are "linked" (traits are taken from the same source or individual) or "unlinked" (samples) are not taken from a single source or individual.
 #' @param contrast_arg A list, whose entries are values (numeric matrices, \link[stats]{formula}s, or character strings naming functions) to be used as replacement values for the \link[stats]{contrasts}  replacement function and whose names are the names of columns of \code{dataset} containing \link[base]{factor}s. Argument and description from \link[stats]{model.matrix}.
 #' @param names.col An argument specifying the column of the dataset that links to the names in the tree. If left unspecified, will search for names in the first column.
+#' @param fm Optional argument for specifying regression analyses. An object of class \code{\link[stats]{formula}} that is a symbolic description of the desired model to be fitted in BayesTraits. See details.
 #' @return Generates files in the current working directory that can be used to run BayesTraits analyses.
 #' @details
 #' BayesTraits is in constant development and as such not all eventualities are accounted for in this package. This function is designed with the informed user in mind. It is assumed that the user knows which model and parameter combinations are appropriate for their own data.
-#' Using this function, models can be specified symbolically. The response variable must always be a numeric vector. Models can be specified as described in the documentation for [lm()].
+#' Using this function, regression models can be specified symbolically using the optional \code{fm} argument. When in use,the response variable must always be a numeric vector. Models can be specified as described in the documentation for [lm()]. Otherwise, the \code{cols} argument can still be used as long as all columns are in the correct order.
 #' @export
 #' @importFrom ape drop.tip write.nexus
 #' @importFrom utils read.table write.table
 #' @importFrom stats model.matrix
-createBTjob <- function(fm, dataset, tree, jobname = "BTjob", bi = 100000, it = 1100000, sa = 1000, model, MCMC = T, reps = 1, optarg, outdir, DistData, link, contrast_arg = NULL, names.col = colnames(dataset)[1]){
+createBTjob <- function(cols, dataset, tree, jobname = "BTjob", bi = 100000, it = 1100000, sa = 1000, model, MCMC = T, reps = 1, optarg, outdir, DistData, link, contrast_arg = NULL, names.col = colnames(dataset)[1], fm){
   # Specify output directory
   if(missing(outdir)) outdir = "."
 
   # Quick check that the names of the species are in the tree
-  if(!any(dataset[,names.col] %in% tree$tip.label))
+  if(class(tree) == "multiPhylo") trtx = tree[[1]]$tip.label else trtx = tree$tip.label
+  if(!any(dataset[,names.col] %in% trtx))
     stop("No species in dataset found in tree. Ensure names.col is specified and that it includes names corresponding to tip labels.")
 
-  # For contrast coding to work as expected, categorical variables should be treated as factors.
-  vartype = sapply(all.vars(fm),function(x)class(dataset[,x]))
-  if(any(vartype == "character")){
-    warning("Character variables detected; converting to factors.")
-    dataset[,names(vartype)[vartype == "character"]] <- lapply(dataset[names(vartype)[vartype == "character"]] , factor)
+  # If we have supplied a formulae, extract the model.
+  if(!missing(fm)){
+
+    # If we have cols and fm supplied, shoot out a warning.
+    if(!missing(cols)){
+      warning("Both cols and fm arguments specified; ignoring column specification in favour of formula.")
+    }
+    # For contrast coding to work as expected, categorical variables should be treated as factors.
     vartype = sapply(all.vars(fm),function(x)class(dataset[,x]))
+    if(any(vartype == "character")){
+      warning("Character variables detected; converting to factors.")
+      dataset[,names(vartype)[vartype == "character"]] <- lapply(dataset[names(vartype)[vartype == "character"]] , factor)
+      vartype = sapply(all.vars(fm),function(x)class(dataset[,x]))
+    }
+
+    # Calculate the model matrix
+    mf = model.matrix(fm, dataset, na.action = 'na.pass', contrasts.arg = contrast_arg)
+
+    # Identify the Y variable and modify the design matrix to BT input format
+    mf[,1] = dataset[,all.vars(fm)[1]]
+
+    # Add the names column to the input data
+    modeldata = cbind.data.frame(dataset[,names.col],mf)
+
+    # Modify the column names of the dataset for the intercept / names column
+    colnames(modeldata)[1:2] = c(names.col,all.vars(fm)[1])
+
+  } else {
+    if(missing(cols)) stop("Need either column specification or model formula. ")
+    modeldata = dataset[,c(names.col, cols)]
   }
 
   # Create and write the tree file
-  .mistx = tree$tip.label[!tree$tip.label %in% dataset[,names.col]]
+  if(class(tree) == "multiPhylo"){
+    .mistx = tree[[1]]$tip.label[!tree[[1]]$tip.label %in% modeldata[,names.col]]
+  } else  .mistx = tree$tip.label[!tree$tip.label %in% modeldata[,names.col]]
   if(length(.mistx) > 0){
     cat("Removing", length(.mistx), "tips from the phylogeny:\n",
         paste0(.mistx, collapse = "\n "), "\n\n")
@@ -114,47 +142,14 @@ createBTjob <- function(fm, dataset, tree, jobname = "BTjob", bi = 100000, it = 
   write.nexus(tree, file = paste0(outdir, "/",jobname, ".trees"))
 
   # Ensure all taxa are in the data file
-  .mistx = dataset[,1][!dataset[,names.col] %in% tree$tip.label]
+  if(class(tree) == "multiPhylo") trtx = tree[[1]]$tip.label else trtx = tree$tip.label
+  .mistx = modeldata[,1][!modeldata[,names.col] %in% trtx]
   if(length(.mistx) > 0){
     cat("Removing", length(.mistx), "rows from the dataset:\n",
         paste0(.mistx, collapse = "\n "), "\n")
-    dataset = dataset[!dataset[,names.col] %in% .mistx,]
+    modeldata = modeldata[!modeldata[,names.col] %in% .mistx,]
   }
 
-  # Calculate the model matrix
-  mf = model.matrix(fm, dataset, na.action = 'na.pass', contrasts.arg = contrast_arg)
-
-  # Identify the Y variable and modify the design matrix to BT input format
-  mf[,1] = dataset[,all.vars(fm)[1]]
-
-  # Add the names column to the input data
-  modeldata = cbind.data.frame(dataset[,names.col],mf)
-
-  # Modify the column names of the dataset for the intercept / names column
-  colnames(modeldata)[1:2] = c(names.col,all.vars(fm)[1])
-
-  ## I have commented this out as it's not really good practice
-  ## But I found it helpful for interpreting the outputs of sum contrasts vs dummy codes
-  # # Modify the column names for any factors
-  # if(any(vartype == "factor")){
-  #   factors = vartype[vartype == "factor"]
-  #   for(f in 1:length(factors)){
-  #     fac = names(factors)[f]
-  #     faclvls = levels(dataset[,fac])
-  #
-  #     # Remove group name from column
-  #     colnames(modeldata) = gsub(fac, "", colnames(modeldata))
-  #
-  #     # If we had per-group coding, names should be OK
-  #     if(any(faclvls %in% colnames(modeldata))) next
-  #
-  #     # If we have contrast coding like sum diffs, adjust name
-  #     for(L in 1:length(faclvls)){
-  #       if(L %in% colnames(modeldata))
-  #         colnames(modeldata)[which(colnames(modeldata) == L)] = as.character(faclvls)[L]}
-  #
-  #
-  #   }}
 
   # BayesTraits does not accept spaces or special characters in column names
   colnames(modeldata) = gsub("-|//*| |:", "_", colnames(modeldata))
@@ -172,7 +167,7 @@ createBTjob <- function(fm, dataset, tree, jobname = "BTjob", bi = 100000, it = 
   if(!missing(DistData)){
 
     # If we have no duplicates, this is a mistake. Check with user.
-    if(nrow(dataset) == length(unique(dataset[,1])))
+    if(nrow(modeldata) == length(unique(modeldata[,1])))
       stop("DistData specified with no sampled values found in dataset.")
 
     # Secondly, check link specification
@@ -182,13 +177,13 @@ createBTjob <- function(fm, dataset, tree, jobname = "BTjob", bi = 100000, it = 
       link = "Linked"}
 
     # For any samples of data, create a DistData table
-    linkeddata = linkvalues(dataset,link)
+    linkeddata = linkvalues(modeldata,link)
     dd = paste0(jobname, "-DistData.txt")
     write.table(linkeddata, file = paste0(outdir, "/", dd), sep  = "\t",
                 col.names = F, row.names = F, quote = F)
 
     # Create a new input file (we need only one data point per taxon)
-    dataset = dataset[match(unique(dataset[,1]), dataset[,1]),]
+    modeldata = modeldata[match(unique(modeldata[,1]), modeldata[,1]),]
 
     # Add command to optional arguments
     optarg = c(optarg, paste0("DistData ", dd))
@@ -203,4 +198,3 @@ createBTjob <- function(fm, dataset, tree, jobname = "BTjob", bi = 100000, it = 
   inf = c(model, ifelse(MCMC==T,2,1), optarg,conditions,"run")
   writeLines(inf, con = paste0(outdir, "/", jobname, ".infile"))
 }
-
