@@ -7,7 +7,7 @@
 #' @export
 
 readBTlog = function(file){
-  skip = (which(grepl("\tTree No", readLines(file)))) - 1
+  skip = (which(grepl("Tree No", readLines(file)))) - 1
   log = read.table(file, sep = "\t", header = T, stringsAsFactors = F,
                    comment.char = "*", skip = skip, fill = T)
   return(log)
