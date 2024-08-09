@@ -1,3 +1,5 @@
+## TODO: Allow tree objects in phylo format in the post-processing tool.
+
 #' @title Read in BayesTraits VR Log Files (raw)
 #' @description Reads the output file from a variable rates analysis in BayesTraits
 #'     for further processing in an R workspace. Will only work with VR log files
