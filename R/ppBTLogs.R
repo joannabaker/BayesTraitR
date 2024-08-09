@@ -315,3 +315,22 @@ predBTlog = function(input, output = NULL, plot = F){
 
 }
 
+#' @title Extract marginal likelihood from a stones file
+#' @description Function to extract the marginal likelihood from the raw stepping-stone sampling output.
+#' @param input A character vector defining the input file exactly as output by BayesTraits.
+#' @return A numeric value defining the log marginal likelihood of the output model.
+#' @export
+predBTlog = function(input){
+
+  # read in raw file
+  raw = readLines("MammalBody_VR_singleTop-001.txt.Stones.txt")
+
+  # Get the last line
+  Lhline = raw[length(raw)]
+
+  # Get the value
+  Lh = as.numeric(gsub(".+\t", "", Lhline))
+
+  return(Lh)
+
+}
