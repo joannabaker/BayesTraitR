@@ -13,6 +13,7 @@ readBTlog = function(file){
   return(log)
 }
 
+## TODO: Fix file specification and parameter input for BTlogs
 
 #' @title Trim header from BayesTraits log files.
 #' @description Removes the header from BayesTraits output files.
@@ -129,20 +130,23 @@ plotBTlog = function (files, cols = "all", table = T, logs = F, colours)
       }
   }
 
+  # If we have multiple files, create a legend.
+  # Otherwise convert single file to list format.
+  if(missing(colours))  colours = rainbow(n = length(files))
+  if(class(fil) != "list") {fil = list(fil)}  else{
+    # Create a blank plot and add a colour legend IF more than one file
+    plot(1, axes = F, main = "", bty = "n", type = "n",
+         xlab = "", ylab = "")
+    legend("center", legend = files, fill = colours)
+    if(length(files) > 10) warning("Colours str specified randomly using rainbow() and may not be clearly distinct for more than 10 replicates.")
+  }
+
   # Specify "iterations" as row indices
   its = seq(from = 1, to = max(unlist(lapply(fil, nrow))), by = 1)
   if (length(cols) == 1)
     if (cols == "all")
-      cols = colnames(fil[[1]])[grepl("Lh|^Alpha|^Beta|Sigma|Var$|R.2|Local|Lambda",
-                                      colnames(fil[[1]]))]
+      cols = colnames(fil[[1]])[grepl("Lh|^Alpha|^Beta|Sigma|Var$|R.2|Local|Lambda",colnames(fil[[1]]))]
 
-  # Create a blank plot and add a colour legend
-  if(missing(colours))  colours = rainbow(n = length(files))
-  plot(1, axes = F, main = "", bty = "n", type = "n",
-       xlab = "", ylab = "")
-  legend("center", legend = files, fill = colours)
-  if(length(files) > 10) warning("Colours str specified randomly using rainbow() and may
-                                 not be clearly distinct for more than 10 replicates.")
 
   # Loop through each of the specified columns of interest
   for (col in cols) {
@@ -224,8 +228,8 @@ summarizeBTlog = function (file, cols = "all", tradeoffs = T, table = T, name = 
 
   if (length(cols) == 1)
     if (cols == "all"){
-      cols = colnames(fi)[grepl("Lh|^Alpha|^Beta|Var$|R.2|Local|Lambda",
-                                colnames(fi))]
+      cols = colnames(fi)[grepl("Lh|^Alpha|^Beta|Sigma|Var$|R.2|Local|Lambda",colnames(fi))]
+
       reorder=TRUE
     } else reorder = FALSE
 
@@ -243,10 +247,7 @@ summarizeBTlog = function (file, cols = "all", tradeoffs = T, table = T, name = 
     ess = data.frame(Parameter = names(ess), ess = ess)
     out = merge(out, ess)
     if (tradeoffs) {
-      pdf(paste0(name, "_Tradeoffs.pdf"), useDingbats = F,
-          height = 20, width = 20)
       plot(fi[, cols])
-      dev.off()
     }
 
     out$Parameter[grepl("Beta", out$Parameter)]
