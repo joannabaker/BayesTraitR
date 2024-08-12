@@ -350,3 +350,50 @@ summarizeVR <- function(vrfile, treefile, forcedequaltrees = F){
   summarized = processVR(VRout)
   return(summarized)
 }
+
+
+#' @title Create a stretched tree from variable rates output
+#' @description Creates a stretched tree (mean, median, or full sample) from the output of the variable rates model.
+#' @param VRsummary The name of the object created by [summarizeVR]
+#' @param frequency A percentage ranging between 0-100 specifying which branches to scale. Branches will only be scaled if they have been scaled in a greater percentage of the posterior than is specified by this parameter.This parameter is ignored if type = "sample".
+#' @param magnitude A value specifying wich branches to scale. Branches will only be scaled if they are above the value specified by magnitude (or below 1/magnitude for rate decreases). This parameter is ignored if type = "sample".
+#' @param type A character string defining what type of scaled tree to return. Can be one of "median", "mean", or "sample". If sample, the full posterior of scaled trees will be returned.
+#' @returns A tree where branch lengths are stretched by the mean or median scalar - or a list of trees stretched by the rate scalars.
+scaleTree = function(VRsummary, frequency = 0, magnitude = 1, type = "median"){
+
+  # Check type of scaled tree desired
+  if(!type %in% c("median", "mean", "sample")) stop("type argument must be one of median, mean, or sample.")
+
+  # Get the tree
+  tree = VRsummary$tree
+
+  # If sample, create sample
+  if(type == "sample"){
+    trees = list(time = tree)
+    for(i in 2:nrow(VRsummary)){
+      tree1 = tree
+      tree1$edge.length = tree1$edge.length * VRsummary$posterior[i,2:ncol(VRsummary$posterior)]
+      trees[[i]] = tree1
+    }
+    class(trees) = "multiPhylo"
+    return(trees)
+  }
+
+  # get the scalar
+  scalar = VRsummary$ratesummary[,paste0(type, "scalar")]
+
+  # calculate the frequency
+  freq = VRsummary$ratesummary$n_scaled/nrow(VRsummary$posterior)*100
+
+  # If less than the specified frequency, set scalar to 1
+  scalar[freq < frequency] = 1
+
+  # Identify the absolute magnitude
+  scalar[scalar < magnitude & scalar > 1] = 1
+  scalar[scalar < 1 & scalar < 1/magnitude]  = 1
+
+  # Scale the tree
+  tree$edge.length = tree$edge.length * scalar
+
+  return(tree)
+}

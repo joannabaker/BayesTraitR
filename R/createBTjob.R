@@ -94,7 +94,7 @@ createBTjob <- function(cols, dataset, tree, jobname = "BTjob", bi = 100000, it 
   if(missing(outdir)) outdir = "."
 
   # Quick check that the names of the species are in the tree
-  if(class(tree) == "multiPhylo") trtx = tree[[1]]$tip.label else trtx = tree$tip.label
+  if(inherits(tree, "multiPhylo")) trtx = tree[[1]]$tip.label else trtx = tree$tip.label
   if(!any(dataset[,names.col] %in% trtx))
     stop("No species in dataset found in tree. Ensure names.col is specified and that it includes names corresponding to tip labels.")
 
@@ -131,7 +131,7 @@ createBTjob <- function(cols, dataset, tree, jobname = "BTjob", bi = 100000, it 
   }
 
   # Create and write the tree file
-  if(class(tree) == "multiPhylo"){
+  if(inherits(tree, "multiPhylo")){
     .mistx = tree[[1]]$tip.label[!tree[[1]]$tip.label %in% modeldata[,names.col]]
   } else  .mistx = tree$tip.label[!tree$tip.label %in% modeldata[,names.col]]
   if(length(.mistx) > 0){
@@ -142,7 +142,7 @@ createBTjob <- function(cols, dataset, tree, jobname = "BTjob", bi = 100000, it 
   write.nexus(tree, file = paste0(outdir, "/",jobname, ".trees"))
 
   # Ensure all taxa are in the data file
-  if(class(tree) == "multiPhylo") trtx = tree[[1]]$tip.label else trtx = tree$tip.label
+  if(inherits(tree, "multiPhylo")) trtx = tree[[1]]$tip.label else trtx = tree$tip.label
   .mistx = modeldata[,1][!modeldata[,names.col] %in% trtx]
   if(length(.mistx) > 0){
     cat("Removing", length(.mistx), "rows from the dataset:\n",

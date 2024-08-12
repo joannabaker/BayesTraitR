@@ -4,12 +4,11 @@
 \alias{predBTlog}
 \title{Calculate predictions from BayesTraits regressions.}
 \usage{
-predBTlog(input)
-
-predBTlog(input)
+predBTlog(input, output = NULL, plot = F)
 }
 \arguments{
-\item{input}{A character vector defining the input file exactly as output by BayesTraits.}
+\item{input}{A character vector defining the original input file (must have column headers).
+Note that this can be a modified version of the original input e.g. if one wants to fix a value at a mean - as long as columns are retained in identical order and format.}
 
 \item{output}{an optional argument. If defined, a character vector locating the original output file (unmodified).
 If unspecified, the function will search for the original input file as if it had been run through BayesTraits, appending .Log.txt.}
@@ -19,11 +18,7 @@ This should really only be used in the case of a simple linear regression (i.e. 
 }
 \value{
 A matrix of predicted values for terminal taxa (if original input was MCMC, one iteration per column)
-
-A numeric value defining the log marginal likelihood of the output model.
 }
 \description{
 Function to calculate predictions from BayesTraits input/output files. Incompatible with other programs.
-
-Function to extract the marginal likelihood from the raw stepping-stone sampling output.
 }

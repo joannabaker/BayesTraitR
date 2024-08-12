@@ -133,7 +133,7 @@ plotBTlog = function (files, cols = "all", table = T, logs = F, colours)
   # If we have multiple files, create a legend.
   # Otherwise convert single file to list format.
   if(missing(colours))  colours = rainbow(n = length(files))
-  if(class(fil) != "list") {fil = list(fil)}  else{
+  if(!inherits(fil,"list")) {fil = list(fil)}  else{
     # Create a blank plot and add a colour legend IF more than one file
     plot(1, axes = F, main = "", bty = "n", type = "n",
          xlab = "", ylab = "")
@@ -321,7 +321,7 @@ predBTlog = function(input, output = NULL, plot = F){
 #' @param input A character vector defining the input file exactly as output by BayesTraits.
 #' @return A numeric value defining the log marginal likelihood of the output model.
 #' @export
-predBTlog = function(input){
+extractML = function(input){
 
   # read in raw file
   raw = readLines("MammalBody_VR_singleTop-001.txt.Stones.txt")

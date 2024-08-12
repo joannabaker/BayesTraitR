@@ -68,24 +68,6 @@ small and incomplete and should not be used for any scientific
 interpretation. They are included as illustrative examples of how to
 interact with BayesTraits and BayesTraitR only.
 
-This is what the consensus artiodactyl tree looks like:
-<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
-
-And here is the data
-
-``` r
-class(Artiodactyl)
-#> [1] "data.frame"
-head(Artiodactyl)
-#>    tip_label multistate
-#> 1 Chevrotain          D
-#> 2    Giraffe          D
-#> 3       Goat          D
-#> 4      Sheep          D
-#> 5  Pronghorn          G
-#> 6    Buffalo          D
-```
-
 To **create a maximum-likelihood multi-state model** across the
 Artiodactyl dataset and tree sample, we can use the following commands:
 
@@ -186,24 +168,6 @@ small and incomplete and should not be used for any scientific
 interpretation. They are included as illustrative examples of how to
 interact with BayesTraits and BayesTraitR only.
 
-This is what the consensus mammal tree looks like:
-<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
-
-And here is the data
-
-``` r
-class(MammalBody)
-#> [1] "data.frame"
-head(MammalBody)
-#>          tip_label     Body
-#> 1          Opossum 3.454326
-#> 2   Diprotodontian 3.680879
-#> 3         Elephant 6.564903
-#> 4            Hyrax 3.390582
-#> 5         Tenrecid 2.065953
-#> 6 Lo_Ear_Ele_shrew 1.667453
-```
-
 To **create a single-trait variable rates model** across the Mammal
 dataset and tree sample, we can use the following commands:
 
@@ -303,7 +267,7 @@ stretchedtree$edge.length = stretchedtree$edge.length * res$ratesummary$mediansc
 plot(stretchedtree)
 ```
 
-<img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
 
 **NOTE**: because we input a sample of trees, we must specify only a
 single tree to summarize on. Here we calculate and use a consensus tree
@@ -316,41 +280,79 @@ summarizing tree will be assigned to their most recent common ancestor.
 ## BayesTraits Files
 
 This package contains the sample files bundled with BayesTraits. This
-includes the following trees:
+includes the following datasets:
 
-- Artiodactyl_trees (A sample of 500 trees of 17 artiodactyls.)
+\*[Artiodactyls](#artiodactyls): A example dataset and tree sample (n =
+500) for multi-state analysis with 17 taxa. I don’t know what the data
+is and I think I will replace this dataset with activity pattern at some
+point in the near future.
 
-- Bird_tree (A tree of 5669 birds.)
+\*[Birds](#birds): An example dataset and tree for heterogeneous or
+discrete (binary) analysis with 5669 taxa. I don’t know what the data
+is; this will be updated in due course.
 
-- Mammal_trees (A sample of 50 trees of 40 mammals.)
+\*\[Mammals\]: Example body size, brain size, and gestation length
+datasets and corresponding tree sample (n = 50) for continuous
+(single-trait), correlational, and regression analyses with 40 taxa.
+Includes
 
-- Marsupials_tree (A tree of 246 marsupials.)
+\*\[Marsupials\]: An example body size dataset and tree for continuous
+analysis with 246 taxa.
 
-- NortheastBantu_tree (A tree of 85 Bantu languages.)
+\*\[Bantu\]: An example coordinate (latitude/longitude) dataset and tree
+for 85 analysis with 85 Bantu languages.
 
-- Primates_trees (A sample of 500 trees of 60 primate species.)
+\*\[Primates\]: An example dataset and tree sample (n = 500) for
+discrete analysis with 60 taxa. I don’t know what the data is; this will
+be updated in due course.
 
-And the following data files:
+### Artiodactyls
 
-- Artiodactyl (for multi-state analysis)
+This is what the consensus artiodactyl tree looks like:
+<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
 
-- BirdTerritory (for heterogeneous models)
+And here is the data
 
-- MammalBody (for continuous models)
+``` r
+class(Artiodactyl)
+#> [1] "data.frame"
+head(Artiodactyl)
+#>    tip_label multistate
+#> 1 Chevrotain          D
+#> 2    Giraffe          D
+#> 3       Goat          D
+#> 4      Sheep          D
+#> 5  Pronghorn          G
+#> 6    Buffalo          D
+```
 
-- MammalBrainBody (for correlational or regression models)
+### Birds
 
-- MammalBrainBodyGt (for multicorrelational or multivariate regression
-  models)
+<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" /> \###
+Mammals
+
+This is what the consensus mammal tree looks like:
+<img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" />
+
+And here is the data
+
+``` r
+class(MammalBody)
+#> [1] "data.frame"
+head(MammalBody)
+#>          tip_label     Body
+#> 1          Opossum 3.454326
+#> 2   Diprotodontian 3.680879
+#> 3         Elephant 6.564903
+#> 4            Hyrax 3.390582
+#> 5         Tenrecid 2.065953
+#> 6 Lo_Ear_Ele_shrew 1.667453
+```
+
+In addition to the data files, we also have the following objects:
 
 - MammalBrainBodySampleData (an example of how to include multiple
   values per species)
 
-- Marsupials (for continuous models, specifically variable rates)
-
 - MammalModelB (a dataset to depict trend or model B runs - not real
   data)
-
-- NortheastBantu (for geo models)
-
-- Primates (for discrete models)
