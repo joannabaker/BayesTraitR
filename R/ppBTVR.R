@@ -394,12 +394,8 @@ scaleTree = function(VRsummary, frequency = 0, magnitude = 1, type = "median"){
   scalar[scalar < 1 & scalar < 1/magnitude]  = 1
 
   # Scale the tree
-  tree$edge.length = tree$edge.length * scalar
+  tree$edge.length = tree$edge.length * scalar[-1]
 
   return(tree)
 }
-<<<<<<< HEAD
 
-=======
-#' @export
->>>>>>> 6ac1265c566816ff225a1a075f345255b7e8ef55
