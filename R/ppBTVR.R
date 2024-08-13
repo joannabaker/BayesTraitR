@@ -359,6 +359,7 @@ summarizeVR <- function(vrfile, treefile, forcedequaltrees = F){
 #' @param magnitude A value specifying wich branches to scale. Branches will only be scaled if they are above the value specified by magnitude (or below 1/magnitude for rate decreases). This parameter is ignored if type = "sample".
 #' @param type A character string defining what type of scaled tree to return. Can be one of "median", "mean", or "sample". If sample, the full posterior of scaled trees will be returned.
 #' @returns A tree where branch lengths are stretched by the mean or median scalar - or a list of trees stretched by the rate scalars.
+#' @export
 scaleTree = function(VRsummary, frequency = 0, magnitude = 1, type = "median"){
 
   # Check type of scaled tree desired
@@ -397,3 +398,4 @@ scaleTree = function(VRsummary, frequency = 0, magnitude = 1, type = "median"){
 
   return(tree)
 }
+

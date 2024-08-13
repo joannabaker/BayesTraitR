@@ -7,7 +7,7 @@
 extractML(input)
 }
 \arguments{
-\item{input}{A character vector defining the input file exactly as output by BayesTraits.}
+\item{input}{A character vector defining the stones file exactly as output by BayesTraits.}
 }
 \value{
 A numeric value defining the log marginal likelihood of the output model.
