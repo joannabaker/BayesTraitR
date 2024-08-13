@@ -398,4 +398,8 @@ scaleTree = function(VRsummary, frequency = 0, magnitude = 1, type = "median"){
 
   return(tree)
 }
+<<<<<<< HEAD
 
+=======
+#' @export
+>>>>>>> 6ac1265c566816ff225a1a075f345255b7e8ef55
