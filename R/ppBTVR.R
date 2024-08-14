@@ -8,8 +8,7 @@
 #' @description Reads the output file from a variable rates analysis in BayesTraits
 #'     for further processing in an R workspace. Will only work with VR log files
 #'     (.VarRates.txt) as directly output from BayesTraits models 1-4, 7 and 9.
-#'     Will not (currently) work with output from any other program or model.
-#' @param vrfile Takes a single string defining the direct path to a single log file.
+#' @param vrfile Takes a single string defining the direct path to a single variable rates output file.
 #' @returns A list with two elements:
 #' \itemize{
 #' \item brInfo - A \code{data.frame} giving information about each branch/node
@@ -36,9 +35,6 @@ readVR = function(vrfile){
   # Identify vr log block
   .vrlogstart = which(grepl("^It", vrraw))
   .vrlog = strsplit(vrraw[(.vrlogstart):length(vrraw)], split = "\t")
-
-  # Print output
-  cat("Extracting VR information from file...\n")
 
   # If we have a sample of trees, the structure of the output is different
   if(grepl("Part", vrraw[1])){
@@ -338,7 +334,6 @@ processVR = function(VRout){
 summarizeVR <- function(vrfile, treefile, forcedequaltrees = F){
   # Read log
   cat("Extracting VR information from file...\n")
-  # cat("WARNING: This is not currently working for multi-topology")
   VRout = readVR(vrfile)
 
   # Link to tree
