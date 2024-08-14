@@ -1,3 +1,5 @@
+## TODO: Account for equaltrees analyses in post-processing tools
+
 #' @title Read in BayesTraits Log Files (raw)
 #' @description Removes the header from BayesTraits output files.
 #'     Can only work with log files (.txt.Log.txt) as directly output from BayesTraits models 1-4, 7 and 9.

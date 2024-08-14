@@ -1,4 +1,5 @@
 ## TODO: Allow tree objects in phylo format in the post-processing tool.
+## TODO: Account for equaltrees analyses in post-processing tools
 
 #' @title Read in BayesTraits VR Log Files (raw)
 #' @description Reads the output file from a variable rates analysis in BayesTraits
