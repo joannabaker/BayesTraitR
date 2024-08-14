@@ -1,4 +1,8 @@
-## TODO: Allow tree objects in phylo format in the post-processing tool.
+## TODO: Clarify argument descriptions for all functions.
+## TODO: Improve flexibility and reduce number of required arguments for all functions.
+## TODO: E.G. Allow input trees only as objects - force user to read in tree.
+## TODO: Check compatibility with outputs with equal trees.
+
 
 #' @title Read in BayesTraits VR Log Files (raw)
 #' @description Reads the output file from a variable rates analysis in BayesTraits

@@ -1,3 +1,9 @@
+## TODO: Clarify argument descriptions for all functions.
+## TODO: Improve flexibility and reduce number of required arguments for all functions.
+## TODO: E.G. Allow input trees only as objects - force user to read in tree.
+## TODO: Check compatibility with log file outputs with equal trees.
+## TODO: Check compatibility with log file outputs and all models in BT
+
 #' @title Read in BayesTraits Log Files (raw)
 #' @description Removes the header from BayesTraits output files.
 #'     Can only work with log files (.txt.Log.txt) as directly output from BayesTraits models 1-4, 7 and 9.
@@ -13,7 +19,7 @@ readBTlog = function(file){
   return(log)
 }
 
-## TODO: Fix file specification and parameter input for BTlogs
+
 
 #' @title Trim header from BayesTraits log files.
 #' @description Removes the header from BayesTraits output files.

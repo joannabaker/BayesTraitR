@@ -127,3 +127,38 @@ compareBLS = function(tree1, tree2){
 }
 
 
+#' @title Identify tippytomies
+#' @description A function that identifies (and optionally deletes) 'tippytomies' from a tree. A tippytomy refers to the situation in which a pair (or group) of taxa have very short terminal branches resulting in what is essentially a bifurcation or polytomy at the tips of the tree. This can cause numerical issues in several programs. For instance, if two sister taxa have very short branches but very different trait values, the variable rates model will capitalize on this by maximizing the rate of evolution on these branches.
+#' @param tree A phylogenetic tree of class \code{phylo}.
+#' @param cutoff The branch length below which taxa will be identified / removed.
+#' @param action One of two character inputs: "identify" or "delete". See Returns for Details.
+#' @return If "identify", the function will return a list of taxa that belong to each tippytomy. If "delete", the list is returned along with a tree which has deleted all but one (the first) member of each tippytomy. This tree can be used in subsequent comparative analyses.
+#' @importFrom ape drop.tip
+#' @export
+tippytomies = function(tre, cutoff = 0.1, action = "identify"){
+  # Identify branches that are less than the cut-off length
+  shortbranches = which(tre$edge.length < cutoff)
+
+  # Identify which of these branches are terminal branches
+  shortterminals = shortbranches[which(tre$edge[shortbranches,2] <= Ntip(tre))]
+
+  # Sort these numerically
+  shortterminal_taxa = sort(tre$edge[shortterminals,2])
+
+  # Identify groups of related branches
+  res = split(shortterminal_taxa, cumsum(c(1,diff(shortterminal_taxa) !=1)))
+
+  if(action == "identify") {
+    res = lapply(res, function(x)tre$tip.label[x])
+    return(res)
+  }
+
+  if(action == "delete"){
+    # keep only the first in each cluster
+    delete = unlist(lapply(res,function(x)tre$tip.label[x[2:length(x)]]))
+    tre = drop.tip(tre, delete)
+    tre$node.label = NULL
+    res = lapply(res, function(x)tre$tip.label[x])
+    return(list(tre = tre, tippytomies = res))
+  }
+}
