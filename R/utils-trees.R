@@ -156,9 +156,9 @@ tippytomies = function(tre, cutoff = 0.1, action = "identify"){
   if(action == "delete"){
     # keep only the first in each cluster
     delete = unlist(lapply(res,function(x)tre$tip.label[x[2:length(x)]]))
+    res = lapply(res, function(x)tre$tip.label[x])
     tre = drop.tip(tre, delete)
     tre$node.label = NULL
-    res = lapply(res, function(x)tre$tip.label[x])
     return(list(tre = tre, tippytomies = res))
   }
 }
