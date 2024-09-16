@@ -4,10 +4,13 @@
 \alias{readBTlog}
 \title{Read in BayesTraits Log Files (raw)}
 \usage{
-readBTlog(file)
+readBTlog(file, burnin = 0)
 }
 \arguments{
 \item{file}{Takes a single string defining the direct path to a single log file.}
+
+\item{burnin}{Value specifying the number of samples to remove from the beginning of the log file before summarizing.
+The default value is zero (i.e. use the full output of the sampled chain).}
 }
 \value{
 R data.frame object that contain the trimmed log file.

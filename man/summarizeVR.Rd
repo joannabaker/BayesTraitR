@@ -4,7 +4,7 @@
 \alias{summarizeVR}
 \title{Summarize BayesTraits VR Log Files (from raw output)}
 \usage{
-summarizeVR(vrfile, tree, forcedequaltrees = F)
+summarizeVR(vrfile, tree, forcedequaltrees = F, burnin = 0)
 }
 \arguments{
 \item{vrfile}{Takes a single string defining the direct path to a single variable rates log file.}
@@ -12,6 +12,8 @@ summarizeVR(vrfile, tree, forcedequaltrees = F)
 \item{tree}{A phylogenetic tree object of class \code{phylo}. The output will link rates to the given tree. That is, every rate scalar is defined on the basis of a branch. If that branch does not exist in the defined tree, the rate scalar will instead be applied to the branch which terminates in the most recent common ancestor of all taxa that descended from the original defined branch. This is designed to summarize the results of a multi-topology variable rates output. The input tree must contain all taxa in the original tree used to run the variable rates model.}
 
 \item{forcedequaltrees}{Boolean operator, default = \code{FALSE}. If \code{forcedequaltrees = true}, then the model will be run iteratively over a pre-defined sample of trees.In this situation, we will have duplicate iterations (one for each tree) and thus multiple posteriors. We need to let the post-processor know if this is the case.}
+
+\item{burnin}{A value specifying the number of rows to remove from the beginning of each log file. Default value is 0 and so the entire chain will be used to calculate rates.}
 }
 \value{
 A list with three elements:

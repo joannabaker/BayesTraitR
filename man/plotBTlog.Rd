@@ -4,28 +4,24 @@
 \alias{plotBTlog}
 \title{Plot parameter values against index value.}
 \usage{
-plotBTlog(files, cols = "all", table = T, logs = F, colours)
+plotBTlog(files, cols = "all", colours, burnin = 0)
 }
 \arguments{
 \item{files}{path or filename of the file a summary is required for.
 This can be a list of filenames - if so, all identical values in each
 table will be plotted on a single chart. This is useful for comparing estimates
 of the same parameter across multiple replicate,s for example.
-File must be a tab-delimited text file with column headers.
-This function is designed to be compatible with the output of \code{\link[=trimBTlog]{trimBTlog()}}.}
+Files must be in the format as output by BayesTraits.}
 
 \item{cols}{A string or list of strings defining the column names or indices
 for which summary information is required. If unspecified, takes the
 value "all" which will return traces for the following columns
 (if present): Likelihood, Intercept, Slope(s)/Beta parameters,
-Variance, R-suqred, Number of local scalars (branch or node), and Lambda.}
-
-\item{table}{if TRUE, then the function will accept a list of \code{data.frames}
-rather than a list of filenames.}
-
-\item{logs}{if TRUE then the function will treat any filenames given as raw BayesTraits output (it will search for and remove any header info). Only compatible with table=FALSE and will not work with modified output files.}
+Variance, R-squared, Number of local scalars (branch or node), and Lambda.}
 
 \item{colours}{if provided, then should be a vector of colours for plotting - otherwise will be drawn randomly from rainbow.}
+
+\item{burnin}{A value specifying the number of rows to remove from the beginning of each log file. Default value is 0 and so the entire chain will be plotted.}
 }
 \description{
 Useful for visualizing parameter traces from MCMC analyses in

@@ -4,35 +4,20 @@
 \alias{summarizeBTlog}
 \title{Function to summarize BayesTraits log files}
 \usage{
-summarizeBTlog(
-  file,
-  cols = "all",
-  tradeoffs = T,
-  table = T,
-  name = "Summary",
-  input = T,
-  logs = T
-)
+summarizeBTlog(file, cols = "all", tradeoffs = F, input = T, burnin = 0)
 }
 \arguments{
-\item{file}{data.frame or file path of the BayesTraits output.
-This must be one of either (see also the 'table' argument):
-- a file path for a tab-delimited text file specifying the output columns from a BayesTraits run.
-- a name of an  R data-frame.}
+\item{file}{data.frame or file path of the BayesTraits output.}
 
 \item{cols}{A string or list of strings defining the columns for which summary information is required.
 If unspecified, takes the value "all" which summarizes a small pre-defined list of columns including:
 Likelihood, Alpha, Beta estimates, Variance, R-squared, Local transforms, and Lambda.}
 
-\item{tradeoffs}{Boolean operator that if true, plots trade-offs between all parameters specified in cols.}
+\item{tradeoffs}{Boolean operator that if true, plots trade-offs between all parameters specified in cols. Defaults to FALSE, as can be slow for complex models.}
 
-\item{table}{Boolean operator that if true, accepts an R data.frame object as input. If False, the file argument is interpreted as a character-string file path to the trimmed log file output from BayesTraits.}
+\item{input}{Optional parameter. Can take two values. If simply specified as TRUE, this will search for a file with the name as follows: gsub(".Log.txt", "", file). Otherwise, can take a specified input file name. In either case, when specified, the function will link the column names of the output table to reflect the parameters in the input data file (e.g. Beta.1 is associated with "Body_Mass"). Note that if the order of columns of the output or input files have been modified in any way this will not produce desirable output.}
 
-\item{name}{The name which the output will be saved under.}
-
-\item{input}{Optional parameter. Can take two values. If simply specified as TRUE, this assumes that 'file' is a filename (i.e. table = F) and will search for a file with the name as follows: gsub(".Log.txt", "", file). Otherwise, can take a specified input file name. In either case, when specified, the function will modify the column names of the output table to reflect the input data file (e.g. Beta.1 will become "BodyMass"). Note that if the order of columns of the output or input files have been modified in any way this will not produce desirable output.}
-
-\item{logs}{Boolean operator that if true, means that the output file is in raw form as output directly from BayesTraits. Otherwise, it assumes the log file has been stripped of the header rows and is a simple tab-delimited file.}
+\item{burnin}{A value specifying the number of rows to remove from the beginning of each log file. Default value is 0 and so the entire chain will be used}
 }
 \value{
 R data.frame object with the summary information:
@@ -48,6 +33,4 @@ R data.frame object with the summary information:
 \description{
 This function will produce average parameter values (mean, median, mode) as well as other summary statistics.
 It will return averages, effective sample sizes, pMCMC values, and ranges.
-It ideally works with the output from \code{\link[=trimBTlog]{trimBTlog()}}.
-Can work with all sorts of outputs, but will need to manually specify column names for non Bayes Traits tables.
 }
