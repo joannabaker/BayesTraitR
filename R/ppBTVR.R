@@ -8,6 +8,7 @@
 #'     for further processing in an R workspace. Will only work with VR log files
 #'     (.VarRates.txt) as directly output from BayesTraits models 1-4, 7 and 9.
 #' @param vrfile Takes a single string defining the direct path to a single variable rates output file.
+#' @param burnin A value specifying the number of rows to remove from the beginning of the sampled chain. Default value is 0 and so the entire chain will be read in.
 #' @returns A list with two elements:
 #' \itemize{
 #' \item brInfo - A \code{data.frame} giving information about each branch/node
@@ -28,6 +29,7 @@
 #' @noRd
 #' @importFrom utils head
 readVR = function(vrfile){
+
   # Read full input file
   vrraw = readLines(vrfile)
 
@@ -90,6 +92,9 @@ readVR = function(vrfile){
   # Tidy VR block
   .vrlognames = .vrlog[[1]] # Identify column headers
   .vrlogblock = .vrlog[-1] # Remove them from the block
+
+  # Remove burnin
+  .vrlogblock = .vrlogblock[(burnin+1):length(.vrlogblock)]
 
   # Split the log block into two parts:
   # First - per-iteration details
@@ -296,6 +301,7 @@ processVR = function(VRout){
 #' @param vrfile Takes a single string defining the direct path to a single variable rates log file.
 #' @param tree A phylogenetic tree object of class \code{phylo}. The output will link rates to the given tree. That is, every rate scalar is defined on the basis of a branch. If that branch does not exist in the defined tree, the rate scalar will instead be applied to the branch which terminates in the most recent common ancestor of all taxa that descended from the original defined branch. This is designed to summarize the results of a multi-topology variable rates output. The input tree must contain all taxa in the original tree used to run the variable rates model.
 #' @param forcedequaltrees Boolean operator, default = \code{FALSE}. If \code{forcedequaltrees = true}, then the model will be run iteratively over a pre-defined sample of trees.In this situation, we will have duplicate iterations (one for each tree) and thus multiple posteriors. We need to let the post-processor know if this is the case.
+#' @param burnin A value specifying the number of rows to remove from the beginning of each log file. Default value is 0 and so the entire chain will be used to calculate rates.
 #' @returns A list with three elements:
 #' \itemize{
 #' \item summary - A \code{data.frame} giving information about each branch/node
@@ -320,10 +326,10 @@ processVR = function(VRout){
 #' VRlogfilepath <- system.file("extdata", "MammalBody_VR-001.txt.VarRates.txt")
 #' summarizeVR(vrfile = VRlogfilepath, tree = Mammal_trees)
 #' @export
-summarizeVR <- function(vrfile, tree, forcedequaltrees = F){
+summarizeVR <- function(vrfile, tree, forcedequaltrees = F, burnin = 0){
   # Read log
   cat("Extracting VR information from file...\n")
-  VRout = readVR(vrfile)
+  VRout = readVR(vrfile, burnin = burnin)
 
   # Link to tree
   cat("\tLinking to tree...\n")

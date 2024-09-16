@@ -4,7 +4,7 @@
 \alias{predBTlog}
 \title{Calculate predictions from BayesTraits regressions.}
 \usage{
-predBTlog(input, output = NULL, plot = F)
+predBTlog(input, output = NULL, plot = F, burnin = 0)
 }
 \arguments{
 \item{input}{A character vector defining the original input file (must have column headers).
@@ -13,8 +13,7 @@ Note that this can be a modified version of the original input e.g. if one wants
 \item{output}{an optional argument. If defined, a character vector locating the original output file (unmodified).
 If unspecified, the function will search for the original input file as if it had been run through BayesTraits, appending .Log.txt.}
 
-\item{plot}{Optional argument. If TRUE, the function will generate a prediction plot. For complicated datasets this might produce undesirable results, and so the behaviour defaults to FALSE.
-This should really only be used in the case of a simple linear regression (i.e. a single continuous predictor and a single continuous response).}
+\item{burnin}{A value specifying the number of rows to remove from the beginning of each log file. Default value is 0 and so the entire chain will be used.}
 }
 \value{
 A matrix of predicted values for terminal taxa (if original input was MCMC, one iteration per column)

@@ -9,13 +9,16 @@
 #'     Can only work with log files (.txt.Log.txt) as directly output from BayesTraits models 1-4, 7 and 9.
 #'     Will not work with output from any other program or model.
 #' @param file Takes a single string defining the direct path to a single log file.
+#' @param burnin Value specifying the number of samples to remove from the beginning of the log file before summarizing.
+#' The default value is zero (i.e. use the full output of the sampled chain).
 #' @return R data.frame object that contain the trimmed log file.
 #' @export
 
-readBTlog = function(file){
+readBTlog = function(file,burnin = 0){
   skip = (which(grepl("Tree No", readLines(file)))) - 1
   log = read.table(file, sep = "\t", header = T, stringsAsFactors = F,
                    comment.char = "*", skip = skip, fill = T)
+  log = log[(burnin+1):nrow(log),]
   return(log)
 }
 
@@ -37,13 +40,14 @@ readBTlog = function(file){
 #' @param resample Takes a single numeric value.
 #'     If defined, the function will resample this number of rows from the original log file.
 #'     Note that this number must be greater than the total number of rows in the original file, or this will fail.
+#' @param burnin Takes a single numeric value. If defined, the function will remove this number of rows from the original file.
 #' @param files Takes a string or list of strings defining specific log files to be trimmed.
 #'     If this is defined, \code{dir} and \code{pat} are ignored.
 #' @return A \code{list} containing the trimmed log file, each as a \code{data.frame}.
 #' @export
 
 
-trimBTlog = function(dir = ".", out = ".", pat = ".txt.Log.txt", start = "\tTree No", tail = NA, resample = NA, files= NULL){
+trimBTlog = function(dir = ".", out = ".", pat = ".txt.Log.txt", start = "\tTree No", tail = NA, resample = NA, files= NULL, burnin = 0){
 
   # Set working directory
   home = getwd()
@@ -66,7 +70,7 @@ trimBTlog = function(dir = ".", out = ".", pat = ".txt.Log.txt", start = "\tTree
   {
 
     # Read in log file
-    .tmp = readBTlog(logs[l])
+    .tmp = readBTlog(logs[l], burnin = burnin)
 
     # remove NA columns for clarity
     .tmp = .tmp[,!apply(.tmp,2,function(x)all(is.na(x)))]
@@ -113,18 +117,19 @@ trimBTlog = function(dir = ".", out = ".", pat = ".txt.Log.txt", start = "\tTree
 #'     (if present): Likelihood, Intercept, Slope(s)/Beta parameters,
 #'     Variance, R-squared, Number of local scalars (branch or node), and Lambda.
 #' @param colours if provided, then should be a vector of colours for plotting - otherwise will be drawn randomly from rainbow.
+#' @param burnin A value specifying the number of rows to remove from the beginning of each log file. Default value is 0 and so the entire chain will be plotted.
 #' @importFrom utils read.table
 #' @importFrom grDevices rainbow
 #' @importFrom graphics legend lines
 #' @export
-plotBTlog = function (files, cols = "all", colours)
+plotBTlog = function (files, cols = "all", colours, burnin = 0)
 {
   cat("Reading output from raw log files...\n")
   # Check to see whether specified inputs are R objects or files
 
     fil = list()
     for (f in 1:length(files))
-      fil[[f]] = readBTlog(files[f])
+      fil[[f]] = readBTlog(files[f], burnin = burnin )
 
   # If we have multiple files, create a legend.
   # Otherwise convert single file to list format.
@@ -162,23 +167,6 @@ plotBTlog = function (files, cols = "all", colours)
   }
 }
 
-#' @title Extract variance from BayesTraits output.
-#' @description This will work with raw output.
-#' @param lf The path and filename of the log file the variance is wanted for.
-#' @return List with elements:
-#' \item{BG}{a vector of the extracted phylogenetic variance}
-#' \item{dBG}{computed density distribution}
-#' \item{dLogBG}{computed logged density distribution}
-#' @importFrom stats density
-#' @export
-# Get variance from a BT log file
-varBTlog = function(lf){
-  skip = (which(grepl("\tTree No", readLines(lf))))-1
-  log = read.table(lf, sep = "\t", header = T, stringsAsFactors = F, comment.char = "*", skip = skip, fill = T)
-  BG = log[,which(grepl("Sigma|^Var$", colnames(log)))]
-  return(list(BG = BG, dBG = density(BG), dLogBG = density(log10(BG))))
-}
-
 
 
 #' @title Function to summarize BayesTraits log files
@@ -190,7 +178,7 @@ varBTlog = function(lf){
 #'     Likelihood, Alpha, Beta estimates, Variance, R-squared, Local transforms, and Lambda.
 #' @param tradeoffs Boolean operator that if true, plots trade-offs between all parameters specified in cols. Defaults to FALSE, as can be slow for complex models.
 #' @param input Optional parameter. Can take two values. If simply specified as TRUE, this will search for a file with the name as follows: gsub(".Log.txt", "", file). Otherwise, can take a specified input file name. In either case, when specified, the function will link the column names of the output table to reflect the parameters in the input data file (e.g. Beta.1 is associated with "Body_Mass"). Note that if the order of columns of the output or input files have been modified in any way this will not produce desirable output.
-#' @param name The name which the output will be saved under.
+#' @param burnin A value specifying the number of rows to remove from the beginning of each log file. Default value is 0 and so the entire chain will be used
 #' @importFrom grDevices pdf dev.off
 #' @importFrom coda effectiveSize
 #' @importFrom stats median density quantile
@@ -206,9 +194,9 @@ varBTlog = function(lf){
 #' @export
 
 
-summarizeBTlog = function (file, cols = "all", tradeoffs = F, name = "Summary", input=T) {
+summarizeBTlog = function (file, cols = "all", tradeoffs = F, input=T, burnin = 0) {
   out = NULL
-  fi = readBTlog(file)
+  fi = readBTlog(file, burnin = burnin)
 
 
   if (length(cols) == 1)
@@ -262,8 +250,6 @@ summarizeBTlog = function (file, cols = "all", tradeoffs = F, name = "Summary", 
 
     }
 
-
-    write.table(out, file = paste0(name, ".txt"), sep = "\t", col.names = F, row.names = T, quote = F)
     return(out)}
 
 #' @title Calculate predictions from BayesTraits regressions.
@@ -272,18 +258,17 @@ summarizeBTlog = function (file, cols = "all", tradeoffs = F, name = "Summary", 
 #' Note that this can be a modified version of the original input e.g. if one wants to fix a value at a mean - as long as columns are retained in identical order and format.
 #' @param output an optional argument. If defined, a character vector locating the original output file (unmodified).
 #' If unspecified, the function will search for the original input file as if it had been run through BayesTraits, appending .Log.txt.
-#' @param plot Optional argument. If TRUE, the function will generate a prediction plot. For complicated datasets this might produce undesirable results, and so the behaviour defaults to FALSE.
-#' This should really only be used in the case of a simple linear regression (i.e. a single continuous predictor and a single continuous response).
+#' @param burnin A value specifying the number of rows to remove from the beginning of each log file. Default value is 0 and so the entire chain will be used.
 #' @return A matrix of predicted values for terminal taxa (if original input was MCMC, one iteration per column)
 #' @export
-predBTlog = function(input, output = NULL, plot = F){
+predBTlog = function(input, output = NULL, plot = F, burnin = 0){
 
   # Specify output (if not specified)
   if(is.null(output)) output = paste0(input, ".Log.txt")
 
   # Read in tables
   input = read.table(input, sep = "\t", header = T, stringsAsFactors = F)
-  output = read.table(file = output, sep = "\t", header = T, skip = which(grepl("Sites:", readLines(output))), stringsAsFactors = F)
+  output = readBTlog(file = output, burnin = burnin)
 
   # Extract Xs and Bs
   Xs = input[,3:ncol(input), drop = F]
@@ -292,10 +277,7 @@ predBTlog = function(input, output = NULL, plot = F){
   # Predict across all Xs
   preds = apply(Bs, 1, function(y)unlist(apply(Xs, 1, function(x)sum(x*y[2:length(y)]) + y[1])))
 
-  if(plot == T){
-    plot(input[,2] ~ input[,3], type = "n")
-    apply(preds,2,function(x)lines(x~input[,3], col = makeTransparent("black", alpha = 0.1)))}
-
+  # Adjust output names
   rownames(preds) = input[,1]
   return(preds)
 

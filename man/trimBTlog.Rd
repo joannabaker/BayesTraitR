@@ -11,7 +11,8 @@ trimBTlog(
   start = "\\tTree No",
   tail = NA,
   resample = NA,
-  files = NULL
+  files = NULL,
+  burnin = 0
 )
 }
 \arguments{
@@ -35,6 +36,8 @@ Note that this number must be greater than the total number of rows in the origi
 
 \item{files}{Takes a string or list of strings defining specific log files to be trimmed.
 If this is defined, \code{dir} and \code{pat} are ignored.}
+
+\item{burnin}{Takes a single numeric value. If defined, the function will remove this number of rows from the original file.}
 }
 \value{
 A \code{list} containing the trimmed log file, each as a \code{data.frame}.
