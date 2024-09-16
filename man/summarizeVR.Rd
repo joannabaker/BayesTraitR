@@ -4,14 +4,12 @@
 \alias{summarizeVR}
 \title{Summarize BayesTraits VR Log Files (from raw output)}
 \usage{
-summarizeVR(vrfile, treefile, forcedequaltrees = F)
+summarizeVR(vrfile, tree, forcedequaltrees = F)
 }
 \arguments{
-\item{vrfile}{Takes a single string defining the direct path to a single log file.}
+\item{vrfile}{Takes a single string defining the direct path to a single variable rates log file.}
 
-\item{treefile}{The name of a treefile as a string. The tree file must be in NEXUS format.
-The output will link rates to the given tree. That is, every rate scalar
-is defined on the basis of a branch. If that branch does not exist in the defined   #'      tree, the rate scalar will instead be applied to the branch which terminates in the #'      most recent common ancestor of all taxa that descended from the original defined branch. This is designed explicitly to summarize the results of a multi-topology variable rates output. Note that this WILL crash if the input tree does not contain all taxa in the original tree used to run the variable rates model.}
+\item{tree}{A phylogenetic tree object of class \code{phylo}. The output will link rates to the given tree. That is, every rate scalar is defined on the basis of a branch. If that branch does not exist in the defined tree, the rate scalar will instead be applied to the branch which terminates in the most recent common ancestor of all taxa that descended from the original defined branch. This is designed to summarize the results of a multi-topology variable rates output. The input tree must contain all taxa in the original tree used to run the variable rates model.}
 
 \item{forcedequaltrees}{Boolean operator, default = \code{FALSE}. If \code{forcedequaltrees = true}, then the model will be run iteratively over a pre-defined sample of trees.In this situation, we will have duplicate iterations (one for each tree) and thus multiple posteriors. We need to let the post-processor know if this is the case.}
 }
@@ -33,8 +31,7 @@ us how many iterations that branch had a scalar ORIGINATING on it (either as the
 a node scalar or as its own branch scalar).
 \item posterior - A \code{data.frame} providing the posterior distribution of rate scalars acting
 on every branch (column) at each iteration (row).
-\item tree - If \code{treefile} is specified, then the tree will be returned as a part of the
-output for use in tree-scaling and visualization etc.
+\item tree - The input tree will be returned for use in tree-scaling and visualization etc.
 }
 }
 \description{
@@ -42,4 +39,9 @@ Reads the output file from a variable rates analysis in BayesTraits
 and produces summarized output. Will only work with VR log files
 (.VarRates.txt) as directly output from BayesTraits models 1-4, 7 and 9.
 Will not (currently) work with output from any other program or model.
+}
+\examples{
+# Here we define a file based on one of the examples included with this package
+VRlogfilepath <- system.file("extdata", "MammalBody_VR-001.txt.VarRates.txt")
+summarizeVR(vrfile = VRlogfilepath, tree = Mammal_trees)
 }

@@ -106,35 +106,25 @@ trimBTlog = function(dir = ".", out = ".", pat = ".txt.Log.txt", start = "\tTree
 #'     This can be a list of filenames - if so, all identical values in each
 #'     table will be plotted on a single chart. This is useful for comparing estimates
 #'     of the same parameter across multiple replicate,s for example.
-#'     File must be a tab-delimited text file with column headers.
-#'     This function is designed to be compatible with the output of [trimBTlog()].
+#'     Files must be in the format as output by BayesTraits.
 #' @param cols A string or list of strings defining the column names or indices
 #'     for which summary information is required. If unspecified, takes the
 #'     value "all" which will return traces for the following columns
 #'     (if present): Likelihood, Intercept, Slope(s)/Beta parameters,
-#'     Variance, R-suqred, Number of local scalars (branch or node), and Lambda.
-#' @param table if TRUE, then the function will accept a list of \code{data.frames}
-#'     rather than a list of filenames.
-#' @param logs if TRUE then the function will treat any filenames given as raw BayesTraits output (it will search for and remove any header info). Only compatible with table=FALSE and will not work with modified output files.
+#'     Variance, R-squared, Number of local scalars (branch or node), and Lambda.
 #' @param colours if provided, then should be a vector of colours for plotting - otherwise will be drawn randomly from rainbow.
 #' @importFrom utils read.table
 #' @importFrom grDevices rainbow
 #' @importFrom graphics legend lines
 #' @export
-plotBTlog = function (files, cols = "all", table = T, logs = F, colours)
+plotBTlog = function (files, cols = "all", colours)
 {
-  if(logs)  cat("Reading output from raw log files...\n")
+  cat("Reading output from raw log files...\n")
   # Check to see whether specified inputs are R objects or files
-  if (table==T) {fil = files; files = names(files)} else {
+
     fil = list()
     for (f in 1:length(files))
-    {
-      if(!logs){
-        fil[[f]] = utils::read.table(files[f], sep = "\t", header = T, stringsAsFactors = F)
-      } else
-        fil[[f]] = readBTlog(files[f])
-      }
-  }
+      fil[[f]] = readBTlog(files[f])
 
   # If we have multiple files, create a legend.
   # Otherwise convert single file to list format.
@@ -194,20 +184,13 @@ varBTlog = function(lf){
 #' @title Function to summarize BayesTraits log files
 #' @description This function will produce average parameter values (mean, median, mode) as well as other summary statistics.
 #'     It will return averages, effective sample sizes, pMCMC values, and ranges.
-#'     It ideally works with the output from [trimBTlog()].
-#'     Can work with all sorts of outputs, but will need to manually specify column names for non Bayes Traits tables.
 #' @param file data.frame or file path of the BayesTraits output.
-#'    This must be one of either (see also the 'table' argument):
-#'      - a file path for a tab-delimited text file specifying the output columns from a BayesTraits run.
-#'      - a name of an  R data-frame.
 #' @param cols A string or list of strings defining the columns for which summary information is required.
 #'     If unspecified, takes the value "all" which summarizes a small pre-defined list of columns including:
 #'     Likelihood, Alpha, Beta estimates, Variance, R-squared, Local transforms, and Lambda.
-#' @param tradeoffs Boolean operator that if true, plots trade-offs between all parameters specified in cols.
-#' @param table Boolean operator that if true, accepts an R data.frame object as input. If False, the file argument is interpreted as a character-string file path to the trimmed log file output from BayesTraits.
-#' @param input Optional parameter. Can take two values. If simply specified as TRUE, this assumes that 'file' is a filename (i.e. table = F) and will search for a file with the name as follows: gsub(".Log.txt", "", file). Otherwise, can take a specified input file name. In either case, when specified, the function will modify the column names of the output table to reflect the input data file (e.g. Beta.1 will become "BodyMass"). Note that if the order of columns of the output or input files have been modified in any way this will not produce desirable output.
+#' @param tradeoffs Boolean operator that if true, plots trade-offs between all parameters specified in cols. Defaults to FALSE, as can be slow for complex models.
+#' @param input Optional parameter. Can take two values. If simply specified as TRUE, this will search for a file with the name as follows: gsub(".Log.txt", "", file). Otherwise, can take a specified input file name. In either case, when specified, the function will link the column names of the output table to reflect the parameters in the input data file (e.g. Beta.1 is associated with "Body_Mass"). Note that if the order of columns of the output or input files have been modified in any way this will not produce desirable output.
 #' @param name The name which the output will be saved under.
-#' @param logs Boolean operator that if true, means that the output file is in raw form as output directly from BayesTraits. Otherwise, it assumes the log file has been stripped of the header rows and is a simple tab-delimited file.
 #' @importFrom grDevices pdf dev.off
 #' @importFrom coda effectiveSize
 #' @importFrom stats median density quantile
@@ -223,13 +206,9 @@ varBTlog = function(lf){
 #' @export
 
 
-summarizeBTlog = function (file, cols = "all", tradeoffs = T, table = T, name = "Summary", input=T, logs = T) {
+summarizeBTlog = function (file, cols = "all", tradeoffs = F, name = "Summary", input=T) {
   out = NULL
-  if (table) {
-    fi = file
-    file = name
-  }  else
-    if(!logs) {fi = read.table(file, sep = "\t", header = T)} else {fi = readBTlog(file)}
+  fi = readBTlog(file)
 
 
   if (length(cols) == 1)
