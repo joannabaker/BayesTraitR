@@ -28,7 +28,7 @@
 #' @keywords internal
 #' @noRd
 #' @importFrom utils head
-readVR = function(vrfile){
+readVR = function(vrfile, burnin = 0){
 
   # Read full input file
   vrraw = readLines(vrfile)
