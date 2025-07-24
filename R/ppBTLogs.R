@@ -261,7 +261,7 @@ summarizeBTlog = function (file, cols = "all", tradeoffs = F, input=T, burnin = 
 #' @param burnin A value specifying the number of rows to remove from the beginning of each log file. Default value is 0 and so the entire chain will be used.
 #' @return A matrix of predicted values for terminal taxa (if original input was MCMC, one iteration per column)
 #' @export
-predBTlog = function(input, output = NULL, plot = F, burnin = 0){
+predBTlog = function(input, output = NULL, burnin = 0){
 
   # Specify output (if not specified)
   if(is.null(output)) output = paste0(input, ".Log.txt")

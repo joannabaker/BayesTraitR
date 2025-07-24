@@ -129,7 +129,7 @@ compareBLS = function(tree1, tree2){
 
 #' @title Identify tippytomies
 #' @description A function that identifies (and optionally deletes) 'tippytomies' from a tree. A tippytomy refers to the situation in which a pair (or group) of taxa have very short terminal branches resulting in what is essentially a bifurcation or polytomy at the tips of the tree. This can cause numerical issues in several programs. For instance, if two sister taxa have very short branches but very different trait values, the variable rates model will capitalize on this by maximizing the rate of evolution on these branches.
-#' @param tree A phylogenetic tree of class \code{phylo}.
+#' @param tre A phylogenetic tree of class \code{phylo}.
 #' @param cutoff The branch length below which taxa will be identified / removed.
 #' @param action One of two character inputs: "identify" or "delete". See Returns for Details.
 #' @return If "identify", the function will return a list of taxa that belong to each tippytomy. If "delete", the list is returned along with a tree which has deleted all but one (the first) member of each tippytomy. This tree can be used in subsequent comparative analyses.
