@@ -48,7 +48,7 @@ For now, tutorials are included here on the homepage but they will soon be moved
 
 You can install the development version of BayesTraitR from [GitHub](https://github.com/) with:
 
-``` r
+``` {r, eval = FALSE}
 # install.packages("devtools")
 devtools::install_github("joannabaker/BayesTraitR")
 ```
@@ -75,7 +75,7 @@ Please note that for this and all worked examples, the datasets are small and in
 
 To **create a maximum-likelihood multi-state model** across the Artiodactyl dataset and tree sample, we can use the following commands: 
 
-``` r
+``` {r, eval = FALSE}
 createBTjob(cols = "multistate", dataset = Artiodactyl, tree = Artiodactyl_trees, jobname = "MultiStateML", model = 1, MCMC = F)
 ```
 
@@ -104,7 +104,7 @@ These files can then be used to run BayesTraits, either separately through your 
 
 For example:
 
-``` r
+``` {r, eval = FALSE}
 shell("BayesTraitsV4.exe MultiStateML.trees MultiStateML-001.txt < MultiStateML.infile")
 ```
 
@@ -149,7 +149,7 @@ Please note that for this and all worked examples, the datasets are small and in
 
 To **create a single-trait variable rates model** across the Mammal dataset and tree sample, we can use the following commands: 
 
-``` r
+``` {r, eval = FALSE}
 createBTjob(cols = "Body", dataset = MammalBody, tree = Mammal_trees, jobname = "MammalBody_VR", model = 7, MCMC = T, optarg = c("varrates", "stones 500 10000"))
 ```
 Note that we specify the following arguments, along with the dataset and tree objects:
@@ -182,7 +182,7 @@ This will create a series of files in your current working directory:
 
 These files can then be used to run BayesTraits, either separately through your command-line interface or using shell (or similar) options direction from within R. 
 
-``` r
+``` {r, eval = FALSE}
 shell("BayesTraitsV4.exe MammalBody.trees MammalBody-001.txt < MammalBody.infile")
 ```
 
