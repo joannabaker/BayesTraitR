@@ -24,7 +24,7 @@ sf_to_csv(
 
 \item{model}{The map reconstruction model. Default is "PALEOMAP". Based on the \code{\link[rgplates]{reconstruct}} function - see full list of options there.}
 
-\item{outputfile}{A character string defining the filename (and full filepath) where the csv file should be saved. By default, the file will be saved simply as "masked.csv" in the present working directory. If this argument is left blank, no csv will be generated.}
+\item{outputfile}{A character string defining the filename (and full filepath) where the csv file should be saved. By default, the file will be saved simply as "masked.csv" in the present working directory.If left as blank (""), no file will be output.}
 }
 \value{
 A \code{data frame} with longitude, latitude, and mask value for land/ocean. This table is also written to the filepath specified by \code{outputfile}.
