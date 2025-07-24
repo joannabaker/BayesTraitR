@@ -25,7 +25,7 @@ incorporated into the vignette.
 
 3)  [Multi-State Model Example](#multistate)
 
-4)  [Variable-Rates Model Example](.inst/tutorials/vr/vr.Rmd)
+4)  [Variable-Rates Model Example](vr.Rmd)
 
 5)  [Geo Model](#geo)
 
