@@ -1,12 +1,17 @@
 ---
 title: "Creating and post-processing variable rates models "
-output: learnr::tutorial
-runtime: shiny_prerendered
+output: github_document
+date: "2025-07-15"
 ---
 
-```{r setup, include=FALSE}
-library(learnr)
-knitr::opts_chunk$set(echo = FALSE)
+```{r, include = FALSE, eval=T,echo=F}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+
 library(BayesTraitR)
 ```
 There is a specific set of commands and functions associated with the [variable rates model](https://www.nature.com/articles/nature10516) and the [variable rates regression model](https://academic.oup.com/biolinnean/article-abstract/118/1/95/2440206). We can use these functions to import the files output by variable rates analyses into R and post-process into results ready for interpretation. 
@@ -83,7 +88,7 @@ This will create a number of output files in your current working directory:
 Now, we can read in the log file into our R workspace using `readBTlog`. 
 
 ``` {r, eval = TRUE, include = T, echo = T}
-log = readBTlog("../../extdata/MultiStateML-001.txt.Log.txt")
+log = readBTlog("inst/extdata/MultiStateML-001.txt.Log.txt")
 ```
 
 We can view this like we would any other R data.frame. Let's look at what the output looks like.
@@ -93,7 +98,7 @@ head(log)
 
 Let's summarize the variable rates output, and create a stretched tree :
 ``` {r, eval = TRUE, include = T, echo = T}
-res = summarizeVR(vrfile = "../../extdata/MammalBody_VR-001.txt.VarRates.txt", tree = read.nexus("../..//extdata/Mammal_Consensus.trees"))
+res = summarizeVR(vrfile = "inst/extdata/MammalBody_VR-001.txt.VarRates.txt", tree = read.nexus("inst/extdata/Mammal_Consensus.trees"))
 
 stretchedtree = scaleTree(res, frequency = 95, magnitude = 1, type = "mean")
 
