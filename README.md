@@ -1,6 +1,6 @@
 Readme
 ================
-2023-04-26
+2025-07-15
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -15,6 +15,9 @@ and tools that will be useful for wrangling datasets and trees into the
 appropriate format for analyses within BayesTraits as well as for
 interpreting and post-processing the outcomes of such analyses.
 
+For now, tutorials are included here on the homepage but they will soon
+be moved to a separate vignette.
+
 **Jump to:**
 
 1)  [Installation](#installation)
@@ -25,9 +28,15 @@ interpreting and post-processing the outcomes of such analyses.
 
 4)  [Variable-Rates Model Example](#vr)
 
-5)  [Files bundled with BayesTraits](#BTFiles)
+5)  [Geo Model](#geo)
 
-## Installation
+6)  [Fabric model](#fabric)
+
+7)  [Files bundled with BayesTraits](#btfiles)
+
+<a id="installation"></a>
+
+## 1 Installation
 
 You can install the development version of BayesTraitR from
 [GitHub](https://github.com/) with:
@@ -43,21 +52,25 @@ from the University of Reading website. Note that this package has been
 developed with the output from BayesTraitsV4.0.1 and different versions
 of the program may produce incompatible outputs.
 
-## Creating Analyses
+<a id="jobcreation"></a>
 
-The function is used to generate an input file, data file and tree file
-for use in downstream BayesTraits analyses. This can then be run
-interactively from within R (using or similar) or externally using the
-command-line interface.
+### 2 Creating Analyses
+
+The function `createBTjob()` is used to generate an input file, data
+file and tree file for use in downstream BayesTraits analyses. This can
+then be run interactively from within R (using `shell` or similar) or
+externally using the command-line interface.
 
 For all models that can be run in BayesTraits, we can simply specify a
 list of columns found in our dataset that we wish to include using the
-argument. However, for regression analyses that may include complex
-contrast coding, categorical variables, interactions and transformations
-(e.g. polynomials), users may wish to alternatively specify their
-analysis variables using the argument.
+`cols` argument. However, for regression analyses that may include
+complex contrast coding, categorical variables, interactions and
+transformations (e.g. polynomials), users may wish to alternatively
+specify their analysis variables using the `fm` argument.
 
-### A worked example of creating and post-processing a multi-state model
+<a id="multistate"></a>
+
+### 3 A worked example of creating and post-processing a multi-state model
 
 We can create a multi-state model using the example files that are
 bundled with the BayesTraits download. These example files are also
@@ -72,7 +85,7 @@ To **create a maximum-likelihood multi-state model** across the
 Artiodactyl dataset and tree sample, we can use the following commands:
 
 ``` r
-createBTjob(cols = "multistate", model = 1, dataset = Artiodactyl, tree = Artiodactyl_trees, jobname = "MultiStateML", MCMC = F)
+createBTjob(cols = "multistate", dataset = Artiodactyl, tree = Artiodactyl_trees, jobname = "MultiStateML", model = 1, MCMC = F)
 ```
 
 Note that we specify the following arguments:
@@ -114,8 +127,8 @@ current working directory:
 
 - MultiStateML-001.txt.Log.txt
 
-Now, we can read in the log file into our R workspace using the from
-this package.
+Now, we can read in the log file into our R workspace using the function
+`readBTlog` from this package.
 
 ``` r
 log = readBTlog("inst/extdata/MultiStateML-001.txt.Log.txt")
@@ -137,7 +150,9 @@ head(log)
 
 **Coming soon…** Plot the transition rates
 
-## A worked example of creating and post-processing a variable rates model
+<a id="vr"></a>
+
+## 4 Creating and post-processing variable rates models
 
 There is a specific set of commands and functions associated with the
 variable rates model and the variable rates regression model. We can use
@@ -147,17 +162,16 @@ into R and post-process into results ready for interpretation.
 There are three types of variable rates models that can be run that each
 have very slight differences in the output files.
 
-Here, I will include how to run the variable rates post-processor using
-all three examples:
-
 1)  A variable rates model
 
 2)  A variable rates model across a sample of trees
 
 3)  A variable rates model across a tree sample, forcing equal tree
-    sampling.
+    sampling. Note that this option is not limited to variable rates
+    models and is equivalent to running analyses sequentially across
+    each tree.
 
-### Let’s start with (1).
+### Example: A single-trait variable rates model
 
 We can create a single-trait variable rates model over a single tree
 using the example files that are bundled with the BayesTraits download.
@@ -168,11 +182,13 @@ small and incomplete and should not be used for any scientific
 interpretation. They are included as illustrative examples of how to
 interact with BayesTraits and BayesTraitR only.
 
+#### Step 1: Generate the input files
+
 To **create a single-trait variable rates model** across the Mammal
 dataset and tree sample, we can use the following commands:
 
 ``` r
-createBTjob(cols = "Body", model = 7, dataset = MammalBody, tree = Mammal_trees, jobname = "MammalBody_VR", MCMC = T, optarg = c("varrates", "stones 500 10000"))
+createBTjob(cols = "Body", dataset = MammalBody, tree = Mammal_trees, jobname = "MammalBody_VR", model = 7, MCMC = T, optarg = c("varrates", "stones 500 10000"))
 ```
 
 Note that we specify the following arguments, along with the dataset and
@@ -211,6 +227,8 @@ This will create a series of files in your current working directory:
 
 - MammalBody_VR.infile
 
+#### Step 2: Run the analysis
+
 These files can then be used to run BayesTraits, either separately
 through your command-line interface or using shell (or similar) options
 direction from within R.
@@ -232,7 +250,9 @@ directory:
 
 - MammalBody-001.txt.VarRates.txt
 
-Now, we can read in the log file into our R workspace using .
+#### Step 3: Post-process the analysis
+
+Now, we can read in the log file into our R workspace using `readBTlog`.
 
 ``` r
 log = readBTlog("inst/extdata/MultiStateML-001.txt.Log.txt")
@@ -255,14 +275,13 @@ head(log)
 Let’s summarize the variable rates output, and create a stretched tree :
 
 ``` r
-res = summarizeVR(vrfile = "inst/extdata/MammalBody_VR-001.txt.VarRates.txt", treefile = "inst/extdata/Mammal_Consensus.trees")
-#> Extracting VR information from file...
+res = summarizeVR(vrfile = "inst/extdata/MammalBody_VR-001.txt.VarRates.txt", tree = read.nexus("inst/extdata/Mammal_Consensus.trees"))
 #> Extracting VR information from file...
 #>  Linking to tree...
 #>      Summarizing Rates...
 
-stretchedtree = read.nexus("inst/extdata/Mammal_Consensus.trees")
-stretchedtree$edge.length = stretchedtree$edge.length * res$ratesummary$medianscalar[-1]
+stretchedtree = scaleTree(res, frequency = 95, magnitude = 1, type = "mean")
+
 
 plot(stretchedtree)
 ```
@@ -277,82 +296,53 @@ same taxa that were included in the analysis.
 Any branches that were stretched that do not exist in your single
 summarizing tree will be assigned to their most recent common ancestor.
 
-## BayesTraits Files
+<a id="geo"></a>
+
+## 5 Geo Model
+
+coming soon…
+
+<a id="fabric"></a>
+
+## 6 Fabric Model
+
+coming soon..
+
+<a id="btfiles"></a>
+
+## 7 BayesTraits Files
 
 This package contains the sample files bundled with BayesTraits. This
 includes the following datasets:
 
-\*[Artiodactyls](#artiodactyls): A example dataset and tree sample (n =
-500) for multi-state analysis with 17 taxa. I don’t know what the data
-is and I think I will replace this dataset with activity pattern at some
-point in the near future.
+#### Artiodactyls
 
-\*[Birds](#birds): An example dataset and tree for heterogeneous or
-discrete (binary) analysis with 5669 taxa. I don’t know what the data
-is; this will be updated in due course.
+A example dataset and tree sample (n = 500) for multi-state analysis
+with 17 taxa. Trait for example only; not to be used as real data.
 
-\*\[Mammals\]: Example body size, brain size, and gestation length
-datasets and corresponding tree sample (n = 50) for continuous
-(single-trait), correlational, and regression analyses with 40 taxa.
-Includes
+#### Birds
 
-\*\[Marsupials\]: An example body size dataset and tree for continuous
-analysis with 246 taxa.
+An example dataset and tree for heterogeneous or discrete (binary)
+analysis with 5669 taxa. Trait for example only; not to be used as real
+data.
 
-\*\[Bantu\]: An example coordinate (latitude/longitude) dataset and tree
-for 85 analysis with 85 Bantu languages.
+#### Mammals
 
-\*\[Primates\]: An example dataset and tree sample (n = 500) for
-discrete analysis with 60 taxa. I don’t know what the data is; this will
-be updated in due course.
+Example body size, brain size, and gestation length datasets and
+corresponding tree sample (n = 50) for continuous (single-trait),
+correlational, and regression analyses with 40 taxa.
 
-### Artiodactyls
+#### Marsupials
 
-This is what the consensus artiodactyl tree looks like:
-<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
+An example dataset and tree for continuous analysis with 246 taxa. Trait
+is body size.
 
-And here is the data
+#### Bantu
 
-``` r
-class(Artiodactyl)
-#> [1] "data.frame"
-head(Artiodactyl)
-#>    tip_label multistate
-#> 1 Chevrotain          D
-#> 2    Giraffe          D
-#> 3       Goat          D
-#> 4      Sheep          D
-#> 5  Pronghorn          G
-#> 6    Buffalo          D
-```
+An example coordinate (latitude/longitude) dataset and tree for 85
+analysis with 85 Bantu languages.
 
-### Birds
+#### Primates
 
-<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" /> \###
-Mammals
-
-This is what the consensus mammal tree looks like:
-<img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" />
-
-And here is the data
-
-``` r
-class(MammalBody)
-#> [1] "data.frame"
-head(MammalBody)
-#>          tip_label     Body
-#> 1          Opossum 3.454326
-#> 2   Diprotodontian 3.680879
-#> 3         Elephant 6.564903
-#> 4            Hyrax 3.390582
-#> 5         Tenrecid 2.065953
-#> 6 Lo_Ear_Ele_shrew 1.667453
-```
-
-In addition to the data files, we also have the following objects:
-
-- MammalBrainBodySampleData (an example of how to include multiple
-  values per species)
-
-- MammalModelB (a dataset to depict trend or model B runs - not real
-  data)
+An example dataset and tree sample (n = 500) for discrete analysis with
+60 taxa. Trait for example only; not to be used as real data.
