@@ -32,7 +32,11 @@ For now, tutorials are included here on the homepage but they will soon be moved
 
 3) [Multi-State Model Example](#multistate)
 
+<<<<<<< HEAD
 4) [Variable-Rates Model Example](vr.md)
+=======
+4) [Variable-Rates Model Example](vr.html)
+>>>>>>> 85552cbacae305f155a52e1e04a84b808345fd2c
 
 5) [Geo Model](#geo)
 
