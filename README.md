@@ -118,7 +118,7 @@ direction from within R.
 
 For example:
 
-``` r
+``` {r, eval=FALSE}
 shell("BayesTraitsV4.exe MultiStateML.trees MultiStateML-001.txt < MultiStateML.infile")
 ```
 
