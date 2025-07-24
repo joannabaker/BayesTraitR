@@ -17,5 +17,6 @@ LazyData: true
 Imports: magrittr,stats,stringr,utils,coda, phytools,adephylo,dplyr,tidyr
 Suggests: 
     knitr,
+    learnr,
     rmarkdown
 VignetteBuilder: knitr
