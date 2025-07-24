@@ -68,7 +68,7 @@ This will create a series of files in your current working directory:
 These files can then be used to run BayesTraits, either separately through your command-line interface or using shell (or similar) options direction from within R. 
 
 ``` {r, eval = FALSE, echo = T}
-shell("BayesTraitsV4.exe MultiStateML.trees MultiStateML-001.txt < MultiStateML.infile")
+shell("BayesTraitsV4.exe MammalBody_VR.trees MammalBody_VR-001.txt < MammalBody_VR.infile")
 ```
 
 This will create a number of output files in your current working directory:
@@ -110,3 +110,8 @@ plot(stretchedtree)
 **NOTE**: because we input a sample of trees, we must specify only a single tree to summarize on. Here we calculate and use a consensus tree but this can be any tree of your choice - as long as it contains the same taxa that were included in the analysis. 
 
 Any branches that were stretched that do not exist in your single summarizing tree will be assigned to their most recent common ancestor.
+
+## Step 4: Plot the rates and trees
+
+**Coming soon...**
+

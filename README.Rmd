@@ -22,7 +22,7 @@ library(BayesTraitR)
 
 The goal of BayesTraitR is to facilitate phylogenetic comparative analyses in BayesTraits for R users. It comprises a suite of functions and tools that will be useful for wrangling datasets and trees into the appropriate format for analyses within BayesTraits as well as for interpreting and post-processing the outcomes of such analyses.
 
-For now, tutorials are included here on the homepage but they will soon be moved to separate tutorial files and upon package release, incorporated into the vignette. 
+**This package is currently in development with no formal release.**
 
 **Jump to:**
 
@@ -30,24 +30,17 @@ For now, tutorials are included here on the homepage but they will soon be moved
 
 2) [Creating jobs to run in BayesTraits](#jobcreation)
 
-3) [Multi-State Model Example](#multistate)
+3) [Models implemented in BayesTraits](#models)
 
-<<<<<<< HEAD
-4) [Variable-Rates Model Example](vr.md)
-=======
-4) [Variable-Rates Model Example](vr.html)
->>>>>>> 85552cbacae305f155a52e1e04a84b808345fd2c
+    *Note that in this section, we will include links to resources that provide a step-by-step instruction on how to implement the various models implemented in BayesTraits using BayesTraitR. These will be included as they become available. Ultimately, these help pages will become the package vignette upon its official release.*
 
-5) [Geo Model](#geo)
+5) [Files bundled with BayesTraits](#btfiles)
 
-6) [Fabric model](#fabric)
-
-7) [Files bundled with BayesTraits](#btfiles)
 
 
 <a id="installation"></a>
 
-## 1 Installation
+## Installation
 
 You can install the development version of BayesTraitR from [GitHub](https://github.com/) with:
 
@@ -61,180 +54,90 @@ You can download the latest version of [BayesTraits](http://www.evolution.readin
 
 <a id="jobcreation"></a>
 
-### 2 Creating Analyses 
+## Creating Analyses 
 
 The function `createBTjob()` is used to generate an input file, data file and tree file for use in downstream BayesTraits analyses. This can then be run interactively from within R (using `shell` or similar) or externally using the command-line interface. 
 
 For all models that can be run in BayesTraits, we can simply specify a list of columns found in our dataset that we wish to include using the `cols` argument. However, for regression analyses that may include complex contrast coding, categorical variables, interactions and transformations (e.g. polynomials), users may wish to alternatively specify their analysis variables using the `fm` argument.  
 
-More detailed descriptions of how to create all model types implemented in BayesTraits can be found in the tutorial pages (linked above). 
+<a id="models"></a>
 
-<a id="multistate"></a>
+**From the manual:**
 
-### 3 A worked example of creating and post-processing a multi-state model
+BayesTraits is a computer package for performing analyses of trait evolution among groups of species for which a phylogeny or sample of phylogenies is available. It can be applied to the analysis of traits that adopt a finite number of discrete states, or to the analysis of continuously varying traits. The methods can be used to take into account uncertainty about the model ofevolution and the underlying phylogeny. Evolutionary hypotheses can be tested including:
 
-We can create a multi-state model using the example files that are bundled with the BayesTraits download. These example files are also included as a part of this package. 
+* Finding rates of evolution
+* Establishing correlations between traits
+* Calculating ancestral state values
+* Building regression models
+* Predicting unknown values
+* Testing for modes of evolution
+  + Accelerated / decelerated rates of evolution through time
+  + Magnitude of phylogenetic signal
+  + Variable rate of evolution through time and within the tree
+  + Fabric model, directional changes and evolvability change
+  + Ornstein-Uhlenbeck processes
+  + If trait change is concentrated at speciation events
+  + Test for covarion evolution
+* Account for uncertainty in trait values
+* Interpolate unknown trait values
+* Geographic model to estimate ancestral ranges and locations
 
-Please note that for this and all worked examples, the datasets are small and incomplete and should not be used for any scientific interpretation. They are included as illustrative examples of how to interact with BayesTraits and BayesTraitR only.
+Each of these are implemented in BayesTraits using a suite of defined model types. Each of the model types is assigned a number that can be selected when running BayesTraits to define the type of analyses that is desired. Here, we give a brief run-down of the available model options. For some of these, we provide worked examples of how to set up and interpret the model using BayesTraitR. 
 
-To **create a maximum-likelihood multi-state model** across the Artiodactyl dataset and tree sample, we can use the following commands: 
+### Multi-State models for categorical data with 2 or more states
 
-``` {r, eval = FALSE}
-createBTjob(cols = "multistate", dataset = Artiodactyl, tree = Artiodactyl_trees, jobname = "MultiStateML", model = 1, MCMC = F)
-```
+Brief description to be inserted here
 
-Note that we specify the following arguments:
+See [here](multistate.md) for an example of how to create and post-process a multi-state model using BayesTraitR. 
 
-* **jobname = "MultiStateML"**: This sets an identifier string with which all output files will be tagged.
+### Discrete models for two binary traits
 
-* **cols = "multistate"**: This specifies the column we wish to run the model over in the input dataset. 
+Brief description to be inserted here
 
-* **model = 1**: This specifies the multi-state model.
+* Discrete: Independent
 
-* **MCMC = F**: By selecting to not use MCMC, the model will revert to maximum-likelihood.
+* Discrete: Dependent
 
-All other parameters are set to the default values. 
+* Discrete: Covarion
 
-Running the above command will create a series of files in your current working directory:
+* Discrete: Heterogeneous
 
-* MultiStateML-001.txt
 
-* MultiStateML.trees
+### Simple evolutionary models for continuous data
 
-* MultiStateML.infile
+Brief description to be inserted here
 
+* Random walk
 
-These files can then be used to run BayesTraits, either separately through your command-line interface or using shell (or similar) options direction from within R. 
+* Directional
 
-Running BayesTraits with these files will create a log file in your current working directory:
+### Regression analyses for continuous data (and binary covariates)
 
-* MultiStateML-001.txt.Log.txt
+Brief description to be inserted here
 
-Now, we can read in the log file into our R workspace using the function `readBTlog` from this package. 
+### Independent contrast methods
 
-``` {r, eval = FALSE}
-log = readBTlog("inst/extdata/MultiStateML-001.txt.Log.txt")
-```
+Brief description to be inserted here
 
-We can view this like we would any other R data.frame. Let's look at what the output looks like.
-``` {r, eval = FALSE}
-head(log)
-```
+Note: despite the name, the independent contrasts models do not output contrasts. The fast-likelihood calculation (contrast) method (e.g. Felsenstein 1973, Freckleton 2012) is needed for models with complex calculations like the variable rates, variable rates  regression, and fabric models for continuous data
 
-**Coming soon...**
-Plot the transition rates
+* Fabric model - tutorial coming soon
 
-<a id="vr"></a>
+* Variable rates - see [here](vr.md) for an example of how to create and post-process a variable rates model using BayesTraitR. 
 
-## 4 Creating and post-processing variable rates models 
-There is a specific set of commands and functions associated with the [variable rates model]{} and the [variable rates regression model]{}. We can use these functions to import the files output by variable rates analyses into R and post-process into results ready for interpretation. 
+* variable rates regression
 
-There are three types of variable rates models that can be run that each have very slight differences in the output files. 
 
-1) A variable rates model
+### Geographic methods (Geo)
 
-2) A variable rates model across a sample of trees
+Brief description to be inserted here
 
-3) A variable rates model across a tree sample, forcing equal tree sampling. Note that this option is not limited to variable rates models and is equivalent to running analyses sequentially across each tree. 
 
-### Example: A single-trait variable rates model
-
-We can create a single-trait variable rates model over a single tree using the example files that are bundled with the BayesTraits download. These example files are also included as a part of this package. 
-
-Please note that for this and all worked examples, the datasets are small and incomplete and should not be used for any scientific interpretation. They are included as illustrative examples of how to interact with BayesTraits and BayesTraitR only.
-
-#### Step 1: Generate the input files
-
-To **create a single-trait variable rates model** across the Mammal dataset and tree sample, we can use the following commands: 
-
-``` {r, eval = FALSE}
-createBTjob(cols = "Body", dataset = MammalBody, tree = Mammal_trees, jobname = "MammalBody_VR", model = 7, MCMC = T, optarg = c("varrates", "stones 500 10000"))
-```
-Note that we specify the following arguments, along with the dataset and tree objects:
-
-* **jobname = "MammalBody_VR"**: This sets an identifier string with which all output files will be tagged.
-
-* **cols = "Body"**: This specifies the column we wish to run the model over in the input dataset. 
-
-* **model = 7**: This specifies the independent-contrast model for a single trait. Note that this does not output contrasts but instead uses the fast likelihood calculation in order to estimate complex model parameterization such as the variable rates models.
-
-* **MCMC = T**: The variable rates model is only available for MCMC analyses. 
-
-We also specify the following optional arguments using the **optarg = c(...)** argument:
-
-* **varrates** Specifies the model should estimate variable rates.
-
-* **stones 500 10000** Specifies that the model should be run with stepping-stone sampling. The model will run 500 stones for 10,000 iterations per stone. 
-
-All other parameters are set to the default values. 
-
-This will create a series of files in your current working directory:
-
-* MammalBody_VR-001.txt
-
-* MammalBody_VR.trees
-
-* MammalBody_VR.infile
-
-#### Step 2: Run the analysis
-
-These files can then be used to run BayesTraits, either separately through your command-line interface or using shell (or similar) options direction from within R. 
-
-This will create a number of output files in your current working directory:
-
-* MammalBody-001.txt.Log.txt
-
-* MammalBody-001.txt.Output.trees
-
-* MammalBody-001.txt.Schedule.txt
-
-* MammalBody-001.txt.Stones.txt
-
-* MammalBody-001.txt.VarRates.txt
-
-#### Step 3: Post-process the analysis
-
-Now, we can read in the log file into our R workspace using `readBTlog`. 
-
-``` {r, eval = FALSE}
-log = readBTlog("inst/extdata/MultiStateML-001.txt.Log.txt")
-```
-
-We can view this like we would any other R data.frame. Let's look at what the output looks like.
-``` {r, eval = FALSE}
-head(log)
-```
-
-Let's summarize the variable rates output, and create a stretched tree :
-``` {r, eval = FALSE}
-res = summarizeVR(vrfile = "inst/extdata/MammalBody_VR-001.txt.VarRates.txt", tree = read.nexus("inst/extdata/Mammal_Consensus.trees"))
-
-stretchedtree = scaleTree(res, frequency = 95, magnitude = 1, type = "mean")
-
-
-plot(stretchedtree)
-
-```
-
-**NOTE**: because we input a sample of trees, we must specify only a single tree to summarize on. Here we calculate and use a consensus tree but this can be any tree of your choice - as long as it contains the same taxa that were included in the analysis. 
-
-Any branches that were stretched that do not exist in your single summarizing tree will be assigned to their most recent common ancestor.
-
-<a id="geo"></a>
-
-## 5 Geo Model
-
-coming soon...
-
-<a id="fabric"></a>
-
-## 6 Fabric Model
-
-coming soon..
 
 <a id="btfiles"></a>
 
-## 7 BayesTraits Files
+## BayesTraits Files
 
 This package contains the sample files bundled with BayesTraits. 
 This includes the following datasets:
