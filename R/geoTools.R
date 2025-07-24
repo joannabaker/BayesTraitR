@@ -49,11 +49,7 @@ sf_to_csv <- function(age = 150, grid = NULL, extent = c(-180, 180, -90, 90),
   df <- as.data.frame(map_rast, xy = TRUE, na.rm = FALSE)
   colnames(df) <- c("lon", "lat", "mask")
 
-<<<<<<< HEAD
   if(outputfile != "") write.csv(df, file = outputfile, col.names = T, row.names = F, quote = F)
-=======
-  if(outputfile != "") write.csv(df, file = df, col.names = T, row.names = F, quote = F)
->>>>>>> 7448c664121052a7114498544580531bd90fd374
 
   # Return data frame
   return(df)
