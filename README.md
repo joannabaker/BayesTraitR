@@ -25,7 +25,7 @@ incorporated into the vignette.
 
 3)  [Multi-State Model Example](#multistate)
 
-4)  [Variable-Rates Model Example](#vr)
+4)  [Variable-Rates Model Example](.inst/tutorials/vr/vr.Rmd)
 
 5)  [Geo Model](#geo)
 
@@ -66,6 +66,9 @@ list of columns found in our dataset that we wish to include using the
 complex contrast coding, categorical variables, interactions and
 transformations (e.g. polynomials), users may wish to alternatively
 specify their analysis variables using the `fm` argument.
+
+More detailed descriptions of how to create all model types implemented
+in BayesTraits can be found in the tutorial pages (linked above).
 
 <a id="multistate"></a>
 

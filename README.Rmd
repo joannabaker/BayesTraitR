@@ -32,7 +32,7 @@ For now, tutorials are included here on the homepage but they will soon be moved
 
 3) [Multi-State Model Example](#multistate)
 
-4) [Variable-Rates Model Example](#vr)
+4) [Variable-Rates Model Example](./inst/tutorials/vr/vr.Rmd)
 
 5) [Geo Model](#geo)
 
@@ -63,6 +63,7 @@ The function `createBTjob()` is used to generate an input file, data file and tr
 
 For all models that can be run in BayesTraits, we can simply specify a list of columns found in our dataset that we wish to include using the `cols` argument. However, for regression analyses that may include complex contrast coding, categorical variables, interactions and transformations (e.g. polynomials), users may wish to alternatively specify their analysis variables using the `fm` argument.  
 
+More detailed descriptions of how to create all model types implemented in BayesTraits can be found in the tutorial pages (linked above). 
 
 <a id="multistate"></a>
 
