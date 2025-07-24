@@ -101,15 +101,6 @@ Running the above command will create a series of files in your current working 
 
 These files can then be used to run BayesTraits, either separately through your command-line interface or using shell (or similar) options direction from within R. 
 
-<<<<<<< HEAD
-=======
-For example:
-
-# ``` {r, eval = FALSE}
-# shell("BayesTraitsV4.exe MultiStateML.trees MultiStateML-001.txt < MultiStateML.infile")
-# ```
->>>>>>> 81fd1b09bcf6110e9933fef28848139589ea7388
-
 Running BayesTraits with these files will create a log file in your current working directory:
 
 * MultiStateML-001.txt.Log.txt
@@ -183,13 +174,6 @@ This will create a series of files in your current working directory:
 #### Step 2: Run the analysis
 
 These files can then be used to run BayesTraits, either separately through your command-line interface or using shell (or similar) options direction from within R. 
-
-<<<<<<< HEAD
-=======
-# ``` {r, eval = FALSE}
-# shell("BayesTraitsV4.exe MammalBody.trees MammalBody-001.txt < MammalBody.infile")
-# ```
->>>>>>> 81fd1b09bcf6110e9933fef28848139589ea7388
 
 This will create a number of output files in your current working directory:
 
