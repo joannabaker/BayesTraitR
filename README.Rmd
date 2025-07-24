@@ -5,7 +5,7 @@ date: "2025-07-15"
 ---
 
 
-```{r, include = FALSE}
+```{r, include = FALSE, eval=FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -107,12 +107,12 @@ Running BayesTraits with these files will create a log file in your current work
 
 Now, we can read in the log file into our R workspace using the function `readBTlog` from this package. 
 
-``` {r, include=T}
+``` {r, eval = FALSE}
 log = readBTlog("inst/extdata/MultiStateML-001.txt.Log.txt")
 ```
 
 We can view this like we would any other R data.frame. Let's look at what the output looks like.
-```{r,echo=T,include=T}
+``` {r, eval = FALSE}
 head(log)
 ```
 
@@ -191,17 +191,17 @@ This will create a number of output files in your current working directory:
 
 Now, we can read in the log file into our R workspace using `readBTlog`. 
 
-``` {r, include=T}
+``` {r, eval = FALSE}
 log = readBTlog("inst/extdata/MultiStateML-001.txt.Log.txt")
 ```
 
 We can view this like we would any other R data.frame. Let's look at what the output looks like.
-```{r,echo=T,include=T}
+``` {r, eval = FALSE}
 head(log)
 ```
 
 Let's summarize the variable rates output, and create a stretched tree :
-```{r, echo = T, include=T}
+``` {r, eval = FALSE}
 res = summarizeVR(vrfile = "inst/extdata/MammalBody_VR-001.txt.VarRates.txt", tree = read.nexus("inst/extdata/Mammal_Consensus.trees"))
 
 stretchedtree = scaleTree(res, frequency = 95, magnitude = 1, type = "mean")
