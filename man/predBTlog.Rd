@@ -4,7 +4,7 @@
 \alias{predBTlog}
 \title{Calculate predictions from BayesTraits regressions.}
 \usage{
-predBTlog(input, output = NULL, plot = F, burnin = 0)
+predBTlog(input, output = NULL, burnin = 0)
 }
 \arguments{
 \item{input}{A character vector defining the original input file (must have column headers).

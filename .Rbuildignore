@@ -2,3 +2,6 @@
 ^\.Rproj\.user$
 ^data-raw$
 ^README\.Rmd$
+^vr\.Rmd$
+^multistate\.Rmd$
+^vr_files

@@ -7,11 +7,11 @@
 tippytomies(tre, cutoff = 0.1, action = "identify")
 }
 \arguments{
+\item{tre}{A phylogenetic tree of class \code{phylo}.}
+
 \item{cutoff}{The branch length below which taxa will be identified / removed.}
 
 \item{action}{One of two character inputs: "identify" or "delete". See Returns for Details.}
-
-\item{tree}{A phylogenetic tree of class \code{phylo}.}
 }
 \value{
 If "identify", the function will return a list of taxa that belong to each tippytomy. If "delete", the list is returned along with a tree which has deleted all but one (the first) member of each tippytomy. This tree can be used in subsequent comparative analyses.
