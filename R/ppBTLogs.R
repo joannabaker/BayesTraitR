@@ -206,6 +206,17 @@ summarizeBTlog = function (file, cols = "all", tradeoffs = F, input=T, burnin = 
       reorder=TRUE
     } else reorder = FALSE
 
+
+  # Check for non-numeric columns
+  numcheck = sapply(fi[,cols], is.numeric)
+  if(!all(numcheck)){
+
+    nonnum = names(numcheck)[!numcheck]
+    cols = cols[!cols %in% nonnum]
+    warning("The following columns have been identified to contain non-numeric values and so have been omitted from calculations: \n", paste0(nonnum, collapse = "\n "), "\n")
+
+  }
+
     for (col in cols) {
       .tmp = fi[, col]
       l0 = length(.tmp[.tmp < 0])/length(.tmp)
@@ -242,10 +253,11 @@ summarizeBTlog = function (file, cols = "all", tradeoffs = F, input=T, burnin = 
 
     # Restructure the table
     if(reorder){
-      cols = c("Alpha", rownames(out)[grepl("Beta", rownames(out))], "Lh", "Var", "R.2")
-      cols = c(cols, rownames(out)[!rownames(out) %in% cols])
+      keepcols = c("Alpha", rownames(out)[grepl("Beta", rownames(out))], "Lh", "Var", "R.2")
+      keepcols = c(keepcols, rownames(out)[!rownames(out) %in% keepcols])
       rows = c("Parameter", "Median", "pMCMC")
       rows = c(rows, colnames(out)[!colnames(out) %in% rows])
+      keepcols = keepcols[keepcols %in% cols]
       out = t(out[cols,rows])
 
     }
