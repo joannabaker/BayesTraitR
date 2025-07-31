@@ -15,12 +15,15 @@
 #' @export
 
 readBTlog = function(file,burnin = 0){
-  skip = (which(grepl("Tree No", readLines(file)))) - 1
-  log = read.table(file, sep = "\t", header = T, stringsAsFactors = F,
-                   comment.char = "*", skip = skip, fill = T)
+  skip = (which(grepl("Tree No", readLines(file))))
+  log = read.table(file, sep = "\t", header = F, stringsAsFactors = F,
+                   comment.char = "*", skip = skip, fill = T, row.names = NULL)
   log = log[(burnin+1):nrow(log),]
+  colnames(log) = unlist(strsplit(readLines(file)[skip], split = "\t"))
+  log=log[!is.na(log$Lh),]
   return(log)
 }
+
 
 
 
