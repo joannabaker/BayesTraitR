@@ -20,7 +20,8 @@ readBTlog = function(file,burnin = 0){
                    comment.char = "*", skip = skip, fill = T, row.names = NULL)
   log = log[(burnin+1):nrow(log),]
   colnames(log) = unlist(strsplit(readLines(file)[skip], split = "\t"))
-  log=log[!is.na(log$Lh),]
+  log=log[!is.na(log$Lh),] # this is not an infallible test
+  log = log[!is.na(log[,(ncol(log)-3)]),] # this is not an infallible test
   return(log)
 }
 
