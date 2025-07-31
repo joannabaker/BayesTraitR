@@ -125,7 +125,7 @@ trimBTlog = function(dir = ".", out = ".", pat = ".txt.Log.txt", start = "\tTree
 #' @importFrom grDevices rainbow
 #' @importFrom graphics legend lines
 #' @export
-plotBTlog = function (files, cols = "all", colours, burnin = 0)
+plotBTlog = function (files, cols = "all", colours, burnin = 0, legend = T)
 {
   cat("Reading output from raw log files...\n")
   # Check to see whether specified inputs are R objects or files
@@ -136,6 +136,7 @@ plotBTlog = function (files, cols = "all", colours, burnin = 0)
 
   # If we have multiple files, create a legend.
   # Otherwise convert single file to list format.
+  if(legend){
   if(missing(colours))  colours = rainbow(n = length(files))
   if(!inherits(fil,"list")) {fil = list(fil)}  else{
     # Create a blank plot and add a colour legend IF more than one file
@@ -143,7 +144,7 @@ plotBTlog = function (files, cols = "all", colours, burnin = 0)
          xlab = "", ylab = "")
     legend("center", legend = files, fill = colours)
     if(length(files) > 10) warning("Colours str specified randomly using rainbow() and may not be clearly distinct for more than 10 replicates.")
-  }
+  }}
 
   # Specify "iterations" as row indices
   its = seq(from = 1, to = max(unlist(lapply(fil, nrow))), by = 1)
