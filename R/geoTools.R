@@ -8,13 +8,16 @@
 #' @param resolution A numeric value defining the grid cell size in degrees for the WGS84 crs. Default is 2 degrees. There are no explicit bounds for this but values of <0.01 can result in slow compute times.
 #' @param outputfile A character string defining the filename (and full filepath) where the csv file should be saved. By default, the file will be saved simply as "masked.csv" in the present working directory.If left as blank (""), no file will be output.
 #' @return A \code{data frame} with longitude, latitude, and mask value for land/ocean. This table is also written to the filepath specified by \code{outputfile}.
+#' @import geojsonsf
 #' @importFrom terra rast crs rasterize values
 #' @importFrom rgplates reconstruct
+#' @importFrom utils write.csv
 #' @export
 #' @examples
+#' \dontrun{
 #' df <- sf_to_csv(age = 200)
 #' df <- sf_to_csv(age = 200, extent = c(-80, 30, -90, 90), resolution = 1)
-#'
+#'}
 
 # function
 sf_to_csv <- function(age = 150, grid = NULL, extent = c(-180, 180, -90, 90),

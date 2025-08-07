@@ -88,7 +88,7 @@ This will create a number of output files in your current working directory:
 Now, we can read in the log file into our R workspace using `readBTlog`. 
 
 ``` {r, eval = TRUE, include = T, echo = T}
-log = readBTlog("inst/extdata/MultiStateML-001.txt.Log.txt")
+log = readBTlog("inst/extdata/MammalBody_VR-001.txt.Log.txt")
 ```
 
 We can view this like we would any other R data.frame. Let's look at what the output looks like.

@@ -1,6 +1,4 @@
 ## TODO: Clarify argument descriptions for all functions.
-## TODO: Improve flexibility and reduce number of required arguments for all functions.
-## TODO: E.G. Allow input trees only as objects - force user to read in tree.
 ## TODO: Check compatibility with log file outputs with equal trees.
 ## TODO: Check compatibility with log file outputs and all models in BT
 
@@ -122,6 +120,7 @@ trimBTlog = function(dir = ".", out = ".", pat = ".txt.Log.txt", start = "\tTree
 #'     Variance, R-squared, Number of local scalars (branch or node), and Lambda.
 #' @param colours if provided, then should be a vector of colours for plotting - otherwise will be drawn randomly from rainbow.
 #' @param burnin A value specifying the number of rows to remove from the beginning of each log file. Default value is 0 and so the entire chain will be plotted.
+#' @param legend If TRUE, will create a blank plot that records the colour for each input file.
 #' @importFrom utils read.table
 #' @importFrom grDevices rainbow
 #' @importFrom graphics legend lines
@@ -319,3 +318,17 @@ extractML = function(input){
   return(Lh)
 
 }
+
+#' @title Bayes Factor Support.
+#' @description Given a Bayes Factor, what is the support level from Raftery et al?
+#' @param BF a Bayes Factor.
+#' @return Verbose support level for Bayes Factor tests.
+#' @export
+BFCrit = function(BF){
+  if(BF < 0) sup = "Negative" else
+    if(BF < 2) sup = "Barely worth mentioning" else
+      if(BF < 5) sup = "Positive" else
+        if(BF < 10) sup = "Strong" else
+          sup = "Very strong"
+        return(sup)}
+

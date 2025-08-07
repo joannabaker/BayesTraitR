@@ -87,7 +87,7 @@ through your command-line interface or using shell (or similar) options
 direction from within R.
 
 ``` r
-shell("BayesTraitsV4.exe MultiStateML.trees MultiStateML-001.txt < MultiStateML.infile")
+shell("BayesTraitsV4.exe MammalBody_VR.trees MammalBody_VR-001.txt < MammalBody_VR.infile")
 ```
 
 This will create a number of output files in your current working
@@ -108,7 +108,7 @@ directory:
 Now, we can read in the log file into our R workspace using `readBTlog`.
 
 ``` r
-log = readBTlog("inst/extdata/MultiStateML-001.txt.Log.txt")
+log = readBTlog("inst/extdata/MammalBody_VR-001.txt.Log.txt")
 ```
 
 We can view this like we would any other R data.frame. Let’s look at
@@ -116,13 +116,20 @@ what the output looks like.
 
 ``` r
 head(log)
-#>   Tree.No        Lh      qDG      qGD Root.P.D. Root.P.G.  X
-#> 1       1 -7.550301 5.441884 6.066461  0.144555  0.855445 NA
-#> 2       2 -7.439013 5.341572 4.576922  0.222662  0.777338 NA
-#> 3       3 -7.637118 6.352144 6.476818  0.195341  0.804659 NA
-#> 4       4 -7.604123 6.706603 5.772352  0.226221  0.773779 NA
-#> 5       5 -7.525569 5.816163 5.410476  0.200482  0.799518 NA
-#> 6       6 -7.807101 8.301755 7.480684  0.257565  0.742435 NA
+#>   Iteration        Lh Tree No   Alpha 1 Sigma^2 1 No RJ Local Branch
+#> 1    101000 -76.44423       1 3.6281597 13.405556                  2
+#> 2    102000 -70.22336      13 3.8568553 12.298780                  2
+#> 3    103000 -74.77264      11 0.3157505 25.232322                  4
+#> 4    104000 -77.70826       7 4.7431700 28.329506                  4
+#> 5    105000 -68.29602      10 2.6831073  6.524745                  5
+#> 6    106000 -77.34678      32 1.5164226 37.779341                  2
+#>   No RJ Local Node <NA>
+#> 1                1   NA
+#> 2                5   NA
+#> 3                0   NA
+#> 4                1   NA
+#> 5                3   NA
+#> 6                0   NA
 ```
 
 Let’s summarize the variable rates output, and create a stretched tree :
@@ -148,3 +155,7 @@ same taxa that were included in the analysis.
 
 Any branches that were stretched that do not exist in your single
 summarizing tree will be assigned to their most recent common ancestor.
+
+## Step 4: Plot the rates and trees
+
+**Coming soon…**

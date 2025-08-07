@@ -4,4 +4,6 @@
 ^README\.Rmd$
 ^vr\.Rmd$
 ^multistate\.Rmd$
-^vr_files
+^vr_files$
+^vr\.md$
+^multistate\.md

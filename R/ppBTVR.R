@@ -322,9 +322,11 @@ processVR = function(VRout){
 #' \item tree - The input tree will be returned for use in tree-scaling and visualization etc.
 #' }
 #' @examples
+#' \dontrun{
 #' # Here we define a file based on one of the examples included with this package
 #' VRlogfilepath <- system.file("extdata", "MammalBody_VR-001.txt.VarRates.txt")
 #' summarizeVR(vrfile = VRlogfilepath, tree = Mammal_trees)
+#' }
 #' @export
 summarizeVR <- function(vrfile, tree, forcedequaltrees = F, burnin = 0){
   # Read log

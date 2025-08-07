@@ -33,9 +33,10 @@ A \code{data frame} with longitude, latitude, and mask value for land/ocean. Thi
 Get palaeomaps in .csv format to create binary map files in BayesTraits.
 }
 \examples{
+\dontrun{
 df <- sf_to_csv(age = 200)
 df <- sf_to_csv(age = 200, extent = c(-80, 30, -90, 90), resolution = 1)
-
+}
 }
 \author{
 Jorge Avaria-Llautureo (j.l.avaria@reading.ac.uk).

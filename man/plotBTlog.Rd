@@ -4,7 +4,7 @@
 \alias{plotBTlog}
 \title{Plot parameter values against index value.}
 \usage{
-plotBTlog(files, cols = "all", colours, burnin = 0)
+plotBTlog(files, cols = "all", colours, burnin = 0, legend = T)
 }
 \arguments{
 \item{files}{path or filename of the file a summary is required for.
@@ -22,6 +22,8 @@ Variance, R-squared, Number of local scalars (branch or node), and Lambda.}
 \item{colours}{if provided, then should be a vector of colours for plotting - otherwise will be drawn randomly from rainbow.}
 
 \item{burnin}{A value specifying the number of rows to remove from the beginning of each log file. Default value is 0 and so the entire chain will be plotted.}
+
+\item{legend}{If TRUE, will create a blank plot that records the colour for each input file.}
 }
 \description{
 Useful for visualizing parameter traces from MCMC analyses in
